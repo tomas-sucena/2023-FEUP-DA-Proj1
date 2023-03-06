@@ -24,7 +24,7 @@ public:
     // methods
     void readAll();
     void readStations();
-    void readNetworks();
+    void readNetwork();
 };
 
 #endif //DA_TRAINS_READER_H

@@ -22,7 +22,7 @@ Reader::Reader(string path) {
  */
 void Reader::readAll(){
     readStations();
-    readNetworks();
+    readNetwork();
 }
 
 /**
@@ -34,12 +34,14 @@ void Reader::readStations(){
     string line;
     getline(reader, line); // header
 
-    while (getline(reader, line)){
+    for (int i = 1; getline(reader, line); ++i){
         std::istringstream line_(line);
 
         // read the name
         string name;
         getline(reader, name, ',');
+
+        ids[name] = i;
         
         // read the district
         string district;
@@ -60,4 +62,11 @@ void Reader::readStations(){
 
     reader.close();
     reader.clear();
+}
+
+/**
+ * @brief reads the file which contains information about the train network
+ */
+void Reader::readNetwork(){
+    reader.open(path + "stations.csv");
 }
