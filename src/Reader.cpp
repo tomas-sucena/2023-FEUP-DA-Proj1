@@ -1,7 +1,8 @@
 #include "Reader.h"
 
 #include <sstream>
-#include <string>
+
+#include "network/Station.h"
 
 using std::string;
 
@@ -20,7 +21,7 @@ Reader::Reader(string path) {
 /**
  * @brief reads all the files
  */
-void Reader::readAll(){
+void Reader::read(){
     readStations();
     readNetwork();
 }
@@ -58,6 +59,8 @@ void Reader::readStations(){
         // read the train line
         string trainLine;
         getline(reader, trainLine, '\r');
+
+        auto station = new Station(name, district, municipality, township, line);
     }
 
     reader.close();
