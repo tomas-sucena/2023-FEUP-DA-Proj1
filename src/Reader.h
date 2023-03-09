@@ -17,15 +17,15 @@ class Reader {
     // data structures
     uMap<std::string, int> ids;
 
-    void readStations();
-    void readNetwork();
+    void readStations(DGraph& g);
+    void readNetwork(DGraph& g);
 
 public:
     // constructor
     explicit Reader(std::string path);
 
     // methods
-    void read();
+    DGraph read();
 };
 
 #endif //DA_TRAINS_READER_H

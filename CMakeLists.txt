@@ -3,10 +3,21 @@ project(DA_Trains)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(DA_Trains
+set(PROJECT_HEADERS
+        graph/src/DGraph.h
+        graph/src/implementation/Graph.cpp
+        src/network/Station.h
+        src/Reader.h)
+
+set(PROJECT_SOURCES
+        graph/src/DGraph.cpp
+        graph/src/implementation/Graph.cpp
         src/main.cpp
-        src/Reader.cpp
-        src/Reader.h src/network/Station.h)
+        src/Reader.cpp)
+
+add_executable(DA_Trains
+        ${PROJECT_HEADERS}
+        ${PROJECT_SOURCES})
 
 add_subdirectory(graph)
 
