@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-#include "network/Station.h"
+#include "network/Station.hpp"
 
 using std::string;
 

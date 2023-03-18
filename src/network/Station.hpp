@@ -1,9 +1,9 @@
-#ifndef DA_TRAINS_STATION_H
-#define DA_TRAINS_STATION_H
+#ifndef DA_TRAINS_STATION_HPP
+#define DA_TRAINS_STATION_HPP
 
 #include <string>
 
-#include "implementation/Vertex.h"
+#include "implementation/Vertex.hpp"
 
 using std::string;
 
@@ -41,4 +41,4 @@ public:
     }
 };
 
-#endif //DA_TRAINS_STATION_H
+#endif //DA_TRAINS_STATION_HPP
