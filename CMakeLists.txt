@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 14)
 set(PROJECT_HEADERS
         graph/src/DGraph.h
         graph/src/implementation/Graph.h
+        src/network/Railway.hpp
         src/network/Station.hpp
-        src/network/Ride.hpp
         src/Reader.h )
 
 set(PROJECT_SOURCES
