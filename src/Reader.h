@@ -5,7 +5,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "DGraph.h"
+#include "network/RailGraph.h"
 
 #define uMap std::unordered_map
 
@@ -17,15 +17,15 @@ class Reader {
     // data structures
     uMap<std::string, int> ids;
 
-    void readStations(DGraph& g);
-    void readNetwork(DGraph& g);
+    void readStations(RailGraph& g);
+    void readNetwork(RailGraph& g);
 
 public:
     // constructor
     explicit Reader(std::string path);
 
     // methods
-    DGraph read();
+    RailGraph read();
 };
 
 #endif //DA_TRAINS_READER_H

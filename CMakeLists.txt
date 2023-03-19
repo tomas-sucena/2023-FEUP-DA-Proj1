@@ -6,14 +6,16 @@ set(CMAKE_CXX_STANDARD 14)
 set(PROJECT_HEADERS
         graph/src/DGraph.h
         graph/src/implementation/Graph.h
+        src/network/RailGraph.h
         src/network/Railway.hpp
         src/network/Station.hpp
-        src/Reader.h )
+        src/Reader.h)
 
 set(PROJECT_SOURCES
         graph/src/DGraph.cpp
         graph/src/implementation/Graph.cpp
         src/main.cpp
+        src/network/RailGraph.cpp
         src/Reader.cpp)
 
 add_executable(DA_Trains

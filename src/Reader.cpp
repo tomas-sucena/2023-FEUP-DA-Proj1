@@ -22,8 +22,8 @@ Reader::Reader(string path) {
  * @brief reads the files that detail the railway network
  * @return directed graph which represents the railway network
  */
-DGraph Reader::read(){
-    DGraph graph;
+RailGraph Reader::read(){
+    RailGraph graph;
     readStations(graph);
     readNetwork(graph);
 
@@ -34,7 +34,7 @@ DGraph Reader::read(){
  * @brief reads the file which contains information about the Stations
  * @param graph directed graph that will be modelled based on the read information
  */
-void Reader::readStations(DGraph& graph){
+void Reader::readStations(RailGraph& graph){
     reader.open(path + "stations.csv");
 
     string line;
@@ -77,7 +77,7 @@ void Reader::readStations(DGraph& graph){
  * @brief reads the file which contains information about the train network
  * @param graph directed graph that will be modelled based on the read information
  */
-void Reader::readNetwork(DGraph& graph){
+void Reader::readNetwork(RailGraph& graph){
     reader.open(path + "network.csv");
 
     string line;
@@ -102,7 +102,7 @@ void Reader::readNetwork(DGraph& graph){
         string service;
         getline(line_, service, '\r');
 
-        graph.addEdge(ids[stationA], ids[stationB], std::stod(capacity));
+        graph.addEdge(ids[stationA], ids[stationB], std::stod(capacity), service);
     }
 
     reader.close();
