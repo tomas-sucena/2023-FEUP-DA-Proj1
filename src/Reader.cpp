@@ -44,25 +44,25 @@ void Reader::readStations(RailGraph& graph){
 
         // read the name
         string name;
-        getline(reader, name, ',');
+        getline(line_, name, ',');
 
         ids[name] = i;
-        
+
         // read the district
         string district;
-        getline(reader, district, ',');
-        
+        getline(line_, district, ',');
+
         // read the municipality
         string municipality;
-        getline(reader, municipality, ',');
+        getline(line_, municipality, ',');
 
         // read the township
         string township;
-        getline(reader, township, ',');
+        getline(line_, township, ',');
 
         // read the train line
         string trainLine;
-        getline(reader, trainLine, '\n');
+        getline(line_, trainLine, '\n');
 
         // add the station to the graph
         auto station = new Station(name, district, municipality, township, line);
