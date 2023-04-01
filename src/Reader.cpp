@@ -11,9 +11,8 @@ using std::string;
  * @param path the path to the directory where the files to be read are
  */
 Reader::Reader(string path) {
-    if (path.back() != '/'){
+    if (path.back() != '/')
         path += '/';
-    }
 
     this->path = path;
 }
@@ -63,12 +62,16 @@ void Reader::readStations(RailGraph& graph){
 
         // read the train line
         string trainLine;
-        getline(reader, trainLine, '\r');
+        getline(reader, trainLine, '\n');
 
+        // add the station to the graph
         auto station = new Station(name, district, municipality, township, line);
         graph.addVertex(station);
-    }
 
+        networkSources.insert(i);
+        networkSinks.insert(i);
+    }
+    
     reader.close();
     reader.clear();
 }
@@ -100,10 +103,25 @@ void Reader::readNetwork(RailGraph& graph){
 
         // read the service
         string service;
-        getline(line_, service, '\r');
+        getline(line_, service, '\n');
 
         graph.addEdge(ids[stationA], ids[stationB], std::stod(capacity), service);
+
+        networkSources.erase(ids[stationB]);
+        networkSinks.erase(ids[stationA]);
     }
+
+    // add the super source
+    graph.addSuperSource();
+
+    for (int sourceID : networkSources)
+        graph.addSource(sourceID);
+    
+    // add the super sink
+    graph.addSuperSink();
+
+    for (int sinkID : networkSinks)
+        graph.addSink(sinkID);
 
     reader.close();
     reader.clear();

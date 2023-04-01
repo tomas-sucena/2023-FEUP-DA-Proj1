@@ -4,10 +4,12 @@
 #include <fstream>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 
 #include "network/RailGraph.h"
 
 #define uMap std::unordered_map
+#define uSet std::unordered_set
 
 class Reader {
     // for reading
@@ -16,6 +18,7 @@ class Reader {
 
     // data structures
     uMap<std::string, int> ids;
+    uSet<int> networkSources, networkSinks;
 
     void readStations(RailGraph& g);
     void readNetwork(RailGraph& g);
