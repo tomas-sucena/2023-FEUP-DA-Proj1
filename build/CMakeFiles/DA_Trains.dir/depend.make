@@ -16,6 +16,18 @@ CMakeFiles/DA_Trains.dir/graph/src/implementation/Graph.cpp.o: ../graph/src/impl
 CMakeFiles/DA_Trains.dir/graph/src/implementation/Graph.cpp.o: ../graph/src/implementation/Path.hpp
 CMakeFiles/DA_Trains.dir/graph/src/implementation/Graph.cpp.o: ../graph/src/implementation/Vertex.hpp
 
+CMakeFiles/DA_Trains.dir/src/Helpy.cpp.o: ../graph/src/UGraph.h
+CMakeFiles/DA_Trains.dir/src/Helpy.cpp.o: ../graph/src/implementation/Edge.hpp
+CMakeFiles/DA_Trains.dir/src/Helpy.cpp.o: ../graph/src/implementation/Graph.h
+CMakeFiles/DA_Trains.dir/src/Helpy.cpp.o: ../graph/src/implementation/Path.hpp
+CMakeFiles/DA_Trains.dir/src/Helpy.cpp.o: ../graph/src/implementation/Vertex.hpp
+CMakeFiles/DA_Trains.dir/src/Helpy.cpp.o: ../src/Helpy.cpp
+CMakeFiles/DA_Trains.dir/src/Helpy.cpp.o: ../src/Helpy.h
+CMakeFiles/DA_Trains.dir/src/Helpy.cpp.o: ../src/Reader.h
+CMakeFiles/DA_Trains.dir/src/Helpy.cpp.o: ../src/network/RailGraph.h
+CMakeFiles/DA_Trains.dir/src/Helpy.cpp.o: ../src/network/Railway.hpp
+CMakeFiles/DA_Trains.dir/src/Helpy.cpp.o: ../src/network/Station.hpp
+
 CMakeFiles/DA_Trains.dir/src/Reader.cpp.o: ../graph/src/UGraph.h
 CMakeFiles/DA_Trains.dir/src/Reader.cpp.o: ../graph/src/implementation/Edge.hpp
 CMakeFiles/DA_Trains.dir/src/Reader.cpp.o: ../graph/src/implementation/Graph.h
@@ -32,6 +44,7 @@ CMakeFiles/DA_Trains.dir/src/main.cpp.o: ../graph/src/implementation/Edge.hpp
 CMakeFiles/DA_Trains.dir/src/main.cpp.o: ../graph/src/implementation/Graph.h
 CMakeFiles/DA_Trains.dir/src/main.cpp.o: ../graph/src/implementation/Path.hpp
 CMakeFiles/DA_Trains.dir/src/main.cpp.o: ../graph/src/implementation/Vertex.hpp
+CMakeFiles/DA_Trains.dir/src/main.cpp.o: ../src/Helpy.h
 CMakeFiles/DA_Trains.dir/src/main.cpp.o: ../src/Reader.h
 CMakeFiles/DA_Trains.dir/src/main.cpp.o: ../src/main.cpp
 CMakeFiles/DA_Trains.dir/src/main.cpp.o: ../src/network/RailGraph.h

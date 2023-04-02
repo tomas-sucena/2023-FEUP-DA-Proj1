@@ -2,19 +2,22 @@
 #define DA_TRAINS_HELPY_H
 
 #include <map>
+#include <unordered_set>
 #include <string>
 
 #include "network/RailGraph.h"
+#include "Reader.h"
 
-#define uMap unordered_map
-#define uSet unordered_set
+using namespace std;
+
 
 class Helpy {
     private:
         RailGraph graph;
+        uMap<string, int> ids;
 
         // maps used to process commands
-        static map<string, int> command, target, what;
+        static std::map<string, int> command, target, what;
                
     public:
         // constructor
@@ -24,22 +27,12 @@ class Helpy {
         static void lowercase(string& s, bool uppercase = false);
         static void properName(string& s);
 
-        void setAirports(const uSet<string>& codes, const uMap<string, string>& names);
-        void setAirlines(const uSet<string>& codes);
-        void setLocations(const uMap<string, uSet<string>>& cities, const uMap<string, uSet<string>>& countries);
-
         string readInput(const string& instruction, uSet<string>& options);
         double readNumber(const string& instruction);
-        string readAirport();
+        int readStation();
         string readCity(bool country = false);
         string readCoordinates();
         string readLocation(string instruction = "");
-
-        uSet<string> readUsableAirlines();
-        uSet<string> readUsableCities();
-        uSet<string> readUsableCountries();
-        uSet<string> readUsableAirports();
-        uSet<string>* readRestrictions();
 
         template <typename T>
         void printAirports(T airports, const list<string>& columnNames);
@@ -51,9 +44,9 @@ class Helpy {
         void guided_mode();
         bool process_command(string& s1, string& s2, string& s3);
 
-        void displayAirportInformation();
-        void displayReachableAirports();
-        void displayShortestRoutes();
+        void calculateMaximumTrains();
+        void determineMostTrains();
+        void determineBudgetNeed();
 };
 
 #endif

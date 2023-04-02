@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/DA_Trains.dir/graph/src/UGraph.cpp.o"
   "CMakeFiles/DA_Trains.dir/graph/src/implementation/Graph.cpp.o"
+  "CMakeFiles/DA_Trains.dir/src/Helpy.cpp.o"
   "CMakeFiles/DA_Trains.dir/src/Reader.cpp.o"
   "CMakeFiles/DA_Trains.dir/src/main.cpp.o"
   "CMakeFiles/DA_Trains.dir/src/network/RailGraph.cpp.o"

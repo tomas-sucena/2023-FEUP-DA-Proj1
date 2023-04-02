@@ -288,6 +288,33 @@ graph/src/implementation/Graph.cpp.s:
 	$(MAKE) -f CMakeFiles/DA_Trains.dir/build.make CMakeFiles/DA_Trains.dir/graph/src/implementation/Graph.cpp.s
 .PHONY : graph/src/implementation/Graph.cpp.s
 
+src/Helpy.o: src/Helpy.cpp.o
+
+.PHONY : src/Helpy.o
+
+# target to build an object file
+src/Helpy.cpp.o:
+	$(MAKE) -f CMakeFiles/DA_Trains.dir/build.make CMakeFiles/DA_Trains.dir/src/Helpy.cpp.o
+.PHONY : src/Helpy.cpp.o
+
+src/Helpy.i: src/Helpy.cpp.i
+
+.PHONY : src/Helpy.i
+
+# target to preprocess a source file
+src/Helpy.cpp.i:
+	$(MAKE) -f CMakeFiles/DA_Trains.dir/build.make CMakeFiles/DA_Trains.dir/src/Helpy.cpp.i
+.PHONY : src/Helpy.cpp.i
+
+src/Helpy.s: src/Helpy.cpp.s
+
+.PHONY : src/Helpy.s
+
+# target to generate assembly for a file
+src/Helpy.cpp.s:
+	$(MAKE) -f CMakeFiles/DA_Trains.dir/build.make CMakeFiles/DA_Trains.dir/src/Helpy.cpp.s
+.PHONY : src/Helpy.cpp.s
+
 src/Reader.o: src/Reader.cpp.o
 
 .PHONY : src/Reader.o
@@ -393,6 +420,9 @@ help:
 	@echo "... graph/src/implementation/Graph.o"
 	@echo "... graph/src/implementation/Graph.i"
 	@echo "... graph/src/implementation/Graph.s"
+	@echo "... src/Helpy.o"
+	@echo "... src/Helpy.i"
+	@echo "... src/Helpy.s"
 	@echo "... src/Reader.o"
 	@echo "... src/Reader.i"
 	@echo "... src/Reader.s"

@@ -21,6 +21,11 @@
 },
 {
   "directory": "/home/gonpedro/DAPROJ1/build",
+  "command": "/usr/bin/g++   -I/home/gonpedro/DAPROJ1/graph/src  -g   -std=gnu++14 -o CMakeFiles/DA_Trains.dir/src/Helpy.cpp.o -c /home/gonpedro/DAPROJ1/src/Helpy.cpp",
+  "file": "/home/gonpedro/DAPROJ1/src/Helpy.cpp"
+},
+{
+  "directory": "/home/gonpedro/DAPROJ1/build",
   "command": "/usr/bin/g++   -I/home/gonpedro/DAPROJ1/graph/src  -g   -std=gnu++14 -o CMakeFiles/DA_Trains.dir/src/Reader.cpp.o -c /home/gonpedro/DAPROJ1/src/Reader.cpp",
   "file": "/home/gonpedro/DAPROJ1/src/Reader.cpp"
 },

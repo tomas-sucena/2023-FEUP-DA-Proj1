@@ -16,6 +16,18 @@ CMakeFiles/DA_Trains.dir/graph/src/implementation/Graph.cpp.o
  /home/gonpedro/DAPROJ1/graph/src/implementation/Graph.h
  /home/gonpedro/DAPROJ1/graph/src/implementation/Path.hpp
  /home/gonpedro/DAPROJ1/graph/src/implementation/Vertex.hpp
+CMakeFiles/DA_Trains.dir/src/Helpy.cpp.o
+ ../graph/src/UGraph.h
+ ../graph/src/implementation/Edge.hpp
+ ../graph/src/implementation/Graph.h
+ ../graph/src/implementation/Path.hpp
+ ../graph/src/implementation/Vertex.hpp
+ /home/gonpedro/DAPROJ1/src/Helpy.cpp
+ /home/gonpedro/DAPROJ1/src/Helpy.h
+ /home/gonpedro/DAPROJ1/src/Reader.h
+ /home/gonpedro/DAPROJ1/src/network/RailGraph.h
+ /home/gonpedro/DAPROJ1/src/network/Railway.hpp
+ /home/gonpedro/DAPROJ1/src/network/Station.hpp
 CMakeFiles/DA_Trains.dir/src/Reader.cpp.o
  ../graph/src/UGraph.h
  ../graph/src/implementation/Edge.hpp
@@ -33,6 +45,7 @@ CMakeFiles/DA_Trains.dir/src/main.cpp.o
  ../graph/src/implementation/Graph.h
  ../graph/src/implementation/Path.hpp
  ../graph/src/implementation/Vertex.hpp
+ /home/gonpedro/DAPROJ1/src/Helpy.h
  /home/gonpedro/DAPROJ1/src/Reader.h
  /home/gonpedro/DAPROJ1/src/main.cpp
  /home/gonpedro/DAPROJ1/src/network/RailGraph.h
