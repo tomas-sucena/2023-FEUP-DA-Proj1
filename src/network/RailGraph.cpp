@@ -4,7 +4,7 @@
 
 #define uSet std::unordered_set
 
-RailGraph::RailGraph() : superSourceID(0), superSinkID(0) {}
+RailGraph::RailGraph(int n) : UGraph(n), superSourceID(0), superSinkID(0) {}
 
 /**
  * adds an edge (i.e. a Railway) to the RailGraph
@@ -16,7 +16,7 @@ RailGraph::RailGraph() : superSourceID(0), superSinkID(0) {}
  * @return 'true' if the insertion occurs, 'false' otherwise
  */
 bool RailGraph::addEdge(int src, int dest, double weight, std::string service, bool valid){
-    return DGraph::addEdge(new Railway(src, dest, weight, valid, std::move(service)));
+    return UGraph::addEdge(new Railway(src, dest, weight, valid, std::move(service)));
 }
 
 int RailGraph::addSuperSource() {
@@ -48,9 +48,5 @@ bool RailGraph::addSink(int sinkID){
 }
 
 double RailGraph::getFullPicture(){
-    // standard direction
-    edmondsKarp(superSourceID, superSinkID);
-
-    // opposite direction
-    return edmondsKarp(superSinkID, superSourceID);
+    return edmondsKarp(superSourceID, superSinkID);
 }

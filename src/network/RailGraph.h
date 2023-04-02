@@ -4,16 +4,16 @@
 #include <list>
 #include <string>
 
-#include "DGraph.h"
+#include "UGraph.h"
 #include "Railway.hpp"
 #include "Station.hpp"
 
-class RailGraph : public DGraph {
+class RailGraph : public UGraph {
     int superSourceID, superSinkID;
 
 public:
     // constructor
-    RailGraph();
+    explicit RailGraph(int n = 0);
 
     bool addEdge(int src, int dest, double weight = 1, std::string service = "STANDARD", bool valid = true);
     int addSuperSource(), addSuperSink();
