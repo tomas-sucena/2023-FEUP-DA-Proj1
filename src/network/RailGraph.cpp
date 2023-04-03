@@ -1,6 +1,7 @@
 #include "RailGraph.h"
 
 #include <unordered_set>
+#include <algorithm>
 
 #define uSet std::unordered_set
 
@@ -99,4 +100,34 @@ std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxFlow
     }
 
     return busiestPairs;
+}
+
+RailGraph RailGraph::subGraph(list<std::pair<int, int>> edgesList) {
+    RailGraph copy = *this;
+    for(auto i : edgesList){
+        for(auto e: copy[i.first].outEdges()){
+            if(e->getDest() == i.second){
+                e->valid = false;
+                break;
+            }
+        }
+    }
+    return copy;
+}
+
+double RailGraph::reducedConnectivity(int start, int end, RailGraph sub) {
+    return sub.edmondsKarp(start, end);
+}
+
+std::vector<std::pair<int, int>> RailGraph::mostAffected(RailGraph sub, int k) {
+    std::vector<std::pair<int, int>> out;
+    sub.getFullPicture();
+    for(int i = 1; i < vertices.size(); i++){
+        out.emplace_back(i, sub[i].inDegree());
+    }
+    std::sort(out.begin(), out.end(), [](auto &left, auto &right) {
+        return left.second < right.second;
+    });
+    out.resize(k);
+    return out;
 }
