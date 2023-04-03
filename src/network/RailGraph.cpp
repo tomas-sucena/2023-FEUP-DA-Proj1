@@ -50,3 +50,32 @@ bool RailGraph::addSink(int sinkID){
 double RailGraph::getFullPicture(){
     return edmondsKarp(superSourceID, superSinkID);
 }
+
+std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxFlow){
+    std::list<std::pair<int, int>> busiestPairs;
+
+    reset = false;
+    resetAll();
+
+    // invalidate the superSource and the superSink
+    (*this)[superSourceID].valid = false;
+    (*this)[superSinkID].valid = false;
+
+    for (int i = 1; i <= countVertices() - 2; ++i){
+        for (int j = i + 1; j <= countVertices() - 2; ++j){
+            resetEdges();
+
+            double flow = maximumFlow(i, j);
+            if (flow < maxFlow) continue;
+
+            if (flow > maxFlow){
+                busiestPairs.clear();
+                maxFlow = flow;
+            }
+
+            busiestPairs.emplace_back(i, j);
+        }
+    }
+
+    return busiestPairs;
+}
