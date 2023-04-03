@@ -23,6 +23,7 @@ public:
 
     double getFullPicture();
     std::list<std::pair<int, int>> getBusiestStationPairs(double& maxFlow);
+    RailGraph subGraph(list<std::pair<int, int>> edgesList);
 };
 
 #endif //DA_TRAINS_RAILGRAPH_H

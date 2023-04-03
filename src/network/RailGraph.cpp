@@ -79,3 +79,16 @@ std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxFlow
 
     return busiestPairs;
 }
+
+RailGraph RailGraph::subGraph(list<std::pair<int, int>> edgesList) {
+    RailGraph copy = *this;
+    for(auto i : edgesList){
+        for(auto e: copy[i.first].outEdges()){
+            if(e->getDest() == i.second){
+                e->valid = false;
+                break;
+            }
+        }
+    }
+    return copy;
+}
