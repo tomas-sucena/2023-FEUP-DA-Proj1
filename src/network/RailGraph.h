@@ -3,14 +3,18 @@
 
 #include <list>
 #include <string>
+#include <unordered_map>
 
 #include "UGraph.h"
 #include "Railway.hpp"
 #include "Station.hpp"
 
+#define uMap std::unordered_map
+
 class RailGraph : public UGraph {
     int superSourceID, superSinkID;
     bool profitMode;
+    uMap<std::string, std::list<Railway*>> districts, municipalities;
 
 public:
     // constructor
@@ -18,6 +22,7 @@ public:
 
     // methods
     bool addEdge(int src, int dest, double weight = 1, std::string service = "STANDARD", bool valid = true);
+    Station& operator[](int index) override;
     int addSuperSource(), addSuperSink();
     bool addSource(int sourceID), addSink(int sinkID);
 

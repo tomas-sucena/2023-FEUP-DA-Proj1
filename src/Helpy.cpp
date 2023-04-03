@@ -210,7 +210,6 @@ b1: cout << endl << YELLOW << BREAK << RESET << endl;
     cin >> s3;
     lowercase(s3);
 
-    // processar o comando
     if (!process_command(s1, s2, s3)){
         goto b1;
     }

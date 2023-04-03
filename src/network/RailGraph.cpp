@@ -16,7 +16,28 @@ RailGraph::RailGraph(int n) : UGraph(n), superSourceID(0), superSinkID(0) {}
  * @return 'true' if the insertion occurs, 'false' otherwise
  */
 bool RailGraph::addEdge(int src, int dest, double weight, std::string service, bool valid){
-    return UGraph::addEdge(new Railway(src, dest, weight, valid, std::move(service)));
+    auto r = new Railway(src, dest, weight, valid, std::move(service));
+    if (!UGraph::addEdge(r)) return false;
+
+    // update the districts map
+    std::string srcDistrict = (*this)[src].getDistrict();
+    std::string destDistrict = (*this)[dest].getDistrict();
+
+    districts[srcDistrict].push_back(r);
+    if (srcDistrict != destDistrict) districts[destDistrict].push_back(r);
+
+    // update the municipalities map
+    std::string srcMunicipality = (*this)[src].getMunicipality();
+    std::string destMunicipality = (*this)[dest].getMunicipality();
+
+    municipalities[srcMunicipality].push_back(r);
+    if (srcMunicipality != destMunicipality) municipalities[destMunicipality].push_back(r);
+    
+    return true;
+}
+
+Station& RailGraph::operator[](int index){
+    return (Station&) Graph::operator[](index);
 }
 
 int RailGraph::addSuperSource() {
