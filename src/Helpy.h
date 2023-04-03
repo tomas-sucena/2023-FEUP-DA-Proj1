@@ -14,14 +14,15 @@ using namespace std;
 class Helpy {
     private:
         RailGraph graph;
-        uMap<string, int> ids;
+        uMap<string, int> stations;
+        bool standard = false;
 
         // maps used to process commands
         static std::map<string, int> command, target, what;
                
     public:
         // constructor
-        Helpy(RailGraph& graph);
+        Helpy(RailGraph& graph, uMap<string, int> ids);
 
         // methods
         static void lowercase(string& s, bool uppercase = false);
@@ -44,9 +45,12 @@ class Helpy {
         void guided_mode();
         bool process_command(string& s1, string& s2, string& s3);
 
+        void chooseMaximumTrains();
         void calculateMaximumTrains();
+        void calculateMaximumTrainsTwoStations();
         void determineMostTrains();
         void determineBudgetNeed();
+        void determineAffectedStations();
 };
 
 #endif

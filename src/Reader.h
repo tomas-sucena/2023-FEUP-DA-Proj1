@@ -17,7 +17,7 @@ class Reader {
     std::string path;
 
     // data structures
-    uMap<std::string, int> ids;
+    uMap<std::string, int> stations;
     uSet<int> networkSources, networkSinks;
 
     void readStations(RailGraph& g);
@@ -29,6 +29,7 @@ public:
 
     // methods
     RailGraph read();
+    uMap<std::string, int> getStations();
 };
 
 #endif //DA_TRAINS_READER_H

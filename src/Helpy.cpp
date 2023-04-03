@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <list>
 #include <map>
 #include <string>
@@ -16,7 +17,7 @@
 #define BREAK   "- - - - - - - - - - - - - - - - - - - - -"
 
 map<string, int> Helpy::command = {{"display", 1}, {"print", 1}, {"show", 1}, {"calculate", 2}, {"determine", 2}};
-map<string, int> Helpy::target = {{"station", 6}, {"shortest", 8}, {"maximum", 10}, {"most", 12}, {"budget", 14}};
+map<string, int> Helpy::target = {{"station", 6}, {"shortest", 8}, {"maximum", 10}, {"most", 12}, {"budget", 14}, {"affected", 17}};
 map<string, int> Helpy::what = {{"information", 24}, {"info", 24}, {"route", 27}, {"routes", 27}, {"train", 27},
                                 {"trains", 27}, {"path", 27}, {"paths", 27}, {"station", 29}, {"stations", 29}, {"need", 31}};
 
@@ -59,9 +60,10 @@ void Helpy::properName(string& s){
 
 /**
  * @brief Construct a new Helpy:: Helpy object
- * @param graph graph that contains all the data regarding Airports, Airlines and flights
+ * @param graph graph that contains all the data regarding Stations and Trips between stations
+ * @param ids unordered map that contains information regarding stations (for search purposes)
  */
-Helpy::Helpy(RailGraph& graph) : graph(graph) {}
+Helpy::Helpy(RailGraph& graph, uMap<string, int> ids) : graph(graph), stations(ids){}
 
 /**
  * @brief reads a line of user input
@@ -141,9 +143,9 @@ double Helpy::readNumber(const string &instruction){
 }
 
 /**
- * @brief reads the code/name of an station from the console
+ * @brief reads the name of an station from the console
  * @complexity O(n)
- * @return the code of the station
+ * @return the index of the station
  */
 int Helpy::readStation(){
     int station = 0;
@@ -155,12 +157,12 @@ int Helpy::readStation(){
 
         properName(line);
         
-        if (ids.find(line) != ids.end()){
-            station = ids[line];
+        if (stations.find(line) != stations.end()){
+            station = stations[line];
             break;
         }
         cout << endl << YELLOW << BREAK << RESET << endl << endl;
-        cout << RED << "Invalid input! The airport you entered does not exist. Please, try again." << RESET << endl;
+        cout << RED << "Invalid input! The station you entered does not exist. Please, try again." << RESET << endl;
     }
 
     return station;
@@ -260,6 +262,7 @@ b2: cout << endl << YELLOW << BREAK << RESET << endl;
     else if (s1 == "determine"){
         cout << endl << YELLOW << BREAK << RESET << endl << endl;
         cout << "* Budget" << endl;
+        cout << "* Affected" << endl;
         cout << endl;
     }
     else { // erro
@@ -282,6 +285,11 @@ b2: cout << endl << YELLOW << BREAK << RESET << endl;
     else if (s2 == "budget"){
         cout << endl << YELLOW << BREAK << RESET << endl << endl;
         cout << "* Need" << endl;
+        cout << endl;
+    }
+    else if (s2 == "affected"){
+        cout << endl << YELLOW << BREAK << RESET << endl << endl;
+        cout << "* Stations" << endl;
         cout << endl;
     }
     else if (s2 == "quit"){
@@ -332,7 +340,7 @@ e2: cout << endl << YELLOW << BREAK << RESET << endl << endl;
 bool Helpy::process_command(string& s1, string& s2, string& s3){
     switch (command[s1] + target[s2] + what[s3]){
         case(39) : {
-            calculateMaximumTrains();
+            chooseMaximumTrains();
             break;
         }
         case(41) : {
@@ -341,6 +349,11 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
         }
         case(47) : {
             determineBudgetNeed();
+            break;
+        }
+        case(48) : {
+            determineAffectedStations();
+            break;
         }
         default : {
             cout << endl << YELLOW << BREAK << RESET << endl;
@@ -354,25 +367,59 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
 }
 
 /**
- * @brief computes the maximum number of trains that go between two stations simultaneously
+ * @brief chooses between calling calculateMaximumTrainsTwoStations or calculateMaximumTrains
  * @complexity O(n * |E|)
- * @param start station where we begin
- * @param finish station where we end up
  */
-void Helpy::calculateMaximumTrains(){
-    int start = readStation();
-    int finish = readStation();
+void Helpy::chooseMaximumTrains(){
+    cout << endl << YELLOW << BREAK << RESET << endl << endl;
+    cout << "1. Between two stations" << endl;
+    cout << "2. That can simultaneously arrive at a station" << endl;
+    cout << endl;
+    string s;
+    cin >> s;
+    if(s == "1"){
+        return calculateMaximumTrainsTwoStations();
+    } else if (s == "2"){
+        return calculateMaximumTrains();
+    }
+    cout << endl << YELLOW << BREAK << RESET << endl;
+    cout << endl << RED << "Invalid number! Please, try again." << RESET << endl;
+    return chooseMaximumTrains();
+}
 
+/**
+ * @brief computes the pairs of stations (if more than one) that require the most trains when taking full advantage of the existing network capacity
+ * @complexity O(n * |E|)
+ */
+void Helpy::determineMostTrains(){
+    int airport = readStation();
     cout << endl << YELLOW << BREAK << RESET << endl;
 
 }
 
 
 /**
- * @brief computes the pairs of stations (if more than one) that require the most trains when taking full advantage 
+ * @brief computes the maximum number of trains that go between two stations simultaneously
  * @complexity O(n * |E|)
+ * @param start station where we begin
+ * @param finish station where we end up
  */
-void Helpy::determineMostTrains(){
+void Helpy::calculateMaximumTrainsTwoStations(){
+    int airport = readStation();
+
+
+    cout << endl << YELLOW << BREAK << RESET << endl;
+
+}
+
+
+
+/**
+ * @brief computes the maximum number of trains that can arrive at a station simultaneously
+ * @complexity O(n * |E|)
+ * @param start station that we want to test
+ */
+void Helpy::calculateMaximumTrains(){
     int airport = readStation();
 
 
@@ -390,3 +437,16 @@ void Helpy::determineBudgetNeed(){
 
     cout << endl << YELLOW << BREAK << RESET << endl;
 }
+
+/**
+ * @brief computes the stations that are most affected by each segment failure
+ * @complexity O(n * |E|)
+ */
+void Helpy::determineAffectedStations(){
+    int airport = readStation();
+
+
+    cout << endl << YELLOW << BREAK << RESET << endl;
+
+}
+

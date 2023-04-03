@@ -46,7 +46,7 @@ void Reader::readStations(RailGraph& graph){
         string name;
         getline(line_, name, ',');
 
-        ids[name] = i;
+        stations[name] = i;
 
         // read the district
         string district;
@@ -105,10 +105,10 @@ void Reader::readNetwork(RailGraph& graph){
         string service;
         getline(line_, service, '\n');
 
-        graph.addEdge(ids[stationA], ids[stationB], std::stod(capacity), service);
+        graph.addEdge(stations[stationA], stations[stationB], std::stod(capacity), service);
 
-        networkSources.erase(ids[stationB]);
-        networkSinks.erase(ids[stationA]);
+        networkSources.erase(stations[stationB]);
+        networkSinks.erase(stations[stationA]);
     }
 
     // add the super source
@@ -126,3 +126,10 @@ void Reader::readNetwork(RailGraph& graph){
     reader.close();
     reader.clear();
 }
+
+
+uMap<std::string, int> Reader::getStations(){
+    return stations;
+}
+
+

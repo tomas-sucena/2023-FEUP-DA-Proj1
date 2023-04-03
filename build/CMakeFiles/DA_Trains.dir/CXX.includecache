@@ -49,6 +49,8 @@ fstream
 -
 iostream
 -
+sstream
+-
 list
 -
 map
@@ -79,6 +81,16 @@ unordered_set
 -
 network/RailGraph.h
 /home/gonpedro/DAPROJ1/src/network/RailGraph.h
+
+/home/gonpedro/DAPROJ1/src/main.cpp
+iostream
+-
+network/RailGraph.h
+/home/gonpedro/DAPROJ1/src/network/RailGraph.h
+Reader.h
+/home/gonpedro/DAPROJ1/src/Reader.h
+Helpy.h
+/home/gonpedro/DAPROJ1/src/Helpy.h
 
 /home/gonpedro/DAPROJ1/src/network/RailGraph.h
 list
