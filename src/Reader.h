@@ -17,6 +17,7 @@ private:
     // for reading
     std::ifstream reader;
     std::string path;
+    char valueDelim, lineDelim; // delimiters
 
     // data structures
     uMap<std::string, int> stationIDs;
@@ -24,7 +25,7 @@ private:
 
 /* CONSTRUCTOR */
 public:
-    explicit Reader(std::string path);
+    explicit Reader(std::string path, char valueDelim = ',', char lineDelim = '\n');
 
 /* METHODS */
 private:

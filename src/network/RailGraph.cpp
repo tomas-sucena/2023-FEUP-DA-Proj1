@@ -18,15 +18,10 @@ RailGraph::RailGraph(int n) : UGraph(n), superSourceID(0), superSinkID(0) {}
  * @return 'true' if the insertion occurs, 'false' otherwise
  */
 bool RailGraph::addEdge(int src, int dest, double weight, std::string service, bool valid){
-    try {
-        auto r = new Railway(src, dest, weight, valid, std::move(service));
-        if (!UGraph::addEdge(r)) return false;
-    }
-    catch (const std::length_error& e) {
-        std::cerr << "Length error: " << e.what() << std::endl;
-    }
     auto r = new Railway(src, dest, weight, valid, std::move(service));
     if (!UGraph::addEdge(r)) return false;
+
+    if (src == superSourceID || dest == superSinkID) return true;
 
     // update the districts map
     std::string srcDistrict = (*this)[src].getDistrict();

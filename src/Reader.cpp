@@ -10,7 +10,7 @@ using std::string;
  * @brief creates a Reader object
  * @param path the path to the directory where the files to be read are
  */
-Reader::Reader(string path) {
+Reader::Reader(string path, char valueDelim, char lineDelim) : valueDelim(valueDelim), lineDelim(lineDelim) {
     if (path.back() != '/')
         path += '/';
 
@@ -44,28 +44,28 @@ void Reader::readStations(RailGraph& graph){
 
         // read the name
         string name;
-        getline(line_, name, ',');
+        getline(line_, name, valueDelim);
 
         stationIDs[name] = i;
 
         // read the district
         string district;
-        getline(line_, district, ',');
+        getline(line_, district, valueDelim);
 
         // read the municipality
         string municipality;
-        getline(line_, municipality, ',');
+        getline(line_, municipality, valueDelim);
 
         // read the township
         string township;
-        getline(line_, township, ',');
+        getline(line_, township, valueDelim);
 
         // read the train line
         string trainLine;
-        getline(line_, trainLine, '\n');
+        getline(line_, trainLine, lineDelim);
 
         // add the station to the graph
-        graph.addVertex(new Station(name, district, municipality, township, line));
+        graph.addVertex(new Station(name, district, municipality, township, trainLine));
 
         networkSources.insert(i);
         networkSinks.insert(i);
@@ -90,19 +90,19 @@ void Reader::readNetwork(RailGraph& graph){
 
         // read the first station
         string stationA;
-        getline(line_, stationA, ',');
+        getline(line_, stationA, valueDelim);
 
         // read the second station
         string stationB;
-        getline(line_, stationB, ',');
+        getline(line_, stationB, valueDelim);
 
         // read the capacity
         string capacity;
-        getline(line_, capacity, ',');
+        getline(line_, capacity, valueDelim);
 
         // read the service
         string service;
-        getline(line_, service, '\n');
+        getline(line_, service, lineDelim);
 
         graph.addEdge(stationIDs[stationA], stationIDs[stationB], std::stod(capacity), service);
 

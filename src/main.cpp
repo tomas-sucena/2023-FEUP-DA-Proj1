@@ -5,7 +5,7 @@
 #include "Helpy.h"
 
 int main() {
-    Reader reader("../data");
+    Reader reader("../data", ';');
     RailGraph network = reader.read();
 
     /*time_t start, end;
