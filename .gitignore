@@ -1,2 +1,10 @@
+# CLion
 .idea/
 cmake-build-debug/
+
+# vscode
+.vscode/
+build/
+
+# test files
+data/testData/
