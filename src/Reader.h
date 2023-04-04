@@ -12,22 +12,26 @@
 #define uSet std::unordered_set
 
 class Reader {
+/* ATTRIBUTES */
+private:
     // for reading
     std::ifstream reader;
     std::string path;
 
     // data structures
-    uMap<std::string, int> stations;
+    uMap<std::string, int> stationIDs;
     uSet<int> networkSources, networkSinks;
 
+/* CONSTRUCTOR */
+public:
+    explicit Reader(std::string path);
+
+/* METHODS */
+private:
     void readStations(RailGraph& g);
     void readNetwork(RailGraph& g);
 
 public:
-    // constructor
-    explicit Reader(std::string path);
-
-    // methods
     RailGraph read();
     uMap<std::string, int> getStations();
 };

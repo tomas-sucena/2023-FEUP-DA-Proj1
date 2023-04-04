@@ -17,7 +17,33 @@ RailGraph::RailGraph(int n) : UGraph(n), superSourceID(0), superSinkID(0) {}
  * @return 'true' if the insertion occurs, 'false' otherwise
  */
 bool RailGraph::addEdge(int src, int dest, double weight, std::string service, bool valid){
-    return UGraph::addEdge(new Railway(src, dest, weight, valid, std::move(service)));
+    auto r = new Railway(src, dest, weight, valid, std::move(service));
+    if (!UGraph::addEdge(r)) return false;
+
+    // update the districts map
+    std::string srcDistrict = (*this)[src].getDistrict();
+    std::string destDistrict = (*this)[dest].getDistrict();
+
+    districts[srcDistrict].push_back(r);
+    if (srcDistrict != destDistrict) districts[destDistrict].push_back(r);
+
+    // update the municipalities map
+    std::string srcMunicipality = (*this)[src].getMunicipality();
+    std::string destMunicipality = (*this)[dest].getMunicipality();
+
+    municipalities[srcMunicipality].push_back(r);
+    if (srcMunicipality != destMunicipality) municipalities[destMunicipality].push_back(r);
+    
+    return true;
+}
+
+/**
+ * @brief accesses a vertex (i.e. a Station) of the Graph and allows modifications to be made to it
+ * @param index index of the vertex
+ * @return reference of the vertex
+ */
+Station& RailGraph::operator[](int index){
+    return (Station&) Graph::operator[](index);
 }
 
 int RailGraph::addSuperSource() {
@@ -81,7 +107,7 @@ std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxFlow
     return busiestPairs;
 }
 
-RailGraph RailGraph::subGraph(list<std::pair<int, int>> edgesList) {
+RailGraph RailGraph::subGraph(const list<std::pair<int, int>>& edgesList) {
     RailGraph copy = *this;
     for(auto i : edgesList){
         for(auto e: copy[i.first].outEdges()){
