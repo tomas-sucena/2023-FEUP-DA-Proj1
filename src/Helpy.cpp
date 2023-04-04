@@ -16,9 +16,9 @@
 #define BOLD    "\033[1m"
 #define BREAK   "- - - - - - - - - - - - - - - - - - - - -"
 
-map<string, int> Helpy::command = {{"display", 1}, {"print", 1}, {"show", 1}, {"calculate", 2}, {"determine", 2}};
-map<string, int> Helpy::target = {{"station", 6}, {"shortest", 8}, {"maximum", 10}, {"most", 12}, {"budget", 14}, {"affected", 17}};
-map<string, int> Helpy::what = {{"information", 24}, {"info", 24}, {"route", 27}, {"routes", 27}, {"train", 27},
+map<string, int> Helpy::command = {{"display", 1}, {"print", 1}, {"show", 1}, {"calculate", 2}, {"determine", 2}, {"change", 3}};
+map<string, int> Helpy::target = {{"station", 6}, {"shortest", 8}, {"maximum", 10}, {"most", 12}, {"budget", 14}, {"affected", 17}, {"mode", 19}};
+map<string, int> Helpy::what = {{" ", 22},{"information", 24}, {"info", 24}, {"route", 27}, {"routes", 27}, {"train", 27},
                                 {"trains", 27}, {"path", 27}, {"paths", 27}, {"station", 29}, {"stations", 29}, {"need", 31}};
 
 /**
@@ -206,6 +206,12 @@ b1: cout << endl << YELLOW << BREAK << RESET << endl;
 
     cin >> s2;
     lowercase(s2);
+    if(s2 == "mode"){
+        string placeholder = " ";
+        if(!process_command(s1, s2, placeholder)){
+            goto b1;
+        }
+    }
 
     cin >> s3;
     lowercase(s3);
@@ -244,6 +250,7 @@ b2: cout << endl << YELLOW << BREAK << RESET << endl;
     cout << "* Display" << endl;
     cout << "* Calculate" << endl;
     cout << "* Determine" << endl;
+    cout << "* Change" << endl;
     cout << endl;
 
     string s1, s2, s3;
@@ -263,6 +270,11 @@ b2: cout << endl << YELLOW << BREAK << RESET << endl;
         cout << endl << YELLOW << BREAK << RESET << endl << endl;
         cout << "* Budget" << endl;
         cout << "* Affected" << endl;
+        cout << endl;
+    }
+    else if (s1 == "change"){
+        cout << endl << YELLOW << BREAK << RESET << endl << endl;
+        cout << "* Mode" << endl;
         cout << endl;
     }
     else { // erro
@@ -291,6 +303,13 @@ b2: cout << endl << YELLOW << BREAK << RESET << endl;
         cout << endl << YELLOW << BREAK << RESET << endl << endl;
         cout << "* Stations" << endl;
         cout << endl;
+    }
+    else if (s2 == "mode"){
+        string s = " "; //placeholder
+        if(!process_command(s1,s2, s)){
+            goto b2;
+        }
+        goto t2;
     }
     else if (s2 == "quit"){
         goto e2;
@@ -347,6 +366,10 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
             determineMostTrains();
             break;
         }
+        case(44) : {
+            changeMode();
+            break;
+        }
         case(47) : {
             determineBudgetNeed();
             break;
@@ -364,6 +387,21 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
     }
 
     return true;
+}
+/**
+ * @brief changes profit mode of the graph (standard or alpha)
+ * @complexity O(1)
+*/
+void Helpy::changeMode(){
+    cout << endl << YELLOW << BREAK << RESET << endl << endl;
+    cout << "Choose between these modes: " << endl;
+    cout << endl << YELLOW << BREAK << RESET << endl << endl;
+    cout << "1. Standard" << endl;
+    cout << "2. Alpha" << endl;
+    cout << endl;
+    string s; cin >> s;
+    //chamar a função go grafo, se der erro (input inválido) escrever isto (cout << endl << RED << "Invalid number! Please, try again." << RESET << endl;)
+
 }
 
 /**

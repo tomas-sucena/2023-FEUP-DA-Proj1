@@ -45,6 +45,7 @@ class Helpy {
         void guided_mode();
         bool process_command(string& s1, string& s2, string& s3);
 
+        void changeMode();
         void chooseMaximumTrains();
         void calculateMaximumTrains();
         void calculateMaximumTrainsTwoStations();
