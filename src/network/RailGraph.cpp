@@ -1,5 +1,6 @@
 #include "RailGraph.h"
 
+#include <iostream>
 #include <unordered_set>
 #include <algorithm>
 
@@ -33,7 +34,7 @@ bool RailGraph::addEdge(int src, int dest, double weight, std::string service, b
 
     municipalities[srcMunicipality].push_back(r);
     if (srcMunicipality != destMunicipality) municipalities[destMunicipality].push_back(r);
-    
+
     return true;
 }
 

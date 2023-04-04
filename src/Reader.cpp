@@ -65,8 +65,7 @@ void Reader::readStations(RailGraph& graph){
         getline(line_, trainLine, '\n');
 
         // add the station to the graph
-        auto station = new Station(name, district, municipality, township, line);
-        graph.addVertex(station);
+        graph.addVertex(new Station(name, district, municipality, township, line));
 
         networkSources.insert(i);
         networkSinks.insert(i);
