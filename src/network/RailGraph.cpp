@@ -37,6 +37,11 @@ bool RailGraph::addEdge(int src, int dest, double weight, std::string service, b
     return true;
 }
 
+/**
+ * @brief accesses a vertex (i.e. a Station) of the Graph and allows modifications to be made to it
+ * @param index index of the vertex
+ * @return reference of the vertex
+ */
 Station& RailGraph::operator[](int index){
     return (Station&) Graph::operator[](index);
 }
@@ -102,7 +107,7 @@ std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxFlow
     return busiestPairs;
 }
 
-RailGraph RailGraph::subGraph(list<std::pair<int, int>> edgesList) {
+RailGraph RailGraph::subGraph(const list<std::pair<int, int>>& edgesList) {
     RailGraph copy = *this;
     for(auto i : edgesList){
         for(auto e: copy[i.first].outEdges()){
