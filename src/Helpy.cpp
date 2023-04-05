@@ -422,7 +422,7 @@ void Helpy::changeOperatingMode(){
  * @complexity O(n^2)
  * @param s what to display
 */
-void Helpy::displayBusiest(const string& s){
+void Helpy::displayBusiest(string& s){
     std::ostringstream instr;
     instr << "Please enter the " << BOLD << "number" << RESET << " of " << YELLOW << s << RESET
           << " you would like to display:";
@@ -441,25 +441,26 @@ void Helpy::displayBusiest(const string& s){
         busiest = graph.getBusiestMunicipalities(k);
 
     // display the top-k
-    for (auto& b: busiest)
-        std::cout<< b.first << " " << b.second << std::endl;
-
     fort::char_table table;
+
     table.set_border_style(FT_NICE_STYLE);
     table.row(0).set_cell_content_text_style(fort::text_style::bold);
     table.row(0).set_cell_content_fg_color(fort::color::yellow);
     table << fort::header;
+
     properName(s);
-    list<string> columnnames = {s, "Flow"};
-    auto it = columnnames.begin();
-    for(int i = 0; i < 2; i++){
+    std::list<string> columnNames = {s, "Flow"};
+
+    auto it = columnNames.begin();
+    for (int i = 0; it != columnNames.end(); ++i){
         table << *it++;
         table.column(i).set_cell_text_align(fort::text_align::center);
     }
+
     table << fort::endr;
-    for(auto b: busiest){
-        table << b.first << b.second << fort::endr;
-    }
+    for (auto& p: busiest)
+        table << p.first << p.second << fort::endr;
+
     std::cout << table.to_string();
 }
 
@@ -467,7 +468,6 @@ void Helpy::displayBusiest(const string& s){
  * @brief displays the "company's" operating mode
  * @complexity O(n^2)
 */
-
 void Helpy::displayOperatingMode(){
     string mode = (graph.profitMode) ? "Profit" : "Standard";
     std::cout << "The current " << BOLD << "operating mode" << RESET << " is " << YELLOW << mode << RESET << "." << std::endl;

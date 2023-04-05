@@ -45,7 +45,7 @@ class Helpy {
         bool process_command(string& s1, string& s2, string& s3);
 
         void displayOperatingMode();
-        void displayBusiest(const string& s);
+        void displayBusiest(string& s);
 
         void changeOperatingMode();
         void chooseMaximumTrains();
