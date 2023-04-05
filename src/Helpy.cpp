@@ -21,10 +21,10 @@ std::map<string, int> Helpy::command = {{"display", 1}, {"print", 1}, {"show", 1
 std::map<string, int> Helpy::target = {{"station", 6}, {"shortest", 8}, {"maximum", 10}, {"most", 12},
                                        {"budget", 14}, {"affected", 17}, {"operating", 19}, {"busiest", 21}};
 
-std::map<string, int> Helpy::what = {{" ", 22},{"information", 24}, {"info", 24}, {"route", 27},
-                                     {"routes", 27}, {"train", 27}, {"trains", 27}, {"path", 27},
-                                     {"paths", 27}, {"station", 29}, {"stations", 29}, {"need", 31},
-                                     {"mode", 33}};
+std::map<string, int> Helpy::what = {{"information", 24}, {"info", 24}, {"route", 27},
+                                     {"routes", 27}, {"train", 27}, {"trains", 27},{"station", 29},
+                                     {"stations", 29}, {"district", 29}, {"districts", 29}, {"municipality", 29},
+                                     {"municipalities", 29}, {"need", 31}, {"mode", 33}};
 
 /**
  * @brief takes a user inputted string and modifies it so that it becomes well-written
@@ -353,10 +353,6 @@ e2: std::cout << BREAK;
  */
 bool Helpy::process_command(string& s1, string& s2, string& s3){
     switch (command[s1] + target[s2] + what[s3]){
-        case (22) : {
-            displayBusiestDistricts();
-            break;
-        }
         case(39) : {
             chooseMaximumTrains();
             break;
@@ -371,6 +367,10 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
         }
         case(48) : {
             determineAffectedStations();
+            break;
+        }
+        case (51) : {
+            displayBusiestDistricts();
             break;
         }
         case (53) : {
