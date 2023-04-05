@@ -62,6 +62,7 @@ Station& RailGraph::operator[](int index){
  */
 void RailGraph::getFullPicture() {
     if (fullPicture) return;
+    fullPicture = true;
 
     // create the super source
     addVertex();
@@ -80,16 +81,16 @@ void RailGraph::getFullPicture() {
     // compute the maximum flow of the entire network
     maximumFlow(superSource, superSink);
 
-    removeVertex(superSource);
     removeVertex(superSink);
-
-    fullPicture = true;
+    removeVertex(superSource);
 }
 
 std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxFlow){
     std::list<std::pair<int, int>> busiestPairs;
 
     reset = false;
+    fullPicture = false;
+
     resetAll();
     
     for (int i = 1; i <= countVertices() - 2; ++i){
