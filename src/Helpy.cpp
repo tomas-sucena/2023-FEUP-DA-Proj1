@@ -423,7 +423,7 @@ void Helpy::changeOperatingMode(){
 */
 void Helpy::displayBusiest(std::string s){
     string instruction = "How many "+ s +" would you like to display: ";
-    int k = readNumber(instruction);
+    int k = (int)readNumber(instruction);
     std::cout << std::endl;
     std::list<std::pair<string, double>> busiest = graph.selectFunction(s, k);
     std::cout << BREAK;
@@ -436,15 +436,17 @@ void Helpy::displayBusiest(std::string s){
     properName(s);
     list<string> columnnames = {s, "Flow"};
     auto it = columnnames.begin();
+    table << "Index";
     for(int i = 0; i < 2; i++){
         table << *it++;
         table.column(i).set_cell_text_align(fort::text_align::center);
     }
     table << fort::endr;
+    int i = 0;
     for(auto b: busiest){
-        table << b.first << b.second << fort::endr;
+        table << i++ << b.first << b.second << fort::endr;
     }
-    std::cout << table.to_string();
+    std::cout << table.to_string() << std::endl;
 }
 
 /**
