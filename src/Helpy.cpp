@@ -27,18 +27,6 @@ std::map<string, int> Helpy::what = {{" ", 22},{"information", 24}, {"info", 24}
                                      {"mode", 33}};
 
 /**
- * @brief turns all the characters of a string into lowercase or uppercase
- * @complexity O(n)
- * @param s string to be modified
- * @param uppercase if true turns all the characters of the string to uppercase; if false turns all the characters of the string to lowercase
- */
-void Helpy::lowercase(string& s, bool uppercase){
-    for (char& c : s){
-        c = (uppercase) ? (char) toupper(c) : (char) tolower(c);
-    }
-}
-
-/**
  * @brief takes a user inputted string and modifies it so that it becomes well-written
  * @complexity O(n)
  * @param s string to be modified
@@ -86,7 +74,7 @@ string Helpy::readInput(const string& instruction, uSet<string>& options){
         std::cout << instruction << std::endl << std::endl;
 
         string line; getline(std::cin >> std::ws, line);
-        lowercase(line);
+        Utils::lowercase(line);
 
         std::istringstream line_(line);
 
@@ -122,7 +110,7 @@ double Helpy::readNumber(const string &instruction){
         std::cout << instruction << std::endl << std::endl;
 
         string line; getline(std::cin >> std::ws, line);
-        lowercase(line);
+        Utils::lowercase(line);
 
         std::istringstream line_(line);
 
@@ -149,23 +137,22 @@ double Helpy::readNumber(const string &instruction){
 }
 
 /**
- * @brief reads the name of an station from the console
+ * @brief reads the name of a Station from the console
  * @complexity O(n)
- * @return the index of the station
+ * @return the name of the Station
  */
-int Helpy::readStation(){
-    int station = 0;
+string Helpy::readStation(){
+    string station;
+
     while (true){
         std::cout << BREAK;
         std::cout << "Please type the " << BOLD << "name" << RESET << " of the " << YELLOW << "station" << RESET << ":"
                   << std::endl << std::endl;
 
-        string line; getline(std::cin >> std::ws, line);
-
-        properName(line);
+        getline(std::cin >> std::ws, station);
+        Utils::lowercase(station);
         
-        if (stationIDs.find(line) != stationIDs.end()){
-            station = stationIDs[line];
+        if (stationIDs.find(station) != stationIDs.end()){
             break;
         }
 
@@ -206,17 +193,17 @@ b1: std::cout << BREAK;
     string s1, s2, s3;
     std::istringstream s_;
 
-    std::cin >> s1; lowercase(s1);
+    std::cin >> s1; Utils::lowercase(s1);
 
     if (s1 == "quit" || s1 == "no" || s1 == "die"){
         goto e1;
     }
 
     std::cin >> s2;
-    lowercase(s2);
+    Utils::lowercase(s2);
 
     std::cin >> s3;
-    lowercase(s3);
+    Utils::lowercase(s3);
 
     if (!process_command(s1, s2, s3)){
         goto b1;
@@ -226,7 +213,7 @@ b1: std::cout << BREAK;
     std::cout << "Anything else? (Yes/No)" << std::endl << std::endl;
 
     s1.clear(); getline(std::cin >> std::ws, s1);
-    lowercase(s1);
+    Utils::lowercase(s1);
 
     s_.clear(); s_.str(s1);
 
@@ -257,7 +244,7 @@ b2: std::cout << BREAK;
     string s1, s2, s3;
     std::istringstream s_;
 
-    std::cin >> s1; lowercase(s1);
+    std::cin >> s1; Utils::lowercase(s1);
 
     if (s1 == "calculate"){
         std::cout << BREAK;
@@ -284,14 +271,9 @@ b2: std::cout << BREAK;
         goto b2;
     }
 
-    std::cin >> s2; lowercase(s2);
+    std::cin >> s2; Utils::lowercase(s2);
 
-    if (s2 == "maximum"){
-        std::cout << BREAK;
-        std::cout << "* Trains" << std::endl;
-        std::cout << std::endl;
-    }
-    else if (s2 == "most"){
+    if (s2 == "maximum" || s2 == "most"){
         std::cout << BREAK;
         std::cout << "* Trains" << std::endl;
         std::cout << std::endl;
@@ -319,7 +301,7 @@ b2: std::cout << BREAK;
         goto b2;
     }
 
-    std::cin >> s3; lowercase(s3);
+    std::cin >> s3; Utils::lowercase(s3);
 
     if (s3 == "quit"){
         goto e2;
@@ -334,7 +316,7 @@ t2: std::cout << BREAK;
     std::cout << "Anything else? (Yes/No)" << std::endl;
 
     s1.clear(); getline(std::cin >> std::ws, s1);
-    lowercase(s1);
+    Utils::lowercase(s1);
 
     s_.clear(); s_.str(s1);
 
@@ -444,23 +426,19 @@ void Helpy::chooseMaximumTrains(){
  * @complexity O(n * |E|)
  */
 void Helpy::determineMostTrains(){
-    int airport = readStation();
+    //int airport = readStation();
     std::cout << BREAK;
-
 }
 
 /**
  * @brief computes the maximum number of trains that go between two stations simultaneously
  * @complexity O(n * |E|)
- * @param start station where we begin
- * @param finish station where we end up
  */
 void Helpy::calculateMaximumTrainsTwoStations(){
-    int airport = readStation();
-
+    string stationA = readStation();
+    string stationB = readStation();
 
     std::cout << BREAK;
-
 }
 
 /**
@@ -469,7 +447,7 @@ void Helpy::calculateMaximumTrainsTwoStations(){
  * @param start station that we want to test
  */
 void Helpy::calculateMaximumTrains(){
-    int airport = readStation();
+    string airport = readStation();
 
 
     std::cout << BREAK;
@@ -482,7 +460,7 @@ void Helpy::calculateMaximumTrains(){
  * @param number number of districts (or municipalities) to show
  */
 void Helpy::determineBudgetNeed(){
-    int number = readStation();
+    string number = readStation();
 
     std::cout << BREAK;
 }
@@ -492,7 +470,7 @@ void Helpy::determineBudgetNeed(){
  * @complexity O(n * |E|)
  */
 void Helpy::determineAffectedStations(){
-    int airport = readStation();
+    string airport = readStation();
 
 
     std::cout << BREAK;
