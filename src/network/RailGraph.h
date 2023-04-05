@@ -33,6 +33,7 @@ public:
     RailGraph subGraph(const list<std::pair<int, int>>& edgesList);
     double reducedConnectivity(int start, int end, RailGraph sub);
     std::vector<std::pair<int,int>> mostAffected(RailGraph sub, int k);
+    std::list<string> getBusiestDistricts(int k);
 };
 
 #endif //DA_TRAINS_RAILGRAPH_H

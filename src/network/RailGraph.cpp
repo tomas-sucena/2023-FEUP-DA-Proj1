@@ -138,3 +138,24 @@ std::vector<std::pair<int, int>> RailGraph::mostAffected(RailGraph sub, int k) {
     out.resize(k);
     return out;
 }
+
+std::list<string> RailGraph::getBusiestDistricts(int k){
+    getFullPicture();
+    std::vector<std::pair<std::string, double>> districtflow;
+    for(auto v: districts){
+        double flow = 0;
+        for(auto e: v.second){
+            flow += e->getFlow();
+        }
+        districtflow.emplace_back(v.first, flow);
+    }
+    std::sort(districtflow.begin(), districtflow.end(), [](auto &left, auto &right) {
+        return left.second > right.second;
+    });
+    districtflow.resize(k);
+    std::list<std::string> busiestDistricts;
+    for(int i = 0; i < k; i++){
+        busiestDistricts.push_back(districtflow[i].first);
+    }
+    return busiestDistricts;
+}
