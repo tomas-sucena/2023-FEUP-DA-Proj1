@@ -414,21 +414,33 @@ void Helpy::changeOperatingMode(){
 
     graph.profitMode = (choice == "profit");
 }
+
 /**
- * @brief displays the busiest districts
+ * @brief computes the top-k stations/districts/municipalities with the most amount of trains circulating in them
  * @complexity O(n^2)
 */
-void Helpy::displayBusiest(std::string s){
-    string instruction = "How many "+ s +" would you like to display: ";
-    int k = readNumber(instruction);
-    std::cout << std::endl;
-    std::list<std::pair<string, double>> busiest = graph.selectFunction(s, k);
-    std::cout << BREAK;
-    for(auto b: busiest){
-        std::cout<< b.first << " " << b.second << std::endl;
-    }
-}
+void Helpy::displayBusiest(const string& s){
+    std::ostringstream instr;
+    instr << "Please enter the " << BOLD << "number" << RESET << " of " << YELLOW << s << RESET
+          << " you would like to display:";
 
+    int k = (int) readNumber(instr.str());
+    std::cout << BREAK;
+
+    // compute the top-k
+    std::list<std::pair<string, double>> busiest;
+
+    if (s == "stations")
+        busiest = graph.getBusiestStations(k);
+    else if (s == "districts")
+        busiest = graph.getBusiestDistricts(k);
+    else
+        busiest = graph.getBusiestMunicipalities(k);
+
+    // display the top-k
+    for (auto& b: busiest)
+        std::cout<< b.first << " " << b.second << std::endl;
+}
 
 void Helpy::displayOperatingMode(){
     string mode = (graph.profitMode) ? "Profit" : "Standard";
