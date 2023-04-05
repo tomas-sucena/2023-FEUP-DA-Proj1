@@ -52,7 +52,6 @@ class Helpy {
         void calculateMaximumTrains();
         void calculateMaximumTrainsTwoStations();
         void determineMostTrains();
-        void determineBudgetNeed();
         void determineAffectedStations();
 };
 

@@ -371,10 +371,6 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
             determineMostTrains();
             break;
         }
-        case(47) : {
-            determineBudgetNeed();
-            break;
-        }
         case(48) : {
             determineAffectedStations();
             break;
@@ -535,17 +531,6 @@ void Helpy::calculateMaximumTrains(){
 
     std::cout << BREAK;
 
-}
-
-/**
- * @brief computes the top k districts (or municipalities) where management should assign a larger budget for the purchase and maintenance of trains
- * @complexity O(n * |E|)
- * @param number number of districts (or municipalities) to show
- */
-void Helpy::determineBudgetNeed(){
-    string number = readStation();
-
-    std::cout << BREAK;
 }
 
 /**
