@@ -309,11 +309,6 @@ b2: std::cout << BREAK;
         std::cout << "* Stations" << std::endl;
         std::cout << std::endl;
     }
-    else if (s2 == "budget"){
-        std::cout << BREAK;
-        std::cout << "* Need" << std::endl;
-        std::cout << std::endl;
-    }
     else if (s2 == "affected"){
         std::cout << BREAK;
         std::cout << "* Stations" << std::endl;
