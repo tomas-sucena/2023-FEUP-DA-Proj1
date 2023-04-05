@@ -6,6 +6,18 @@
 RailGraph::RailGraph(int n) : UGraph(n), superSourceID(0), superSinkID(0), profitMode(false), fullPicture(false) {}
 
 /**
+ * adds a vertex (i.e. a Station) to the RailGraph
+ * @param v Station that will be added
+ */
+void RailGraph::addVertex(Vertex* v){
+    UGraph::addVertex(v);
+    if (v == nullptr) return;
+
+    auto s = (Station*) v;
+    stationNames.emplace_back(s->getName());
+}
+
+/**
  * adds an edge (i.e. a Railway) to the RailGraph
  * @param src index of the source Station
  * @param dest index of the destination Station
@@ -140,11 +152,32 @@ std::vector<std::pair<int, int>> RailGraph::mostAffected(RailGraph sub, int k) {
     return out;
 }
 
-std::list<std::pair<std::string,double>> RailGraph::selectFunction(std::string s, int k){
-    if(s == "districts"){
-        return getBusiestDistricts(k);
-    }
-    return getBusiestMunicipalities(k);
+/**
+ * computes the top-k stations with the most trains circulating in them (i.e. most flow)
+ * @param k number of stations that will be selected
+ * @return list with the names and the number of trains circulating in the top-k stations
+ */
+std::list<std::pair<string, double>> RailGraph::getBusiestStations(int k){
+    getFullPicture();
+    k = (k > countVertices()) ? countVertices() : k;
+
+    // compute the total flow of each station
+    uMap<int, double> stationsFlow;
+    for (const Edge* e : edges)
+        stationsFlow[e->getDest()] += e->getFlow();
+
+    // sort the stations by descending order of flow
+    std::vector<std::pair<int, double>> temp(stationsFlow.begin(), stationsFlow.end());
+
+    std::sort(temp.begin(), temp.end(), [](auto &left, auto &right) {
+        return left.second > right.second;
+    });
+
+    std::list<std::pair<string, double>> busiestStations;
+    for (int i = 0; i < k; ++i)
+        busiestStations.emplace_back(stationNames[temp[i].first], temp[i].second);
+
+    return busiestStations;
 }
 
 /**
@@ -154,7 +187,8 @@ std::list<std::pair<std::string,double>> RailGraph::selectFunction(std::string s
  */
 std::list<std::pair<string, double>> RailGraph::getBusiestDistricts(int k){
     getFullPicture();
-    k = k > districtRailways.size() ? districtRailways.size() : k;
+    k = (k > districtRailways.size()) ? (int) districtRailways.size() : k;
+    
     // compute the total flow of each district
     std::vector<std::pair<std::string, double>> districtsFlow;
 
@@ -187,9 +221,9 @@ std::list<std::pair<string, double>> RailGraph::getBusiestDistricts(int k){
  */
 std::list<std::pair<string, double>> RailGraph::getBusiestMunicipalities(int k){
     getFullPicture();
-
-    k = k > municipalityRailways.size() ? municipalityRailways.size() : k;
-    // compute the total flow of each district
+    k = (k > municipalityRailways.size()) ? (int) municipalityRailways.size() : k;
+    
+    // compute the total flow of each municipality
     std::vector<std::pair<std::string, double>> municipalitiesFlow;
 
     for(auto& p: municipalityRailways){

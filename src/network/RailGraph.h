@@ -3,6 +3,7 @@
 
 #include <list>
 #include <string>
+#include <vector>
 
 #include "../Utils.hpp"
 #include "Railway.hpp"
@@ -14,6 +15,8 @@ class RailGraph : public UGraph {
 
     int superSourceID, superSinkID;
     bool profitMode, fullPicture;
+
+    std::vector<std::string> stationNames;
     uMap<std::string, std::list<Railway*>> districtRailways, municipalityRailways;
 
 public:
@@ -21,6 +24,7 @@ public:
     explicit RailGraph(int n = 0);
 
     // methods
+    void addVertex(Vertex* v = nullptr) override;
     bool addEdge(int src, int dest, double weight = 1, std::string service = "STANDARD", bool valid = true);
     Station& operator[](int index) override;
     int addSuperSource(), addSuperSink();
@@ -31,7 +35,8 @@ public:
     RailGraph subGraph(const list<std::pair<int, int>>& edgesList);
     double reducedConnectivity(int start, int end, RailGraph sub);
     std::vector<std::pair<int,int>> mostAffected(RailGraph sub, int k);
-    std::list<std::pair<std::string, double>> selectFunction(std::string s, int k);
+
+    std::list<std::pair<string, double>> getBusiestStations(int k);
     std::list<std::pair<string, double>> getBusiestDistricts(int k);
     std::list<std::pair<string, double>> getBusiestMunicipalities(int k);
 };

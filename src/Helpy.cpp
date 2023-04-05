@@ -416,31 +416,48 @@ void Helpy::changeOperatingMode(){
 
     graph.profitMode = (choice == "profit");
 }
+
 /**
- * @brief displays the busiest districts
+ * @brief computes the top-k stations/districts/municipalities with the most amount of trains circulating in them
  * @complexity O(n^2)
  * @param s what to display
 */
-void Helpy::displayBusiest(std::string s){
-    string instruction = "How many "+ s +" would you like to display: ";
-    int k = (int)readNumber(instruction);
-    std::cout << std::endl;
-    std::list<std::pair<string, double>> busiest = graph.selectFunction(s, k);
+void Helpy::displayBusiest(string& s){
+    std::ostringstream instr;
+    instr << "Please enter the " << BOLD << "number" << RESET << " of " << YELLOW << s << RESET
+          << " you would like to display:";
+
+    int k = (int) readNumber(instr.str());
+
     std::cout << BREAK;
 
+    // compute the top-k
+    std::list<std::pair<string, double>> busiest;
+
+    if (s == "stations")
+        busiest = graph.getBusiestStations(k);
+    else if (s == "districts")
+        busiest = graph.getBusiestDistricts(k);
+    else
+        busiest = graph.getBusiestMunicipalities(k);
+
+    // display the top-k
     fort::char_table table;
+
     table.set_border_style(FT_NICE_STYLE);
     table.row(0).set_cell_content_text_style(fort::text_style::bold);
     table.row(0).set_cell_content_fg_color(fort::color::yellow);
     table << fort::header;
+
     properName(s);
-    list<string> columnnames = {s, "Flow"};
-    auto it = columnnames.begin();
-    table << "Index";
-    for(int i = 0; i < 2; i++){
+    std::list<string> columnNames = {"Index", s, "Flow"};
+
+    auto it = columnNames.begin();
+    for (int i = 0; it != columnNames.end(); ++i){
         table << *it++;
         table.column(i).set_cell_text_align(fort::text_align::center);
     }
+
     table << fort::endr;
     int i = 0;
     for(auto b: busiest){
