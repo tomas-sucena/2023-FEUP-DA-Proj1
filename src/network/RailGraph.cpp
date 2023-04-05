@@ -1,12 +1,11 @@
 #include "RailGraph.h"
 
-#include <iostream>
-#include <unordered_set>
 #include <algorithm>
+#include <unordered_set>
 
 #define uSet std::unordered_set
 
-RailGraph::RailGraph(int n) : UGraph(n), superSourceID(0), superSinkID(0) {}
+RailGraph::RailGraph(int n) : UGraph(n), superSourceID(0), superSinkID(0), profitMode(false) {}
 
 /**
  * adds an edge (i.e. a Railway) to the RailGraph

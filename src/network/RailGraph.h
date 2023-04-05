@@ -12,6 +12,8 @@
 #define uMap std::unordered_map
 
 class RailGraph : public UGraph {
+    friend class Helpy;
+
     int superSourceID, superSinkID;
     bool profitMode;
     uMap<std::string, std::list<Railway*>> districts, municipalities;

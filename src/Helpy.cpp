@@ -3,23 +3,28 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <list>
-#include <map>
-#include <string>
+#include <utility>
 
-
-// cores para o output
+// output colors
 #define RESET   "\033[0;m"
 #define RED     "\033[1;31m"
 #define YELLOW  "\033[33m"
 #define GREEN   "\033[32m"
 #define BOLD    "\033[1m"
-#define BREAK   "- - - - - - - - - - - - - - - - - - - - -"
 
-map<string, int> Helpy::command = {{"display", 1}, {"print", 1}, {"show", 1}, {"calculate", 2}, {"determine", 2}, {"change", 3}};
-map<string, int> Helpy::target = {{"station", 6}, {"shortest", 8}, {"maximum", 10}, {"most", 12}, {"budget", 14}, {"affected", 17}, {"mode", 19}};
-map<string, int> Helpy::what = {{" ", 22},{"information", 24}, {"info", 24}, {"route", 27}, {"routes", 27}, {"train", 27},
-                                {"trains", 27}, {"path", 27}, {"paths", 27}, {"station", 29}, {"stations", 29}, {"need", 31}};
+// line breaks
+#define BREAK   std::endl << YELLOW << "- - - - - - - - - - - - - - - - - - - - -" << RESET << std::endl << std::endl
+
+std::map<string, int> Helpy::command = {{"display", 1}, {"print", 1}, {"show", 1}, {"calculate", 2},
+                                        {"determine", 2}, {"change", 3}, {"switch", 3}, {"toggle", 3}};
+
+std::map<string, int> Helpy::target = {{"station", 6}, {"shortest", 8}, {"maximum", 10}, {"most", 12},
+                                       {"budget", 14}, {"affected", 17}, {"operating", 19}};
+
+std::map<string, int> Helpy::what = {{" ", 22},{"information", 24}, {"info", 24}, {"route", 27},
+                                     {"routes", 27}, {"train", 27}, {"trains", 27}, {"path", 27},
+                                     {"paths", 27}, {"station", 29}, {"stations", 29}, {"need", 31},
+                                     {"mode", 33}};
 
 /**
  * @brief turns all the characters of a string into lowercase or uppercase
@@ -42,7 +47,7 @@ void Helpy::properName(string& s){
     string name;
 
     bool first = true;
-    for (istringstream s_(s); s_ >> s;){
+    for (std::istringstream s_(s); s_ >> s;){
         s[0] = (char) toupper(s[0]);
 
         for (int i = 1; i < s.size(); i++){
@@ -63,7 +68,7 @@ void Helpy::properName(string& s){
  * @param graph graph that contains all the data regarding Stations and Trips between stations
  * @param ids unordered map that contains information regarding stations (for search purposes)
  */
-Helpy::Helpy(RailGraph& graph, uMap<string, int> ids) : graph(graph), stations(ids){}
+Helpy::Helpy(RailGraph& graph, uMap<string, int> stationIDs) : graph(graph), stationIDs(std::move(stationIDs)) {}
 
 /**
  * @brief reads a line of user input
@@ -77,25 +82,26 @@ string Helpy::readInput(const string& instruction, uSet<string>& options){
     bool valid = false;
 
     while (true){
-        cout << endl << YELLOW << BREAK << RESET << endl << endl;
-        cout << instruction << endl << endl;
+        std::cout << BREAK;
+        std::cout << instruction << std::endl << std::endl;
 
-        string line; getline(cin >> ws, line);
+        string line; getline(std::cin >> std::ws, line);
         lowercase(line);
 
-        istringstream line_(line);
+        std::istringstream line_(line);
 
         while (line_ >> res){
-            if (options.find(res) != options.end()){
-                valid = true;
-                break;
-            }
+            if (options.find(res) == options.end())
+                continue;
+
+            valid = true;
+            break;
         }
 
         if (valid) break;
 
-        cout << endl << YELLOW << BREAK << RESET << endl << endl;
-        cout << RED << "Invalid command! Please, try again." << RESET << endl;
+        std::cout << BREAK;
+        std::cout << RED << "Invalid command! Please, try again." << RESET << std::endl;
     }
 
     return res;
@@ -112,13 +118,13 @@ double Helpy::readNumber(const string &instruction){
     bool valid = false;
 
     while (true){
-        cout << endl << YELLOW << BREAK << RESET << endl << endl;
-        cout << instruction << endl << endl;
+        std::cout << BREAK;
+        std::cout << instruction << std::endl << std::endl;
 
-        string line; getline(cin >> ws, line);
+        string line; getline(std::cin >> std::ws, line);
         lowercase(line);
 
-        istringstream line_(line);
+        std::istringstream line_(line);
 
         string temp;
         while (line_ >> temp){
@@ -135,8 +141,8 @@ double Helpy::readNumber(const string &instruction){
 
         if (valid) break;
 
-        cout << endl << YELLOW << BREAK << RESET << endl << endl;
-        cout << RED << "Invalid input! Please, try again." << RESET << endl;
+        std::cout << BREAK;
+        std::cout << RED << "Invalid input! Please, try again." << RESET << std::endl;
     }
 
     return res;
@@ -150,19 +156,21 @@ double Helpy::readNumber(const string &instruction){
 int Helpy::readStation(){
     int station = 0;
     while (true){
-        cout << endl << YELLOW << BREAK << RESET << endl << endl;
-        cout << "Please type the " << BOLD << "name" << RESET << " of the " << YELLOW << "station" << RESET << ":" << endl << endl;
+        std::cout << BREAK;
+        std::cout << "Please type the " << BOLD << "name" << RESET << " of the " << YELLOW << "station" << RESET << ":"
+                  << std::endl << std::endl;
 
-        string line; getline(cin >> ws, line);
+        string line; getline(std::cin >> std::ws, line);
 
         properName(line);
         
-        if (stations.find(line) != stations.end()){
-            station = stations[line];
+        if (stationIDs.find(line) != stationIDs.end()){
+            station = stationIDs[line];
             break;
         }
-        cout << endl << YELLOW << BREAK << RESET << endl << endl;
-        cout << RED << "Invalid input! The station you entered does not exist. Please, try again." << RESET << endl;
+
+        std::cout << BREAK;
+        std::cout << RED << "Invalid input! The station you entered does not exist. Please, try again." << RESET << std::endl;
     }
 
     return station;
@@ -192,38 +200,32 @@ void Helpy::terminal(){
  * @complexity O(1)
  */
 void Helpy::advanced_mode(){
-b1: cout << endl << YELLOW << BREAK << RESET << endl;
-    cout << endl << "How can I be of assistance?" << endl << endl;
+b1: std::cout << BREAK;
+    std::cout << "How can I be of assistance?" << std::endl << std::endl;
 
     string s1, s2, s3;
-    istringstream s_;
+    std::istringstream s_;
 
-    cin >> s1; lowercase(s1);
+    std::cin >> s1; lowercase(s1);
 
     if (s1 == "quit" || s1 == "no" || s1 == "die"){
         goto e1;
     }
 
-    cin >> s2;
+    std::cin >> s2;
     lowercase(s2);
-    if(s2 == "mode"){
-        string placeholder = " ";
-        if(!process_command(s1, s2, placeholder)){
-            goto b1;
-        }
-    }
 
-    cin >> s3;
+    std::cin >> s3;
     lowercase(s3);
 
     if (!process_command(s1, s2, s3)){
         goto b1;
     }
 
-    cout << endl << YELLOW << BREAK << RESET << endl;
-    cout << endl << "Anything else? (Yes/No)" << endl << endl;
+    std::cout << BREAK;
+    std::cout << "Anything else? (Yes/No)" << std::endl << std::endl;
 
-    s1.clear(); getline(cin >> ws, s1);
+    s1.clear(); getline(std::cin >> std::ws, s1);
     lowercase(s1);
 
     s_.clear(); s_.str(s1);
@@ -234,8 +236,8 @@ b1: cout << endl << YELLOW << BREAK << RESET << endl;
         }
     }
 
-e1: cout << endl << YELLOW << BREAK << RESET << endl << endl;
-    cout << "See you next time!" << endl << endl;
+e1: std::cout << BREAK;
+    std::cout << "See you next time!" << std::endl << std::endl;
 }
 
 /**
@@ -243,72 +245,71 @@ e1: cout << endl << YELLOW << BREAK << RESET << endl << endl;
  * @complexity O(1)
  */
 void Helpy::guided_mode(){
-b2: cout << endl << YELLOW << BREAK << RESET << endl;
-    cout << endl << "Hello! How can I be of assistance?" << endl;
-    cout << endl;
-    cout << "* Display" << endl;
-    cout << "* Calculate" << endl;
-    cout << "* Determine" << endl;
-    cout << "* Change" << endl;
-    cout << endl;
+b2: std::cout << BREAK;
+    std::cout << "Hello! How can I be of assistance?" << std::endl;
+    std::cout << std::endl;
+    std::cout << "* Display" << std::endl;
+    std::cout << "* Calculate" << std::endl;
+    std::cout << "* Determine" << std::endl;
+    std::cout << "* Change" << std::endl;
+    std::cout << std::endl;
 
     string s1, s2, s3;
-    istringstream s_;
+    std::istringstream s_;
 
-    cin >> s1; lowercase(s1);
+    std::cin >> s1; lowercase(s1);
+
     if (s1 == "calculate"){
-        cout << endl << YELLOW << BREAK << RESET << endl << endl;
-        cout << "* Maximum" << endl;
-        cout << "* Most" << endl;
-        cout << endl;
+        std::cout << BREAK;
+        std::cout << "* Maximum" << std::endl;
+        std::cout << "* Most" << std::endl;
+        std::cout << std::endl;
     }
     else if (s1 == "quit"){
         goto e2;
     }
     else if (s1 == "determine"){
-        cout << endl << YELLOW << BREAK << RESET << endl << endl;
-        cout << "* Budget" << endl;
-        cout << "* Affected" << endl;
-        cout << endl;
+        std::cout << BREAK;
+        std::cout << "* Budget" << std::endl;
+        std::cout << "* Affected" << std::endl;
+        std::cout << std::endl;
     }
-    else if (s1 == "change"){
-        cout << endl << YELLOW << BREAK << RESET << endl << endl;
-        cout << "* Mode" << endl;
-        cout << endl;
+    else if (s1 == "change" || s1 == "display"){
+        std::cout << BREAK;
+        std::cout << "* Operating" << std::endl;
+        std::cout << std::endl;
     }
     else { // erro
         process_command(s1, s2, s3);
         goto b2;
     }
 
-    cin >> s2; lowercase(s2);
+    std::cin >> s2; lowercase(s2);
 
     if (s2 == "maximum"){
-        cout << endl << YELLOW << BREAK << RESET << endl << endl;
-        cout << "* Trains" << endl;
-        cout << endl;
+        std::cout << BREAK;
+        std::cout << "* Trains" << std::endl;
+        std::cout << std::endl;
     }
     else if (s2 == "most"){
-        cout << endl << YELLOW << BREAK << RESET << endl << endl;
-        cout << "* Trains" << endl;
-        cout << endl;
+        std::cout << BREAK;
+        std::cout << "* Trains" << std::endl;
+        std::cout << std::endl;
     }
     else if (s2 == "budget"){
-        cout << endl << YELLOW << BREAK << RESET << endl << endl;
-        cout << "* Need" << endl;
-        cout << endl;
+        std::cout << BREAK;
+        std::cout << "* Need" << std::endl;
+        std::cout << std::endl;
     }
     else if (s2 == "affected"){
-        cout << endl << YELLOW << BREAK << RESET << endl << endl;
-        cout << "* Stations" << endl;
-        cout << endl;
+        std::cout << BREAK;
+        std::cout << "* Stations" << std::endl;
+        std::cout << std::endl;
     }
-    else if (s2 == "mode"){
-        string s = " "; //placeholder
-        if(!process_command(s1,s2, s)){
-            goto b2;
-        }
-        goto t2;
+    else if (s2 == "operating"){
+        std::cout << BREAK;
+        std::cout << "* Mode" << std::endl;
+        std::cout << std::endl;
     }
     else if (s2 == "quit"){
         goto e2;
@@ -318,7 +319,7 @@ b2: cout << endl << YELLOW << BREAK << RESET << endl;
         goto b2;
     }
 
-    cin >> s3; lowercase(s3);
+    std::cin >> s3; lowercase(s3);
 
     if (s3 == "quit"){
         goto e2;
@@ -329,10 +330,10 @@ b2: cout << endl << YELLOW << BREAK << RESET << endl;
         goto b2;
     }
 
-t2: cout << endl << YELLOW << BREAK << RESET << endl;
-    cout << endl << "Anything else? (Yes/No)" << endl;
+t2: std::cout << BREAK;
+    std::cout << "Anything else? (Yes/No)" << std::endl;
 
-    s1.clear(); getline(cin >> ws, s1);
+    s1.clear(); getline(std::cin >> std::ws, s1);
     lowercase(s1);
 
     s_.clear(); s_.str(s1);
@@ -343,8 +344,8 @@ t2: cout << endl << YELLOW << BREAK << RESET << endl;
         }
     }
 
-e2: cout << endl << YELLOW << BREAK << RESET << endl << endl;
-    cout << "See you next time!" << endl << endl;
+e2: std::cout << BREAK;
+    std::cout << "See you next time!" << std::endl << std::endl;
 }
 
 /**
@@ -365,10 +366,6 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
             determineMostTrains();
             break;
         }
-        case(44) : {
-            changeMode();
-            break;
-        }
         case(47) : {
             determineBudgetNeed();
             break;
@@ -377,9 +374,17 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
             determineAffectedStations();
             break;
         }
+        case (53) : {
+            displayOperatingMode();
+            break;
+        }
+        case(55) : {
+            changeOperatingMode();
+            break;
+        }
         default : {
-            cout << endl << YELLOW << BREAK << RESET << endl;
-            cout << endl << RED << "Invalid command! Please, type another command." << RESET << endl;
+            std::cout << BREAK;
+            std::cout << RED << "Invalid command! Please, type another command." << RESET << std::endl;
 
             return false;
         }
@@ -388,19 +393,29 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
     return true;
 }
 /**
- * @brief changes profit mode of the graph (standard or alpha)
+ * @brief changes the operating mode of the RailGraph
  * @complexity O(1)
 */
-void Helpy::changeMode(){
-    cout << endl << YELLOW << BREAK << RESET << endl << endl;
-    cout << "Choose between these modes: " << endl;
-    cout << endl << YELLOW << BREAK << RESET << endl << endl;
-    cout << "1. Standard" << endl;
-    cout << "2. Alpha" << endl;
-    cout << endl;
-    string s; cin >> s;
-    //chamar a função go grafo, se der erro (input inválido) escrever isto (cout << endl << RED << "Invalid number! Please, try again." << RESET << endl;)
+void Helpy::changeOperatingMode(){
+    std::ostringstream instr;
+    instr << "Please select the " << BOLD << "operating mode" << RESET << " you would like:\n\n"
+          << "* Standard\n"
+          << "* Profit";
 
+    uSet<string> modes = {"standard", "profit"};
+    string choice = readInput(instr.str(), modes);
+
+    graph.profitMode = (choice == "profit");
+}
+
+void Helpy::displayOperatingMode(){
+    string mode = (graph.profitMode) ? "Profit" : "Standard";
+    std::cout << "The current " << BOLD << "operating mode" << RESET << " is " << YELLOW << mode << RESET << "." << std::endl;
+
+    string instruction = "Would you like to change it?";
+    uSet<string> options = {"yes", "no"};
+
+    if (readInput(instruction, options) == "yes") changeOperatingMode();
 }
 
 /**
@@ -408,19 +423,19 @@ void Helpy::changeMode(){
  * @complexity O(n * |E|)
  */
 void Helpy::chooseMaximumTrains(){
-    cout << endl << YELLOW << BREAK << RESET << endl << endl;
-    cout << "1. Between two stations" << endl;
-    cout << "2. That can simultaneously arrive at a station" << endl;
-    cout << endl;
+    std::cout << BREAK;
+    std::cout << "1. Between two stations" << std::endl;
+    std::cout << "2. That can simultaneously arrive at a station" << std::endl;
+    std::cout << std::endl;
     string s;
-    cin >> s;
+    std::cin >> s;
     if(s == "1"){
         return calculateMaximumTrainsTwoStations();
     } else if (s == "2"){
         return calculateMaximumTrains();
     }
-    cout << endl << YELLOW << BREAK << RESET << endl;
-    cout << endl << RED << "Invalid number! Please, try again." << RESET << endl;
+    std::cout << BREAK;
+    std::cout << std::endl << RED << "Invalid number! Please, try again." << RESET << std::endl;
     return chooseMaximumTrains();
 }
 
@@ -430,10 +445,9 @@ void Helpy::chooseMaximumTrains(){
  */
 void Helpy::determineMostTrains(){
     int airport = readStation();
-    cout << endl << YELLOW << BREAK << RESET << endl;
+    std::cout << BREAK;
 
 }
-
 
 /**
  * @brief computes the maximum number of trains that go between two stations simultaneously
@@ -445,11 +459,9 @@ void Helpy::calculateMaximumTrainsTwoStations(){
     int airport = readStation();
 
 
-    cout << endl << YELLOW << BREAK << RESET << endl;
+    std::cout << BREAK;
 
 }
-
-
 
 /**
  * @brief computes the maximum number of trains that can arrive at a station simultaneously
@@ -460,7 +472,7 @@ void Helpy::calculateMaximumTrains(){
     int airport = readStation();
 
 
-    cout << endl << YELLOW << BREAK << RESET << endl;
+    std::cout << BREAK;
 
 }
 
@@ -472,7 +484,7 @@ void Helpy::calculateMaximumTrains(){
 void Helpy::determineBudgetNeed(){
     int number = readStation();
 
-    cout << endl << YELLOW << BREAK << RESET << endl;
+    std::cout << BREAK;
 }
 
 /**
@@ -483,7 +495,6 @@ void Helpy::determineAffectedStations(){
     int airport = readStation();
 
 
-    cout << endl << YELLOW << BREAK << RESET << endl;
+    std::cout << BREAK;
 
 }
-
