@@ -5,6 +5,8 @@
 #include <sstream>
 #include <utility>
 
+#include "libfort/fort.hpp"
+
 // output colors
 #define RESET   "\033[0;m"
 #define RED     "\033[1;31m"
@@ -417,6 +419,7 @@ void Helpy::changeOperatingMode(){
 /**
  * @brief displays the busiest districts
  * @complexity O(n^2)
+ * @param s what to display
 */
 void Helpy::displayBusiest(std::string s){
     string instruction = "How many "+ s +" would you like to display: ";
@@ -424,12 +427,30 @@ void Helpy::displayBusiest(std::string s){
     std::cout << std::endl;
     std::list<std::pair<string, double>> busiest = graph.selectFunction(s, k);
     std::cout << BREAK;
-    for(auto b: busiest){
-        std::cout<< b.first << " " << b.second << std::endl;
+
+    fort::char_table table;
+    table.set_border_style(FT_NICE_STYLE);
+    table.row(0).set_cell_content_text_style(fort::text_style::bold);
+    table.row(0).set_cell_content_fg_color(fort::color::yellow);
+    table << fort::header;
+    properName(s);
+    list<string> columnnames = {s, "Flow"};
+    auto it = columnnames.begin();
+    for(int i = 0; i < 2; i++){
+        table << *it++;
+        table.column(i).set_cell_text_align(fort::text_align::center);
     }
+    table << fort::endr;
+    for(auto b: busiest){
+        table << b.first << b.second << fort::endr;
+    }
+    std::cout << table.to_string();
 }
 
-
+/**
+ * @brief displays the "company's" operating mode
+ * @complexity O(n^2)
+*/
 void Helpy::displayOperatingMode(){
     string mode = (graph.profitMode) ? "Profit" : "Standard";
     std::cout << "The current " << BOLD << "operating mode" << RESET << " is " << YELLOW << mode << RESET << "." << std::endl;
