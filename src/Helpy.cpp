@@ -507,15 +507,6 @@ void Helpy::calculateMaximumTrains(){
 
         switch (n){
             case (1) : {
-                int station = stationIDs[readStation()];
-
-                std::cout << BREAK;
-                std::cout << "The maximum number of trains that can simultaneously arrive at " << graph[station].getName()
-                          << " is " << BOLD << YELLOW << graph.getMaximumTrains(station) << RESET << '.' << std::endl;
-
-                return;
-            }
-            case (2) : {
                 int stationA = stationIDs[readStation()];
                 int stationB = stationIDs[readStation()];
 
@@ -523,6 +514,15 @@ void Helpy::calculateMaximumTrains(){
                 std::cout << "The maximum number of trains that can simultaneously travel between "
                           << graph[stationA].getName() << " and " << graph[stationB].getName() << " is " << BOLD
                           << YELLOW << graph.maximumFlow(stationA, stationB) << RESET << '.' << std::endl;
+
+                return;
+            }
+            case (2) : {
+                int station = stationIDs[readStation()];
+
+                std::cout << BREAK;
+                std::cout << "The maximum number of trains that can simultaneously arrive at " << graph[station].getName()
+                          << " is " << BOLD << YELLOW << graph.getMaximumTrains(station) << RESET << '.' << std::endl;
 
                 return;
             }
