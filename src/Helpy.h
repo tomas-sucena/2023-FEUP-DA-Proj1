@@ -15,8 +15,11 @@ class Helpy {
 /* ATTRIBUTES */
 private:
     Reader reader;
-    RailGraph graph;
     uMap<string, int> stationIDs;
+
+    // graphs
+    RailGraph graph;
+    RailGraph* original;
 
     uSet<string> districts, municipalities;
     uMap<string, string> districtStations, municipalityStations;
@@ -44,14 +47,11 @@ private:
 
     void displayOperatingMode();
     void displayBusiest(string& s);
+    void displayBusiestPairs();
 
     void changeOperatingMode();
-    void chooseMaximumTrains();
     void calculateMaximumTrains();
-    void calculateMaximumTrainsTwoStations();
     void determineMostTrains();
-    void determineBudgetNeed();
-    void determineAffectedStations();
 
 public:
     void terminal();

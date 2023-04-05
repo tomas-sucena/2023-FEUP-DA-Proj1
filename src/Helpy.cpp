@@ -71,6 +71,7 @@ void Helpy::fetchData() {
     graph.networkSources = reader.getNetworkSources();
     graph.networkSinks = reader.getNetworkSinks();
 
+    original = &graph;
     stationIDs = reader.getStations();
 }
 
@@ -319,11 +320,11 @@ b2: std::cout << BREAK;
         std::cout << std::endl;
     }
     else if (s2 == "busiest"){
-    std::cout << BREAK;
-    std::cout << "* Stations" << std::endl;
-    std::cout << "* Districts" << std::endl;
-    std::cout << "* Municipalities" << std::endl;
-    std::cout << std::endl;
+        std::cout << BREAK;
+        std::cout << "* Stations" << std::endl;
+        std::cout << "* Districts" << std::endl;
+        std::cout << "* Municipalities" << std::endl;
+        std::cout << std::endl;
     }
     else if (s2 == "operating"){
         std::cout << BREAK;
@@ -378,19 +379,11 @@ e2: std::cout << BREAK;
 bool Helpy::process_command(string& s1, string& s2, string& s3){
     switch (command[s1] + target[s2] + what[s3]){
         case(39) : {
-            chooseMaximumTrains();
+            calculateMaximumTrains();
             break;
         }
         case(41) : {
             determineMostTrains();
-            break;
-        }
-        case(47) : {
-            determineBudgetNeed();
-            break;
-        }
-        case(48) : {
-            determineAffectedStations();
             break;
         }
         case(51) : {
@@ -486,7 +479,7 @@ void Helpy::displayBusiest(string& s){
         table << i++ << p.first << p.second << fort::endr;
     }
 
-    std::cout << table.to_string() << std::endl;
+    std::cout << table.to_string();
 }
 
 /**
@@ -504,81 +497,55 @@ void Helpy::displayOperatingMode(){
 }
 
 /**
- * @brief chooses between calling calculateMaximumTrainsTwoStations or calculateMaximumTrains
- * @complexity O(n * |E|)
+ * @brief calculates either the maximum amount of trains that can simultaneously travel between two stations or the
+ * maximum amount of trains that simultaneously arrive at a station
+ * @complexity O(|V| * |E|^2)
  */
-void Helpy::chooseMaximumTrains(){
-    std::cout << BREAK;
-    std::cout << "1. Between two stations" << std::endl;
-    std::cout << "2. That can simultaneously arrive at a station" << std::endl;
-    std::cout << std::endl;
-    string s;
-    std::cin >> s;
-    if(s == "1"){
-        return calculateMaximumTrainsTwoStations();
-    } else if (s == "2"){
-        return calculateMaximumTrains();
+void Helpy::calculateMaximumTrains(){
+    while (true) {
+        std::ostringstream instr;
+        instr << "Please enter the " << BOLD << "number" << RESET << " of the option you desire:" << std::endl << std::endl
+              << "1. Between two stations" << std::endl
+              << "2. That can simultaneously arrive at a station";
+
+        int n = (int) readNumber(instr.str());
+
+        switch (n){
+            case (1) : {
+                int station = stationIDs[readStation()];
+
+                std::cout << BREAK;
+                std::cout << "The maximum number of trains that can simultaneously arrive at " << graph[station].getName()
+                          << " is " << BOLD << YELLOW << graph.getMaximumTrains(station) << RESET << '.' << std::endl;
+
+                return;
+            }
+            case (2) : {
+                int stationA = stationIDs[readStation()];
+                int stationB = stationIDs[readStation()];
+
+                std::cout << BREAK;
+                std::cout << "The maximum number of trains that can simultaneously travel between "
+                          << graph[stationA].getName() << " and " << graph[stationB].getName() << " is " << BOLD
+                          << YELLOW << graph.maximumFlow(stationA, stationB) << RESET << '.' << std::endl;
+
+                return;
+            }
+            default :
+                break;
+        }
+
+        std::cout << BREAK;
+        std::cout << RED << "Invalid number! Please, try again." << RESET << std::endl;
     }
-    std::cout << BREAK;
-    std::cout << std::endl << RED << "Invalid number! Please, try again." << RESET << std::endl;
-    return chooseMaximumTrains();
 }
 
 /**
- * @brief computes the pairs of stations (if more than one) that require the most trains when taking full advantage of the existing network capacity
+ * @brief computes the pairs of stations (if more than one) that require the most trains when taking full advantage of
+ * the existing network capacity
  * @complexity O(n * |E|)
  */
 void Helpy::determineMostTrains(){
     //int airport = readStation();
     std::cout << BREAK;
-}
-
-/**
- * @brief computes the maximum number of trains that go between two stations simultaneously
- * @complexity O(n * |E|)
- */
-void Helpy::calculateMaximumTrainsTwoStations(){
-    int stationA = stationIDs[readStation()];
-    int stationB = stationIDs[readStation()];
-
-    std::cout << BREAK;
-    std::cout << "The maximum number of trains that can simultaneously travel between " << graph[stationA].getName()
-              << " and " << graph[stationB].getName() << " is " << graph.maximumFlow(stationA, stationB)
-              << std::endl;
-}
-
-/**
- * @brief computes the maximum number of trains that can arrive at a station simultaneously
- * @complexity O(n * |E|)
- * @param start station that we want to test
- */
-void Helpy::calculateMaximumTrains(){
-    string airport = readStation();
-
-
-    std::cout << BREAK;
-
-}
-
-/**
- * @brief computes the top k districts (or municipalities) where management should assign a larger budget for the purchase and maintenance of trains
- * @complexity O(n * |E|)
- * @param number number of districts (or municipalities) to show
- */
-void Helpy::determineBudgetNeed(){
-    string number = readStation();
-
-    std::cout << BREAK;
-}
-
-/**
- * @brief computes the stations that are most affected by each segment failure
- * @complexity O(n * |E|)
- */
-void Helpy::determineAffectedStations(){
-    string airport = readStation();
-
-
-    std::cout << BREAK;
-
 }
