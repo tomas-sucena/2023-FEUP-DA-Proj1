@@ -12,48 +12,49 @@
 using std::string;
 
 class Helpy {
-    private:
-        RailGraph graph;
-        uMap<string, int> stationIDs;
+/* ATTRIBUTES */
+private:
+    Reader reader;
+    RailGraph graph;
+    uMap<string, int> stationIDs;
 
-        uSet<string> districts, municipalities;
-        uMap<string, string> districtStations, municipalityStations;
+    uSet<string> districts, municipalities;
+    uMap<string, string> districtStations, municipalityStations;
 
-        // maps used to process commands
-        static std::map<string, int> command, target, what;
-               
-    public:
-        // constructor
-        Helpy(RailGraph& graph, uMap<string, int>  stationIDs);
+    // maps used to process commands
+    static std::map<string, int> command, target, what;
 
-        // methods
-        static void properName(string& s);
+/* CONSTRUCTOR */
+public:
+    Helpy();
 
-        static string readInput(const string& instruction, uSet<string>& options);
-        static double readNumber(const string& instruction);
-        string readStation();
-        string readCity();
+/* METHODS */
+private:
+    void fetchData();
+    static void properName(string& s);
 
-        template <typename T>
-        void printAirports(T airports, const list<string>& columnNames);
-        void printFlights(const string& airport);
-        void printPath(const Path& p);
+    static string readInput(const string& instruction, uSet<string>& options);
+    static double readNumber(const string& instruction);
+    string readStation();
+    string readCity();
 
-        void terminal();
-        void advanced_mode();
-        void guided_mode();
-        bool process_command(string& s1, string& s2, string& s3);
+    void advanced_mode();
+    void guided_mode();
+    bool process_command(string& s1, string& s2, string& s3);
 
-        void displayOperatingMode();
-        void displayBusiest(string& s);
+    void displayOperatingMode();
+    void displayBusiest(string& s);
 
-        void changeOperatingMode();
-        void chooseMaximumTrains();
-        void calculateMaximumTrains();
-        void calculateMaximumTrainsTwoStations();
-        void determineMostTrains();
-        void determineBudgetNeed();
-        void determineAffectedStations();
+    void changeOperatingMode();
+    void chooseMaximumTrains();
+    void calculateMaximumTrains();
+    void calculateMaximumTrainsTwoStations();
+    void determineMostTrains();
+    void determineBudgetNeed();
+    void determineAffectedStations();
+
+public:
+    void terminal();
 };
 
 #endif

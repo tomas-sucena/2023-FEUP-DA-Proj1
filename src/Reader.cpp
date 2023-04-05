@@ -115,22 +115,18 @@ void Reader::readNetwork(RailGraph& graph){
         networkSinks.erase(stationIDs[stationA]);
     }
 
-    // add the super source
-    graph.addSuperSource();
-
-    for (int sourceID : networkSources)
-        graph.addSource(sourceID);
-    
-    // add the super sink
-    graph.addSuperSink();
-
-    for (int sinkID : networkSinks)
-        graph.addSink(sinkID);
-
     reader.close();
     reader.clear();
 }
 
-uMap<std::string, int> Reader::getStations(){
+uMap<std::string, int> Reader::getStations() const{
     return stationIDs;
+}
+
+uSet<int> Reader::getNetworkSources() const{
+    return networkSources;
+}
+
+uSet<int> Reader::getNetworkSinks() const{
+    return networkSinks;
 }

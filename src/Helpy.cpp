@@ -58,7 +58,21 @@ void Helpy::properName(string& s){
  * @param graph graph that contains all the data regarding Stations and Trips between stations
  * @param ids unordered map that contains information regarding stations (for search purposes)
  */
-Helpy::Helpy(RailGraph& graph, uMap<string, int> stationIDs) : graph(graph), stationIDs(std::move(stationIDs)) {}
+Helpy::Helpy() : reader("../data", ';') {
+    fetchData();
+}
+
+/**
+ * @brief reads and parses the data files
+ */
+void Helpy::fetchData() {
+    // create the graph
+    graph = reader.read();
+    graph.networkSources = reader.getNetworkSources();
+    graph.networkSinks = reader.getNetworkSinks();
+
+    stationIDs = reader.getStations();
+}
 
 /**
  * @brief reads a line of user input
@@ -459,10 +473,11 @@ void Helpy::displayBusiest(string& s){
     }
 
     table << fort::endr;
+
     int i = 0;
-    for(auto b: busiest){
-        table << i++ << b.first << b.second << fort::endr;
-    }
+    for(auto& p: busiest)
+        table << i++ << p.first << p.second << fort::endr;
+
     std::cout << table.to_string() << std::endl;
 }
 

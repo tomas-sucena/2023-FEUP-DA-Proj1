@@ -13,22 +13,24 @@
 class RailGraph : public UGraph {
     friend class Helpy;
 
-    int superSourceID, superSinkID;
+/* ATTRIBUTES */
+private:
     bool profitMode, fullPicture;
 
+    // for searching
     std::vector<std::string> stationNames;
+    uSet<int> networkSources, networkSinks;
     uMap<std::string, std::list<Railway*>> districtRailways, municipalityRailways;
 
+/* CONSTRUCTOR */
 public:
-    // constructor
     explicit RailGraph(int n = 0);
 
-    // methods
+/* METHODS */
+public:
     void addVertex(Vertex* v = nullptr) override;
     bool addEdge(int src, int dest, double weight = 1, std::string service = "STANDARD", bool valid = true);
     Station& operator[](int index) override;
-    int addSuperSource(), addSuperSink();
-    bool addSource(int sourceID), addSink(int sinkID);
 
     void getFullPicture();
     std::list<std::pair<int, int>> getBusiestStationPairs(double& maxFlow);
