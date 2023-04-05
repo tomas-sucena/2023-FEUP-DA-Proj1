@@ -10,7 +10,8 @@ set(PROJECT_HEADERS
         src/network/Railway.hpp
         src/network/Station.hpp
         src/Helpy.h
-        src/Reader.h)
+        src/Reader.h
+        src/Utils.hpp)
 
 set(PROJECT_SOURCES
         graph/src/implementation/Graph.cpp

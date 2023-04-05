@@ -7,9 +7,7 @@
 #include <unordered_set>
 
 #include "network/RailGraph.h"
-
-#define uMap std::unordered_map
-#define uSet std::unordered_set
+#include "Utils.hpp"
 
 class Reader {
 /* ATTRIBUTES */

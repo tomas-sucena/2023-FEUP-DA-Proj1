@@ -4,13 +4,10 @@
 #include <list>
 #include <map>
 #include <string>
-#include <unordered_set>
 
 #include "network/RailGraph.h"
 #include "Reader.h"
-
-#define uSet std::unordered_set
-#define uMap std::unordered_map
+#include "Utils.hpp"
 
 using std::string;
 
@@ -28,12 +25,11 @@ class Helpy {
         Helpy(RailGraph& graph, uMap<string, int>  stationIDs);
 
         // methods
-        static void lowercase(string& s, bool uppercase = false);
         static void properName(string& s);
 
         static string readInput(const string& instruction, uSet<string>& options);
         static double readNumber(const string& instruction);
-        int readStation();
+        string readStation();
         string readCity();
 
         template <typename T>

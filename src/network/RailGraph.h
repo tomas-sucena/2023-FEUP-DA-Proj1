@@ -3,13 +3,11 @@
 
 #include <list>
 #include <string>
-#include <unordered_map>
 
-#include "UGraph.h"
+#include "../Utils.hpp"
 #include "Railway.hpp"
 #include "Station.hpp"
-
-#define uMap std::unordered_map
+#include "UGraph.h"
 
 class RailGraph : public UGraph {
     friend class Helpy;
