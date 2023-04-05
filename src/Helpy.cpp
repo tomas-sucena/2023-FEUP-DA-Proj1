@@ -21,10 +21,10 @@ std::map<string, int> Helpy::command = {{"display", 1}, {"print", 1}, {"show", 1
 std::map<string, int> Helpy::target = {{"station", 6}, {"shortest", 8}, {"maximum", 10}, {"most", 12},
                                        {"budget", 14}, {"affected", 17}, {"operating", 19}, {"busiest", 21}};
 
-std::map<string, int> Helpy::what = {{" ", 22},{"information", 24}, {"info", 24}, {"route", 27},
-                                     {"routes", 27}, {"train", 27}, {"trains", 27}, {"path", 27},
-                                     {"paths", 27}, {"station", 29}, {"stations", 29}, {"districts", 29}, {"municipalities", 29}, {"need", 31},
-                                     {"mode", 33}};
+std::map<string, int> Helpy::what = {{"information", 24}, {"info", 24}, {"route", 27},
+                                     {"routes", 27}, {"train", 27}, {"trains", 27},{"station", 29},
+                                     {"stations", 29}, {"district", 29}, {"districts", 29}, {"municipality", 29},
+                                     {"municipalities", 29}, {"need", 31}, {"mode", 33}};
 
 /**
  * @brief takes a user inputted string and modifies it so that it becomes well-written
@@ -246,7 +246,13 @@ b2: std::cout << BREAK;
 
     std::cin >> s1; Utils::lowercase(s1);
 
-    if (s1 == "calculate"){
+    if (s1 == "display"){
+        std::cout << BREAK;
+        std::cout << "* Busiest" << std::endl;
+        std::cout << "* Operating" << std::endl;
+        std::cout << std::endl;
+    }
+    else if (s1 == "calculate"){
         std::cout << BREAK;
         std::cout << "* Maximum" << std::endl;
         std::cout << "* Most" << std::endl;
@@ -261,7 +267,7 @@ b2: std::cout << BREAK;
         std::cout << "* Affected" << std::endl;
         std::cout << std::endl;
     }
-    else if (s1 == "change" || s1 == "display"){
+    else if (s1 == "change"){
         std::cout << BREAK;
         std::cout << "* Operating" << std::endl;
         std::cout << "* Busiest" << std::endl;
@@ -277,6 +283,13 @@ b2: std::cout << BREAK;
     if (s2 == "maximum" || s2 == "most"){
         std::cout << BREAK;
         std::cout << "* Trains" << std::endl;
+        std::cout << std::endl;
+    }
+    else if (s2 == "busiest"){
+        std::cout << BREAK;
+        std::cout << "* Districts" << std::endl;
+        std::cout << "* Municipalities" << std::endl;
+        std::cout << "* Stations" << std::endl;
         std::cout << std::endl;
     }
     else if (s2 == "budget"){
@@ -365,7 +378,7 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
             break;
         }
         case(51) : {
-            displayBusiest();
+            displayBusiest(s3);
             break;
         }
         case (53) : {
@@ -406,10 +419,14 @@ void Helpy::changeOperatingMode(){
  * @complexity O(n^2)
 */
 void Helpy::displayBusiest(std::string s){
-    string instruction = "How many"+ s +"would you like to display: ";
+    string instruction = "How many "+ s +" would you like to display: ";
     int k = readNumber(instruction);
     std::cout << std::endl;
-    
+    std::list<std::pair<string, double>> busiest = graph.selectFunction(s, k);
+    std::cout << BREAK;
+    for(auto b: busiest){
+        std::cout<< b.first << " " << b.second << std::endl;
+    }
 }
 
 
@@ -458,10 +475,13 @@ void Helpy::determineMostTrains(){
  * @complexity O(n * |E|)
  */
 void Helpy::calculateMaximumTrainsTwoStations(){
-    string stationA = readStation();
-    string stationB = readStation();
+    int stationA = stationIDs[readStation()];
+    int stationB = stationIDs[readStation()];
 
     std::cout << BREAK;
+    std::cout << "The maximum number of trains that can simultaneously travel between " << graph[stationA].getName()
+              << " and " << graph[stationB].getName() << " is " << graph.maximumFlow(stationA, stationB)
+              << std::endl;
 }
 
 /**

@@ -1,11 +1,9 @@
 #include "RailGraph.h"
 
 #include <algorithm>
-#include <unordered_set>
+#include <map>
 
-#define uSet std::unordered_set
-
-RailGraph::RailGraph(int n) : UGraph(n), superSourceID(0), superSinkID(0), profitMode(false) {}
+RailGraph::RailGraph(int n) : UGraph(n), superSourceID(0), superSinkID(0), profitMode(false), fullPicture(false) {}
 
 /**
  * adds an edge (i.e. a Railway) to the RailGraph
@@ -26,15 +24,15 @@ bool RailGraph::addEdge(int src, int dest, double weight, std::string service, b
     std::string srcDistrict = (*this)[src].getDistrict();
     std::string destDistrict = (*this)[dest].getDistrict();
 
-    districts[srcDistrict].push_back(r);
-    if (srcDistrict != destDistrict) districts[destDistrict].push_back(r);
+    districtRailways[srcDistrict].push_back(r);
+    if (srcDistrict != destDistrict) districtRailways[destDistrict].push_back(r);
 
     // update the municipalities map
     std::string srcMunicipality = (*this)[src].getMunicipality();
     std::string destMunicipality = (*this)[dest].getMunicipality();
 
-    municipalities[srcMunicipality].push_back(r);
-    if (srcMunicipality != destMunicipality) municipalities[destMunicipality].push_back(r);
+    municipalityRailways[srcMunicipality].push_back(r);
+    if (srcMunicipality != destMunicipality) municipalityRailways[destMunicipality].push_back(r);
 
     return true;
 }
@@ -76,8 +74,11 @@ bool RailGraph::addSink(int sinkID){
     return addEdge(sinkID, superSinkID, INF);
 }
 
-double RailGraph::getFullPicture(){
-    return edmondsKarp(superSourceID, superSinkID);
+void RailGraph::getFullPicture(){
+    if (fullPicture) return;
+
+    fullPicture = true;
+    edmondsKarp(superSourceID, superSinkID);
 }
 
 std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxFlow){
@@ -139,29 +140,76 @@ std::vector<std::pair<int, int>> RailGraph::mostAffected(RailGraph sub, int k) {
     return out;
 }
 
-std::list<string> RailGraph::selectFunction(std::string s, int k){
+std::list<std::pair<std::string,double>> RailGraph::selectFunction(std::string s, int k){
     if(s == "districts"){
         return getBusiestDistricts(k);
     }
+    return getBusiestMunicipalities(k);
 }
 
-std::list<string> RailGraph::getBusiestDistricts(int k){
+/**
+ * computes the top-k districts with the most trains circulating in them (i.e. most flow)
+ * @param k number of districts that will be selected
+ * @return list with the names and the number of trains circulating in the top-k districts
+ */
+std::list<std::pair<string, double>> RailGraph::getBusiestDistricts(int k){
     getFullPicture();
-    std::vector<std::pair<std::string, double>> districtflow;
-    for(auto v: districts){
+    k = k > districtRailways.size() ? districtRailways.size() : k;
+    // compute the total flow of each district
+    std::vector<std::pair<std::string, double>> districtsFlow;
+
+    for(auto& p: districtRailways){
         double flow = 0;
-        for(auto e: v.second){
+        for (const Edge* e : p.second){
             flow += e->getFlow();
         }
-        districtflow.emplace_back(v.first, flow);
+
+        districtsFlow.emplace_back(p.first, flow);
     }
-    std::sort(districtflow.begin(), districtflow.end(), [](auto &left, auto &right) {
+
+    // sort the districts by descending order of flow
+    std::sort(districtsFlow.begin(), districtsFlow.end(), [](auto &left, auto &right) {
         return left.second > right.second;
     });
-    districtflow.resize(k);
-    std::list<std::string> busiestDistricts;
-    for(int i = 0; i < k; i++){
-        busiestDistricts.push_back(districtflow[i].first);
+
+    std::list<std::pair<string, double>> busiestDistricts;
+    for (int i = 0; i < k; ++i){
+        busiestDistricts.emplace_back(districtsFlow[i].first, districtsFlow[i].second);
     }
+
     return busiestDistricts;
+}
+
+/**
+ * computes the top-k municipalities with the most trains circulating in them (i.e. most flow)
+ * @param k number of municipalities that will be selected
+ * @return list with the names and the number of trains circulating in the top-k municipalities
+ */
+std::list<std::pair<string, double>> RailGraph::getBusiestMunicipalities(int k){
+    getFullPicture();
+
+    k = k > municipalityRailways.size() ? municipalityRailways.size() : k;
+    // compute the total flow of each district
+    std::vector<std::pair<std::string, double>> municipalitiesFlow;
+
+    for(auto& p: municipalityRailways){
+        double flow = 0;
+        for (const Edge* e : p.second){
+            flow += e->getFlow();
+        }
+
+        municipalitiesFlow.emplace_back(p.first, flow);
+    }
+
+    // sort the municipalities by descending order of flow
+    std::sort(municipalitiesFlow.begin(), municipalitiesFlow.end(), [](auto &left, auto &right) {
+        return left.second > right.second;
+    });
+
+    std::list<std::pair<string, double>> busiestMunicipalities;
+    for(int i = 0; i < k; ++i){
+        busiestMunicipalities.emplace_back(municipalitiesFlow[i].first, municipalitiesFlow[i].second);
+    }
+
+    return busiestMunicipalities;
 }

@@ -13,8 +13,8 @@ class RailGraph : public UGraph {
     friend class Helpy;
 
     int superSourceID, superSinkID;
-    bool profitMode;
-    uMap<std::string, std::list<Railway*>> districts, municipalities;
+    bool profitMode, fullPicture;
+    uMap<std::string, std::list<Railway*>> districtRailways, municipalityRailways;
 
 public:
     // constructor
@@ -26,13 +26,14 @@ public:
     int addSuperSource(), addSuperSink();
     bool addSource(int sourceID), addSink(int sinkID);
 
-    double getFullPicture();
+    void getFullPicture();
     std::list<std::pair<int, int>> getBusiestStationPairs(double& maxFlow);
     RailGraph subGraph(const list<std::pair<int, int>>& edgesList);
     double reducedConnectivity(int start, int end, RailGraph sub);
     std::vector<std::pair<int,int>> mostAffected(RailGraph sub, int k);
-    std::list<string> selectFunction(std::string s, int k);
-    std::list<string> getBusiestDistricts(int k);
+    std::list<std::pair<std::string, double>> selectFunction(std::string s, int k);
+    std::list<std::pair<string, double>> getBusiestDistricts(int k);
+    std::list<std::pair<string, double>> getBusiestMunicipalities(int k);
 };
 
 #endif //DA_TRAINS_RAILGRAPH_H

@@ -15,7 +15,9 @@ class Helpy {
     private:
         RailGraph graph;
         uMap<string, int> stationIDs;
-        bool standard = false;
+
+        uSet<string> districts, municipalities;
+        uMap<string, string> districtStations, municipalityStations;
 
         // maps used to process commands
         static std::map<string, int> command, target, what;
@@ -42,9 +44,10 @@ class Helpy {
         void guided_mode();
         bool process_command(string& s1, string& s2, string& s3);
 
-        void changeOperatingMode();
         void displayOperatingMode();
+
         void displayBusiest(std::string s);
+        void changeOperatingMode();
         void chooseMaximumTrains();
         void calculateMaximumTrains();
         void calculateMaximumTrainsTwoStations();
