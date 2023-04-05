@@ -139,6 +139,12 @@ std::vector<std::pair<int, int>> RailGraph::mostAffected(RailGraph sub, int k) {
     return out;
 }
 
+std::list<string> RailGraph::selectFunction(std::string s, int k){
+    if(s == "districts"){
+        return getBusiestDistricts(k);
+    }
+}
+
 std::list<string> RailGraph::getBusiestDistricts(int k){
     getFullPicture();
     std::vector<std::pair<std::string, double>> districtflow;

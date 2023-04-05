@@ -44,6 +44,7 @@ class Helpy {
 
         void changeOperatingMode();
         void displayOperatingMode();
+        void displayBusiest(std::string s);
         void chooseMaximumTrains();
         void calculateMaximumTrains();
         void calculateMaximumTrainsTwoStations();

@@ -19,11 +19,11 @@ std::map<string, int> Helpy::command = {{"display", 1}, {"print", 1}, {"show", 1
                                         {"determine", 2}, {"change", 3}, {"switch", 3}, {"toggle", 3}};
 
 std::map<string, int> Helpy::target = {{"station", 6}, {"shortest", 8}, {"maximum", 10}, {"most", 12},
-                                       {"budget", 14}, {"affected", 17}, {"operating", 19}};
+                                       {"budget", 14}, {"affected", 17}, {"operating", 19}, {"busiest", 21}};
 
 std::map<string, int> Helpy::what = {{" ", 22},{"information", 24}, {"info", 24}, {"route", 27},
                                      {"routes", 27}, {"train", 27}, {"trains", 27}, {"path", 27},
-                                     {"paths", 27}, {"station", 29}, {"stations", 29}, {"need", 31},
+                                     {"paths", 27}, {"station", 29}, {"stations", 29}, {"districts", 29}, {"municipalities", 29}, {"need", 31},
                                      {"mode", 33}};
 
 /**
@@ -264,6 +264,7 @@ b2: std::cout << BREAK;
     else if (s1 == "change" || s1 == "display"){
         std::cout << BREAK;
         std::cout << "* Operating" << std::endl;
+        std::cout << "* Busiest" << std::endl;
         std::cout << std::endl;
     }
     else { // erro
@@ -287,6 +288,13 @@ b2: std::cout << BREAK;
         std::cout << BREAK;
         std::cout << "* Stations" << std::endl;
         std::cout << std::endl;
+    }
+    else if (s2 == "busiest"){
+    std::cout << BREAK;
+    std::cout << "* Stations" << std::endl;
+    std::cout << "* Districts" << std::endl;
+    std::cout << "* Municipalities" << std::endl;
+    std::cout << std::endl;
     }
     else if (s2 == "operating"){
         std::cout << BREAK;
@@ -356,6 +364,10 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
             determineAffectedStations();
             break;
         }
+        case(51) : {
+            displayBusiest();
+            break;
+        }
         case (53) : {
             displayOperatingMode();
             break;
@@ -389,6 +401,17 @@ void Helpy::changeOperatingMode(){
 
     graph.profitMode = (choice == "profit");
 }
+/**
+ * @brief displays the busiest districts
+ * @complexity O(n^2)
+*/
+void Helpy::displayBusiest(std::string s){
+    string instruction = "How many"+ s +"would you like to display: ";
+    int k = readNumber(instruction);
+    std::cout << std::endl;
+    
+}
+
 
 void Helpy::displayOperatingMode(){
     string mode = (graph.profitMode) ? "Profit" : "Standard";
