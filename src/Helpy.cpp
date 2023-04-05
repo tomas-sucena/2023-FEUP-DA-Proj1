@@ -58,7 +58,21 @@ void Helpy::properName(string& s){
  * @param graph graph that contains all the data regarding Stations and Trips between stations
  * @param ids unordered map that contains information regarding stations (for search purposes)
  */
-Helpy::Helpy(RailGraph& graph, uMap<string, int> stationIDs) : graph(graph), stationIDs(std::move(stationIDs)) {}
+Helpy::Helpy() : reader("../data", ';') {
+    fetchData();
+}
+
+/**
+ * @brief reads and parses the data files
+ */
+void Helpy::fetchData() {
+    // create the graph
+    graph = reader.read();
+    graph.networkSources = reader.getNetworkSources();
+    graph.networkSinks = reader.getNetworkSinks();
+
+    stationIDs = reader.getStations();
+}
 
 /**
  * @brief reads a line of user input
@@ -294,11 +308,6 @@ b2: std::cout << BREAK;
         std::cout << "* Stations" << std::endl;
         std::cout << std::endl;
     }
-    else if (s2 == "budget"){
-        std::cout << BREAK;
-        std::cout << "* Need" << std::endl;
-        std::cout << std::endl;
-    }
     else if (s2 == "affected"){
         std::cout << BREAK;
         std::cout << "* Stations" << std::endl;
@@ -430,12 +439,18 @@ void Helpy::displayBusiest(string& s){
     // compute the top-k
     std::list<std::pair<string, double>> busiest;
 
-    if (s == "stations")
+    if (s == "station" || s == "stations"){
         busiest = graph.getBusiestStations(k);
-    else if (s == "districts")
+        s = "stations";
+    }
+    else if (s == "district" || s == "districts"){
         busiest = graph.getBusiestDistricts(k);
-    else
+        s = "districts";
+    }
+    else{
         busiest = graph.getBusiestMunicipalities(k);
+        s = "municipalities";
+    }
 
     // display the top-k
     fort::char_table table;
@@ -446,7 +461,7 @@ void Helpy::displayBusiest(string& s){
     table << fort::header;
 
     properName(s);
-    std::list<string> columnNames = {"Index", s, "Flow"};
+    std::list<string> columnNames = {"N", s, "Trains"};
 
     auto it = columnNames.begin();
     for (int i = 0; it != columnNames.end(); ++i){
@@ -455,10 +470,13 @@ void Helpy::displayBusiest(string& s){
     }
 
     table << fort::endr;
-    int i = 0;
-    for(auto b: busiest){
-        table << i++ << b.first << b.second << fort::endr;
+
+    int i = 1;
+    for(auto& p: busiest){
+        properName(p.first);
+        table << i++ << p.first << p.second << fort::endr;
     }
+
     std::cout << table.to_string() << std::endl;
 }
 

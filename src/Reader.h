@@ -32,7 +32,9 @@ private:
 
 public:
     RailGraph read();
-    uMap<std::string, int> getStations();
+    uMap<std::string, int> getStations() const;
+    uSet<int> getNetworkSources() const;
+    uSet<int> getNetworkSinks() const;
 };
 
 #endif //DA_TRAINS_READER_H

@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <map>
 
-RailGraph::RailGraph(int n) : UGraph(n), superSourceID(0), superSinkID(0), profitMode(false), fullPicture(false) {}
+RailGraph::RailGraph(int n) : UGraph(n), profitMode(false), fullPicture(false) {}
 
 /**
  * adds a vertex (i.e. a Station) to the RailGraph
@@ -29,8 +29,6 @@ void RailGraph::addVertex(Vertex* v){
 bool RailGraph::addEdge(int src, int dest, double weight, std::string service, bool valid){
     auto r = new Railway(src, dest, weight, valid, std::move(service));
     if (!UGraph::addEdge(r)) return false;
-
-    if (src == superSourceID || dest == superSinkID) return true;
 
     // update the districts map
     std::string srcDistrict = (*this)[src].getDistrict();
@@ -58,51 +56,43 @@ Station& RailGraph::operator[](int index){
     return (Station&) Graph::operator[](index);
 }
 
-int RailGraph::addSuperSource() {
-    addVertex();
-    superSourceID = countVertices();
-
-    return superSourceID;
-}
-
-int RailGraph::addSuperSink() {
-    addVertex();
-    superSinkID = countVertices();
-
-    return superSinkID;
-}
-
-bool RailGraph::addSource(int sourceID){
-    // super source has not been set
-    if (!superSourceID) return false;
-
-    return addEdge(superSourceID, sourceID, INF);
-}
-
-bool RailGraph::addSink(int sinkID){
-    // super sink has not been set
-    if (!superSinkID) return false;
-
-    return addEdge(sinkID, superSinkID, INF);
-}
-
-void RailGraph::getFullPicture(){
+/**
+ * @brief computes the maximum amount of trains that can circulate (i.e. max flow), considering the entire railway network
+ * @complexity O(|V| * |E|^2)
+ */
+void RailGraph::getFullPicture() {
     if (fullPicture) return;
-
     fullPicture = true;
-    edmondsKarp(superSourceID, superSinkID);
+
+    // create the super source
+    addVertex();
+    int superSource = countVertices();
+    
+    for (int src : networkSources)
+        UGraph::addEdge(superSource, src, INF);
+
+    // create the super sink
+    addVertex();
+    int superSink = countVertices();
+
+    for (int sink : networkSinks)
+        UGraph::addEdge(sink, superSink, INF);
+
+    // compute the maximum flow of the entire network
+    maximumFlow(superSource, superSink);
+
+    removeVertex(superSink);
+    removeVertex(superSource);
 }
 
 std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxFlow){
     std::list<std::pair<int, int>> busiestPairs;
 
     reset = false;
+    fullPicture = false;
+
     resetAll();
-
-    // invalidate the superSource and the superSink
-    (*this)[superSourceID].valid = false;
-    (*this)[superSinkID].valid = false;
-
+    
     for (int i = 1; i <= countVertices() - 2; ++i){
         for (int j = i + 1; j <= countVertices() - 2; ++j){
             resetEdges();
