@@ -435,10 +435,13 @@ void Helpy::determineMostTrains(){
  * @complexity O(n * |E|)
  */
 void Helpy::calculateMaximumTrainsTwoStations(){
-    string stationA = readStation();
-    string stationB = readStation();
+    int stationA = stationIDs[readStation()];
+    int stationB = stationIDs[readStation()];
 
     std::cout << BREAK;
+    std::cout << "The maximum number of trains that can simultaneously travel between " << graph[stationA].getName()
+              << " and " << graph[stationB].getName() << " is " << graph.maximumFlow(stationA, stationB)
+              << std::endl;
 }
 
 /**

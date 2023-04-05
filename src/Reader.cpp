@@ -46,35 +46,27 @@ void Reader::readStations(RailGraph& graph){
         string name;
         getline(line_, name, valueDelim);
 
-        Utils::lowercase(name);
-        stationIDs[name] = i;
-
         // read the district
         string district;
         getline(line_, district, valueDelim);
-
-        Utils::lowercase(district);
 
         // read the municipality
         string municipality;
         getline(line_, municipality, valueDelim);
 
-        Utils::lowercase(municipality);
-
         // read the township
         string township;
         getline(line_, township, valueDelim);
-
-        Utils::lowercase(township);
 
         // read the train line
         string trainLine;
         getline(line_, trainLine, lineDelim);
 
-        Utils::lowercase(trainLine);
-
         // add the station to the graph
         graph.addVertex(new Station(name, district, municipality, township, trainLine));
+
+        Utils::lowercase(name);
+        stationIDs[name] = i;
 
         networkSources.insert(i);
         networkSinks.insert(i);
