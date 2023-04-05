@@ -9,6 +9,7 @@ set(PROJECT_HEADERS
         src/network/RailGraph.h
         src/network/Railway.hpp
         src/network/Station.hpp
+        src/libfort/fort.hpp
         src/Helpy.h
         src/Reader.h
         src/Utils.hpp)
@@ -18,6 +19,7 @@ set(PROJECT_SOURCES
         graph/src/UGraph.cpp
         src/main.cpp
         src/network/RailGraph.cpp
+        src/libfort/fort.c
         src/Helpy.cpp
         src/Reader.cpp)
 
