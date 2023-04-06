@@ -374,7 +374,7 @@ double Helpy::getIncomingTrains(int index, bool display){
     graph.getFullPicture();
 
     // create the table
-    fort::char_table table;
+    fort::utf8_table table;
 
     table.set_border_style(FT_NICE_STYLE);
     table.row(0).set_cell_content_text_style(fort::text_style::bold);
@@ -414,7 +414,7 @@ double Helpy::getIncomingTrains(int index, bool display){
  * @brief displays all the stations that are part of the railway network
  */
 void Helpy::displayAllStations(){
-    fort::char_table table;
+    fort::utf8_table table;
 
     table.set_border_style(FT_NICE_STYLE);
     table.row(0).set_cell_content_text_style(fort::text_style::bold);
@@ -485,7 +485,7 @@ void Helpy::displayBusiest(string& s){
     }
 
     // display the top-k
-    fort::char_table table;
+    fort::utf8_table table;
 
     table.set_border_style(FT_NICE_STYLE);
     table.row(0).set_cell_content_text_style(fort::text_style::bold);
@@ -526,7 +526,7 @@ void Helpy::displayBusiestPairs(){
     double flow = 0;
     std::list<std::pair<int,int>> busiestPairs = graph.getBusiestStationPairs(flow);
 
-    fort::char_table table;
+    fort::utf8_table table;
 
     table.set_border_style(FT_NICE_STYLE);
     table.row(0).set_cell_content_text_style(fort::text_style::bold);
@@ -640,7 +640,7 @@ void Helpy::determineAffectedStations(){
     beforeAndAfter.resize(k);
 
     // create the table
-    fort::char_table table;
+    fort::utf8_table table;
 
     table.set_border_style(FT_NICE_STYLE);
     table.row(0).set_cell_content_text_style(fort::text_style::bold);
