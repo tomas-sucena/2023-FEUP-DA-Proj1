@@ -152,6 +152,30 @@ string Helpy::readStation(){
     return station;
 }
 
+void Helpy::readInputFromTable(std::list<std::pair<int,int>>& edges, std::vector<Edge*> ref, int station){
+    int size = ref.size();
+    while(true){
+    std::cout << std::endl << YELLOW << BREAK << RESET;
+    std::cout << "Please type the " << BOLD << "indexes" << RESET << " of the " << YELLOW << "edges" << RESET << " you would like to " << RED << "remove"
+        << RESET << ", separated by a comma (ex: 0,1,2,7,...).\n";
+
+    // countries to USE
+    string line; getline(std::cin, line);
+    line += ",";
+
+    std::istringstream line_(line);
+
+    for (string temp; getline(line_, temp, ',');){
+        int k = std::stoi(temp);
+
+        if(k > size) return; //preguiça depois faz-se
+
+        edges.push_back({station, ref[k]->getDest()});
+        }
+    }
+    
+}
+
 
 /**
  * @brief allows the user to choose the mode of the UI
@@ -673,7 +697,7 @@ void Helpy::determineAffectedStations(){
  * @brief Prints the out edges of a station
  * @param station considered station
 */
-void Helpy::printEdges(int station){
+std::vector<Edge*> Helpy::printEdges(int station){
     fort::utf8_table table;
     table.set_border_style(FT_NICE_STYLE);
     table.row(0).set_cell_content_text_style(fort::text_style::bold);
@@ -691,18 +715,30 @@ void Helpy::printEdges(int station){
     table << fort::endr;
 
     int i = 0;
+    std::vector<Edge*> edges;
     for(auto e: graph[station].outEdges()){
+        edges.push_back(e);
         table << i++ << graph[station].getName() << graph[e->getDest()].getName() << fort::endr;
     }
 }
+
 
 /**
  * @brief changes the considered railway network while preserving the original network
 */
 void Helpy::changeRailwayNetwork(){
+    std::list<std::pair<int,int>> edgesToRem;
     while(true){
         int station = stationIDs[readStation()];
+        std::vector<Edge*> edges = printEdges(station);
+        readInputFromTable(edgesToRem, edges, station);
+        std::cout << "Would you like to select more edges (y/n): \n" << std::endl;
+        std::string s; std::cin >> s;
+        if(s == "y" || s == "yes") continue;
+        break;
 
     }
+    *original = graph;
+    graph = graph.subGraph(edgesToRem);
 
 }

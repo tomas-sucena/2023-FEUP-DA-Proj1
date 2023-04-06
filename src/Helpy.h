@@ -47,12 +47,13 @@ private:
     void displayOperatingMode();
     void displayBusiest(string& s);
     void displayBusiestPairs();
-    void printEdges(int station);
+    std::vector<Edge*> printEdges(int station);
 
     void changeOperatingMode();
     void calculateMaximumTrains();
     void determineAffectedStations();
     void changeRailwayNetwork();
+    void readInputFromTable(std::list<std::pair<int,int>>& edges, std::vector<Edge*> ref, int station);
 
 public:
     void terminal();
