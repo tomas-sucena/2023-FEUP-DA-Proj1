@@ -51,7 +51,7 @@ private:
 
     void changeOperatingMode();
     void calculateMaximumTrains();
-    void determineMostTrains();
+    void determineBusiestPairs();
 
 public:
     void terminal();

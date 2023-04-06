@@ -17,14 +17,14 @@
 // line breaks
 #define BREAK   std::endl << YELLOW << "- - - - - - - - - - - - - - - - - - - - -" << RESET << std::endl << std::endl
 
-std::map<string, int> Helpy::command = {{"display", 1}, {"print", 1}, {"show", 1}, {"calculate", 2},
+std::map<string, int> Helpy::command = {{"display", 2}, {"print", 1}, {"show", 1}, {"calculate", 2},
                                         {"determine", 2}, {"change", 3}, {"switch", 3}, {"toggle", 3}};
 
 std::map<string, int> Helpy::target = {{"station", 6}, {"shortest", 8}, {"maximum", 10}, {"most", 12},
                                        {"budget", 14}, {"affected", 17}, {"operating", 19}, {"busiest", 21}};
 
 std::map<string, int> Helpy::what = {{"information", 24}, {"info", 24}, {"route", 27},
-                                     {"routes", 27}, {"train", 27}, {"trains", 27},{"station", 29},
+                                     {"routes", 27}, {"train", 27}, {"trains", 27}, {"pair", 27}, {"pairs", 27} ,{"station", 29},
                                      {"stations", 29}, {"district", 29}, {"districts", 29}, {"municipality", 29},
                                      {"municipalities", 29}, {"need", 31}, {"mode", 33}};
 
@@ -280,8 +280,8 @@ b2: std::cout << BREAK;
     }
     else if (s1 == "determine"){
         std::cout << BREAK;
-        std::cout << "* Budget" << std::endl;
         std::cout << "* Affected" << std::endl;
+        std::cout << "* Busiest" << std::endl;
         std::cout << std::endl;
     }
     else if (s1 == "change"){
@@ -302,13 +302,6 @@ b2: std::cout << BREAK;
         std::cout << "* Trains" << std::endl;
         std::cout << std::endl;
     }
-    else if (s2 == "busiest"){
-        std::cout << BREAK;
-        std::cout << "* Districts" << std::endl;
-        std::cout << "* Municipalities" << std::endl;
-        std::cout << "* Stations" << std::endl;
-        std::cout << std::endl;
-    }
     else if (s2 == "affected"){
         std::cout << BREAK;
         std::cout << "* Stations" << std::endl;
@@ -319,6 +312,7 @@ b2: std::cout << BREAK;
         std::cout << "* Stations" << std::endl;
         std::cout << "* Districts" << std::endl;
         std::cout << "* Municipalities" << std::endl;
+        std::cout << "* Pairs" << std::endl;
         std::cout << std::endl;
     }
     else if (s2 == "operating"){
@@ -377,11 +371,11 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
             calculateMaximumTrains();
             break;
         }
-        case(41) : {
-            determineMostTrains();
+        case(50) : {
+            determineBusiestPairs();
             break;
         }
-        case(51) : {
+        case(52) : {
             displayBusiest(s3);
             break;
         }
@@ -540,7 +534,8 @@ void Helpy::calculateMaximumTrains(){
  * the existing network capacity
  * @complexity O(n * |E|)
  */
-void Helpy::determineMostTrains(){
+void Helpy::determineBusiestPairs(){
+    std::cout << BREAK;
     double flow = 0;
     std::list<std::pair<int,int>> busiestPairs = graph.getBusiestStationPairs(flow);
 
