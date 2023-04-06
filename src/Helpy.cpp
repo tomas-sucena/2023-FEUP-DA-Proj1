@@ -18,12 +18,12 @@ std::map<string, int> Helpy::command = {{"display", 1}, {"print", 1}, {"show", 1
 
 std::map<string, int> Helpy::target = {{"all", 4}, {"station", 6}, {"shortest", 8}, {"maximum", 10},
                                        {"most", 12}, {"budget", 14}, {"affected", 17}, {"operating", 19},
-                                       {"busiest", 21}};
+                                       {"busiest", 21}, {"railway",23}};
 
 std::map<string, int> Helpy::what = {{"information", 24}, {"info", 24}, {"route", 27},{"routes", 27},
                                      {"train", 27}, {"trains", 27}, {"pair", 27}, {"pairs", 27},
                                      {"station", 29},{"stations", 29}, {"district", 29},{"districts", 29},
-                                     {"municipality", 29},{"municipalities", 29}, {"need", 31}, {"mode", 33}};
+                                     {"municipality", 29},{"municipalities", 29}, {"need", 31}, {"mode", 33}, {"network", 35}};
 
 /**
  * @brief Construct a new Helpy:: Helpy object
@@ -358,6 +358,10 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
             changeOperatingMode();
             break;
         }
+        case(61) : {
+            changeRailwayNetwork();
+            break;
+        }
         default : {
             std::cout << BREAK;
             std::cout << RED << "Invalid command! Please, type another command." << RESET << std::endl;
@@ -663,4 +667,42 @@ void Helpy::determineAffectedStations(){
     }
 
     std::cout << table.to_string();
+}
+
+/**
+ * @brief Prints the out edges of a station
+ * @param station considered station
+*/
+void Helpy::printEdges(int station){
+    fort::utf8_table table;
+    table.set_border_style(FT_NICE_STYLE);
+    table.row(0).set_cell_content_text_style(fort::text_style::bold);
+    table.row(0).set_cell_content_fg_color(fort::color::yellow);
+    table << fort::header;
+    
+    std::list<string> columnNames = {"N", "Source","Destination"};
+
+    auto it = columnNames.begin();
+    for (int i = 0; it != columnNames.end(); ++i){
+        table << *it++;
+        table.column(i).set_cell_text_align(fort::text_align::center);
+    }
+
+    table << fort::endr;
+
+    int i = 0;
+    for(auto e: graph[station].outEdges()){
+        table << i++ << graph[station].getName() << graph[e->getDest()].getName() << fort::endr;
+    }
+}
+
+/**
+ * @brief changes the considered railway network while preserving the original network
+*/
+void Helpy::changeRailwayNetwork(){
+    while(true){
+        int station = stationIDs[readStation()];
+
+    }
+
 }

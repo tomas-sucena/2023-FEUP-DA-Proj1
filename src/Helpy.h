@@ -47,10 +47,12 @@ private:
     void displayOperatingMode();
     void displayBusiest(string& s);
     void displayBusiestPairs();
+    void printEdges(int station);
 
     void changeOperatingMode();
     void calculateMaximumTrains();
     void determineAffectedStations();
+    void changeRailwayNetwork();
 
 public:
     void terminal();
