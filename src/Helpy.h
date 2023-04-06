@@ -1,10 +1,6 @@
 #ifndef DA_TRAINS_HELPY_H
 #define DA_TRAINS_HELPY_H
 
-#include <list>
-#include <map>
-#include <string>
-
 #include "network/RailGraph.h"
 #include "Reader.h"
 #include "Utils.hpp"
@@ -34,7 +30,6 @@ public:
 /* METHODS */
 private:
     void fetchData();
-    static void properName(string& s);
 
     static string readInput(const string& instruction, uSet<string>& options);
     static double readNumber(const string& instruction);

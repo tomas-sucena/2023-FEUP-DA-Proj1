@@ -1,10 +1,5 @@
 #include "Helpy.h"
 
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <utility>
-
 #include "libfort/fort.hpp"
 
 // output colors
@@ -29,31 +24,6 @@ std::map<string, int> Helpy::what = {{"information", 24}, {"info", 24}, {"route"
                                      {"train", 27}, {"trains", 27}, {"pair", 27}, {"pairs", 27},
                                      {"station", 29},{"stations", 29}, {"district", 29},{"districts", 29},
                                      {"municipality", 29},{"municipalities", 29}, {"need", 31}, {"mode", 33}};
-
-/**
- * @brief takes a user inputted string and modifies it so that it becomes well-written
- * @complexity O(n)
- * @param s string to be modified
- */
-void Helpy::properName(string& s){
-    string name;
-
-    bool first = true;
-    for (std::istringstream s_(s); s_ >> s;){
-        s[0] = (char) toupper(s[0]);
-
-        for (int i = 1; i < s.size(); i++){
-            s[i] = (char) tolower(s[i]);
-        }
-
-        if (!first) name += ' ';
-
-        name += s;
-        first = false;
-    }
-
-    s = name;
-}
 
 /**
  * @brief Construct a new Helpy:: Helpy object
@@ -536,7 +506,7 @@ void Helpy::displayBusiest(string& s){
 
     int i = 1;
     for(auto& p: busiest){
-        properName(p.first);
+        Utils::properName(p.first);
         table << i++ << p.first << p.second << fort::endr;
     }
 
@@ -655,20 +625,21 @@ void Helpy::determineAffectedStations(){
     graph.getFullPicture();
     std::vector<std::pair<std::pair<double,double>, int>> beforeAndAfter;
     for(int i = 1; i <= graph.countVertices(); i++){
-        beforeAndAfter.push_back({{graph.getIncomingTrains(i),0},i});
+        beforeAndAfter.push_back({{getIncomingTrains(i),0},i});
     }
     std::list<std::pair<int,int>> edges;
     //get edges to remove
     *original = graph;
     graph = graph.subGraph(edges);
     for(int i = 1; i <= graph.countVertices(); i++){
-        beforeAndAfter[i].first.second = graph.getIncomingTrains(i);
+        beforeAndAfter[i].first.second = getIncomingTrains(i);
     }
     std::sort(beforeAndAfter.begin(), beforeAndAfter.end(),[](auto &left, auto &right) {
         return std::abs(left.first.first - left.first.second) > std::abs(right.first.first - right.first.second);
     });
     beforeAndAfter.resize(k);
 
+    // create the table
     fort::char_table table;
 
     table.set_border_style(FT_NICE_STYLE);
@@ -692,6 +663,4 @@ void Helpy::determineAffectedStations(){
     }
 
     std::cout << table.to_string();
-
-    return;
 }
