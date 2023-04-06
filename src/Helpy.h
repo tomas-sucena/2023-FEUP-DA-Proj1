@@ -48,6 +48,7 @@ private:
     void displayIncomingTrains(int index);
 
     // commands
+    void displayAllStations();
     void displayOperatingMode();
     void displayBusiest(string& s);
     void displayBusiestPairs();
@@ -56,7 +57,6 @@ private:
     void calculateMaximumTrains();
     void determineBusiestPairs();
     void determineAffectedStations();
-    void displayAllStations();
 
 public:
     void terminal();

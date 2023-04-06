@@ -17,11 +17,12 @@
 // line breaks
 #define BREAK   std::endl << YELLOW << "- - - - - - - - - - - - - - - - - - - - -" << RESET << std::endl << std::endl
 
-std::map<string, int> Helpy::command = {{"display", 2}, {"print", 1}, {"show", 1}, {"calculate", 2},
+std::map<string, int> Helpy::command = {{"display", 2}, {"print", 2}, {"show", 2}, {"calculate", 2},
                                         {"determine", 2}, {"change", 3}, {"switch", 3}, {"toggle", 3}};
 
-std::map<string, int> Helpy::target = {{"station", 6}, {"shortest", 8}, {"maximum", 10}, {"most", 12},
-                                       {"budget", 14}, {"affected", 17}, {"operating", 19}, {"busiest", 21}};
+std::map<string, int> Helpy::target = {{"all", 4}, {"station", 6}, {"shortest", 8}, {"maximum", 10},
+                                       {"most", 12}, {"budget", 14}, {"affected", 17}, {"operating", 19},
+                                       {"busiest", 21}};
 
 std::map<string, int> Helpy::what = {{"information", 24}, {"info", 24}, {"route", 27},
                                      {"routes", 27}, {"train", 27}, {"trains", 27}, {"pair", 27}, {"pairs", 27} ,{"station", 29},
@@ -262,30 +263,24 @@ b2: std::cout << BREAK;
     std::istringstream s_;
 
     std::cin >> s1; Utils::lowercase(s1);
+    std::cout << BREAK;
 
     if (s1 == "display"){
-        std::cout << BREAK;
+        std::cout << "* All" << std::endl;
         std::cout << "* Busiest" << std::endl;
         std::cout << "* Operating" << std::endl;
-        std::cout << std::endl;
     }
     else if (s1 == "calculate"){
-        std::cout << BREAK;
         std::cout << "* Maximum" << std::endl;
         std::cout << "* Most" << std::endl;
-        std::cout << std::endl;
     }
     else if (s1 == "determine"){
-        std::cout << BREAK;
         std::cout << "* Affected" << std::endl;
         std::cout << "* Busiest" << std::endl;
-        std::cout << std::endl;
     }
     else if (s1 == "change"){
-        std::cout << BREAK;
         std::cout << "* Operating" << std::endl;
         std::cout << "* Busiest" << std::endl;
-        std::cout << std::endl;
     }
     else if (s1 == "quit" || s1 == "die"){
         goto e2;
@@ -295,30 +290,28 @@ b2: std::cout << BREAK;
         goto b2;
     }
 
-    std::cin >> s2; Utils::lowercase(s2);
+    std::cout << std::endl;
 
-    if (s2 == "maximum" || s2 == "most"){
-        std::cout << BREAK;
+    std::cin >> s2; Utils::lowercase(s2);
+    std::cout << BREAK;
+
+    if (s2 == "all"){
+        std::cout << "* Stations" << std::endl;
+    }
+    else if (s2 == "maximum" || s2 == "most"){
         std::cout << "* Trains" << std::endl;
-        std::cout << std::endl;
     }
     else if (s2 == "affected"){
-        std::cout << BREAK;
         std::cout << "* Stations" << std::endl;
-        std::cout << std::endl;
     }
     else if (s2 == "busiest"){
-        std::cout << BREAK;
         std::cout << "* Stations" << std::endl;
         std::cout << "* Districts" << std::endl;
         std::cout << "* Municipalities" << std::endl;
         std::cout << "* Pairs" << std::endl;
-        std::cout << std::endl;
     }
     else if (s2 == "operating"){
-        std::cout << BREAK;
         std::cout << "* Mode" << std::endl;
-        std::cout << std::endl;
     }
     else if (s2 == "quit" || s2 == "die"){
         goto e2;
@@ -328,6 +321,7 @@ b2: std::cout << BREAK;
         goto b2;
     }
 
+    std::cout << std::endl;
     std::cin >> s3; Utils::lowercase(s3);
 
     if (s3 == "quit" || s3 == "die"){
@@ -339,7 +333,7 @@ b2: std::cout << BREAK;
     }
 
 t2: std::cout << BREAK;
-    std::cout << "Anything else? (Yes/No)" << std::endl;
+    std::cout << "Anything else? (Yes/No)" << std::endl << std::endl;
 
     s1.clear(); getline(std::cin >> std::ws, s1);
     Utils::lowercase(s1);
@@ -351,8 +345,8 @@ t2: std::cout << BREAK;
             goto b2;
     }
 
-e2: std::cout << BREAK;
-    std::cout << "See you next time!" << std::endl << std::endl;
+    std::cout << BREAK;
+e2: std::cout << "See you next time!" << std::endl << std::endl;
 }
 
 /**
@@ -365,6 +359,10 @@ e2: std::cout << BREAK;
  */
 bool Helpy::process_command(string& s1, string& s2, string& s3){
     switch (command[s1] + target[s2] + what[s3]){
+        case (35) : {
+            displayAllStations();
+            break;
+        }
         case(39) : {
             calculateMaximumTrains();
             break;
@@ -407,6 +405,36 @@ void Helpy::displayIncomingTrains(int index){
     double flow = 0;
     for (const Edge* e : graph[index].inEdges())
         flow += e->getFlow();
+}
+
+/**
+ * @brief displays all the stations that are part of the railway network
+ */
+void Helpy::displayAllStations(){
+    fort::char_table table;
+
+    table.set_border_style(FT_NICE_STYLE);
+    table.row(0).set_cell_content_text_style(fort::text_style::bold);
+    table.row(0).set_cell_content_fg_color(fort::color::yellow);
+    table << fort::header;
+
+    std::list<string> columnNames = {"N", "Name", "District", "Municipality", "Line"};
+
+    auto it = columnNames.begin();
+    for (int i = 0; it != columnNames.end(); ++i){
+        table << *it++;
+        table.column(i).set_cell_text_align(fort::text_align::center);
+    }
+
+    table << fort::endr;
+
+    for(int i = 1; i < graph.getVertices().size(); i++){
+        table << i << graph[i].getName() << graph[i].getDistrict() << graph[i].getMunicipality() << graph[i].getLine()
+              << fort::endr;
+    }
+
+    std::cout << BREAK;
+    std::cout << table.to_string();
 }
 
 /**
@@ -526,9 +554,9 @@ void Helpy::calculateMaximumTrains(){
             case (2) : {
                 int station = stationIDs[readStation()];
 
-                std::cout << BREAK;
+                /*std::cout << BREAK;
                 std::cout << "The maximum number of trains that can simultaneously arrive at " << graph[station].getName()
-                          << " is " << BOLD << YELLOW << graph.getMaximumTrains(station) << RESET << '.' << std::endl;
+                          << " is " << BOLD << YELLOW << graph.getMaximumTrains(station) << RESET << '.' << std::endl;*/
 
                 return;
             }
@@ -574,8 +602,8 @@ void Helpy::determineBusiestPairs(){
     }
 
     std::cout << table.to_string();
-
 }
+
 /**
  * @brief determines the top-k most affected stations per considered segment removed from the graph
 */
@@ -588,30 +616,4 @@ void Helpy::determineAffectedStations(){
 
     //a função mostAffected já faz isso tudo...
     return;
-}
-
-void Helpy::displayAllStations(){
-    fort::char_table table;
-
-    table.set_border_style(FT_NICE_STYLE);
-    table.row(0).set_cell_content_text_style(fort::text_style::bold);
-    table.row(0).set_cell_content_fg_color(fort::color::yellow);
-    table << fort::header;
-
-    std::list<string> columnNames = {"N", "Name", "District", "Municipality", "Line"};
-
-    auto it = columnNames.begin();
-    for (int i = 0; it != columnNames.end(); ++i){
-        table << *it++;
-        table.column(i).set_cell_text_align(fort::text_align::center);
-    }
-
-    table << fort::endr;
-
-    int j = 1;
-    for(int i = 1; i < graph.getVertices().size(); i++){
-        table << j++ << graph[i].getName() << graph[i].getDistrict() << graph[i].getMunicipality() << graph[i].getLine() << fort::endr;
-    }
-
-    std::cout << table.to_string();
 }
