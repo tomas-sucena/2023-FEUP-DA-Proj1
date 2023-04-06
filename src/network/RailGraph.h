@@ -38,7 +38,7 @@ public:
     std::list<std::pair<int, int>> getBusiestStationPairs(double& maxFlow);
     RailGraph subGraph(const list<std::pair<int, int>>& edgesList);
     double reducedConnectivity(int start, int end, RailGraph sub);
-    std::vector<std::pair<int,int>> mostAffected(RailGraph sub, int k);
+    std::vector<std::pair<int,int>> mostAffected(int k);
 
     std::list<std::pair<string, double>> getBusiestStations(int k);
     std::list<std::pair<string, double>> getBusiestDistricts(int k);
