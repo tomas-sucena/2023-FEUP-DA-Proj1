@@ -10,11 +10,11 @@ RailGraph::RailGraph(int n) : UGraph(n), profitMode(false), fullPicture(false) {
  * @param v Station that will be added
  */
 void RailGraph::addVertex(Vertex* v){
-    UGraph::addVertex(v);
-    if (v == nullptr) return;
-
     auto s = (Station*) v;
-    stationNames.emplace_back(s->getName());
+    if (s == nullptr || !stationNames.insert(s->getName()).second)
+        return;
+
+    UGraph::addVertex(v);
 }
 
 /**
@@ -153,20 +153,24 @@ std::list<std::pair<string, double>> RailGraph::getBusiestStations(int k){
     k = (k > countVertices()) ? countVertices() : k;
 
     // compute the total flow of each station
-    uMap<int, double> stationsFlow;
-    for (const Edge* e : edges)
-        stationsFlow[e->getDest()] += e->getFlow();
+    std::vector<std::pair<int, double>> stationsFlow(countVertices());
+    for (const Edge* e : edges){
+        auto& p = stationsFlow[e->getDest()];
+
+        p.first = e->getDest();
+        p.second += e->getFlow();
+    }
 
     // sort the stations by descending order of flow
-    std::vector<std::pair<int, double>> temp(stationsFlow.begin(), stationsFlow.end());
-
-    std::sort(temp.begin(), temp.end(), [](auto &left, auto &right) {
+    std::sort(stationsFlow.begin(), stationsFlow.end(), [](auto &left, auto &right) {
         return left.second > right.second;
     });
 
     std::list<std::pair<string, double>> busiestStations;
-    for (int i = 0; i < k; ++i)
-        busiestStations.emplace_back(stationNames[temp[i].first], temp[i].second);
+    for (int i = 0; i < k; ++i){
+        auto& p = stationsFlow[i];
+        busiestStations.emplace_back((*this)[p.first].getName(), p.second);
+    }
 
     return busiestStations;
 }
@@ -185,9 +189,8 @@ std::list<std::pair<string, double>> RailGraph::getBusiestDistricts(int k){
 
     for(auto& p: districtRailways){
         double flow = 0;
-        for (const Edge* e : p.second){
+        for (const Edge* e : p.second)
             flow += e->getFlow();
-        }
 
         districtsFlow.emplace_back(p.first, flow);
     }
@@ -232,9 +235,8 @@ std::list<std::pair<string, double>> RailGraph::getBusiestMunicipalities(int k){
     });
 
     std::list<std::pair<string, double>> busiestMunicipalities;
-    for(int i = 0; i < k; ++i){
+    for(int i = 0; i < k; ++i)
         busiestMunicipalities.emplace_back(municipalitiesFlow[i].first, municipalitiesFlow[i].second);
-    }
 
     return busiestMunicipalities;
 }

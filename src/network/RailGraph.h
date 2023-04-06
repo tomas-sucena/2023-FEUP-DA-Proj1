@@ -14,8 +14,8 @@ private:
     bool profitMode, fullPicture;
 
     // for searching
-    std::vector<std::string> stationNames;
     uSet<int> networkSources, networkSinks;
+    uSet<std::string> stationNames;
     uMap<std::string, std::list<Railway*>> districtRailways, municipalityRailways;
 
 /* CONSTRUCTOR */

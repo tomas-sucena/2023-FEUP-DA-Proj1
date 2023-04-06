@@ -431,7 +431,7 @@ void Helpy::displayAllStations(){
 
     table << fort::endr;
 
-    for(int i = 1; i < graph.getVertices().size(); i++){
+    for(int i = 1; i <= graph.countVertices(); i++){
         table << i << graph[i].getName() << graph[i].getDistrict() << graph[i].getMunicipality() << graph[i].getLine()
               << fort::endr;
     }
