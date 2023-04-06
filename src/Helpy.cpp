@@ -371,6 +371,10 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
             calculateMaximumTrains();
             break;
         }
+        case(48) : {
+            determineAffectedStations();
+            break;
+        }
         case(50) : {
             determineBusiestPairs();
             break;
@@ -563,4 +567,14 @@ void Helpy::determineBusiestPairs(){
 
     std::cout << table.to_string();
 
+}
+/**
+ * @brief determines the top-k most affected stations per considered segment removed from the graph
+*/
+void Helpy::determineAffectedStations(){
+    //Railgraph sub = graph.reducedConnectivity();
+    //sub.getFullPicture();
+    //Iterar pelas stations ate encontrar as mais afetadas
+    //Repetir este processo para cada edge a retirar (diria eu)
+    return;
 }

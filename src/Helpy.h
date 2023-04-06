@@ -52,6 +52,7 @@ private:
     void changeOperatingMode();
     void calculateMaximumTrains();
     void determineBusiestPairs();
+    void determineAffectedStations();
 
 public:
     void terminal();
