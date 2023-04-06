@@ -17,14 +17,14 @@
 // line breaks
 #define BREAK   std::endl << YELLOW << "- - - - - - - - - - - - - - - - - - - - -" << RESET << std::endl << std::endl
 
-std::map<string, int> Helpy::command = {{"display", 1}, {"print", 1}, {"show", 1}, {"calculate", 2},
+std::map<string, int> Helpy::command = {{"display", 2}, {"print", 1}, {"show", 1}, {"calculate", 2},
                                         {"determine", 2}, {"change", 3}, {"switch", 3}, {"toggle", 3}};
 
 std::map<string, int> Helpy::target = {{"station", 6}, {"shortest", 8}, {"maximum", 10}, {"most", 12},
                                        {"budget", 14}, {"affected", 17}, {"operating", 19}, {"busiest", 21}};
 
 std::map<string, int> Helpy::what = {{"information", 24}, {"info", 24}, {"route", 27},
-                                     {"routes", 27}, {"train", 27}, {"trains", 27},{"station", 29},
+                                     {"routes", 27}, {"train", 27}, {"trains", 27}, {"pair", 27}, {"pairs", 27} ,{"station", 29},
                                      {"stations", 29}, {"district", 29}, {"districts", 29}, {"municipality", 29},
                                      {"municipalities", 29}, {"need", 31}, {"mode", 33}};
 
@@ -278,6 +278,7 @@ b2: std::cout << BREAK;
     else if (s1 == "determine"){
         std::cout << BREAK;
         std::cout << "* Affected" << std::endl;
+        std::cout << "* Busiest" << std::endl;
         std::cout << std::endl;
     }
     else if (s1 == "change"){
@@ -301,13 +302,6 @@ b2: std::cout << BREAK;
         std::cout << "* Trains" << std::endl;
         std::cout << std::endl;
     }
-    else if (s2 == "busiest"){
-        std::cout << BREAK;
-        std::cout << "* Districts" << std::endl;
-        std::cout << "* Municipalities" << std::endl;
-        std::cout << "* Stations" << std::endl;
-        std::cout << std::endl;
-    }
     else if (s2 == "affected"){
         std::cout << BREAK;
         std::cout << "* Stations" << std::endl;
@@ -318,6 +312,7 @@ b2: std::cout << BREAK;
         std::cout << "* Stations" << std::endl;
         std::cout << "* Districts" << std::endl;
         std::cout << "* Municipalities" << std::endl;
+        std::cout << "* Pairs" << std::endl;
         std::cout << std::endl;
     }
     else if (s2 == "operating"){
@@ -374,15 +369,15 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
             calculateMaximumTrains();
             break;
         }
-        case(41) : {
-            determineMostTrains();
-            break;
-        }
         case(48) : {
             determineAffectedStations();
             break;
         }
-        case(51) : {
+        case(50) : {
+            determineBusiestPairs();
+            break;
+        }
+        case(52) : {
             displayBusiest(s3);
             break;
         }
@@ -551,7 +546,72 @@ void Helpy::calculateMaximumTrains(){
  * the existing network capacity
  * @complexity O(n * |E|)
  */
-void Helpy::determineMostTrains(){
-    //int airport = readStation();
+void Helpy::determineBusiestPairs(){
     std::cout << BREAK;
+    double flow = 0;
+    std::list<std::pair<int,int>> busiestPairs = graph.getBusiestStationPairs(flow);
+
+    fort::char_table table;
+
+    table.set_border_style(FT_NICE_STYLE);
+    table.row(0).set_cell_content_text_style(fort::text_style::bold);
+    table.row(0).set_cell_content_fg_color(fort::color::yellow);
+    table << fort::header;
+
+    std::list<string> columnNames = {"N", "StationA","StationB", "Trains"};
+
+    auto it = columnNames.begin();
+    for (int i = 0; it != columnNames.end(); ++i){
+        table << *it++;
+        table.column(i).set_cell_text_align(fort::text_align::center);
+    }
+
+    table << fort::endr;
+
+    int i = 1;
+    for(auto& p: busiestPairs){
+        table << i++ << graph[p.first].getName() << graph[p.second].getName() << flow << fort::endr;
+    }
+
+    std::cout << table.to_string();
+
+}
+/**
+ * @brief determines the top-k most affected stations per considered segment removed from the graph
+*/
+void Helpy::determineAffectedStations(){
+    //Railgraph sub = graph.reducedConnectivity();
+    //sub.getFullPicture();
+    //Iterar pelas stations ate encontrar as mais afetadas
+    //Repetir este processo para cada edge a retirar (diria eu)
+
+
+    //a função mostAffected já faz isso tudo...
+    return;
+}
+
+void Helpy::displayAllStations(){
+    fort::char_table table;
+
+    table.set_border_style(FT_NICE_STYLE);
+    table.row(0).set_cell_content_text_style(fort::text_style::bold);
+    table.row(0).set_cell_content_fg_color(fort::color::yellow);
+    table << fort::header;
+
+    std::list<string> columnNames = {"N", "Name", "District", "Municipality", "Line"};
+
+    auto it = columnNames.begin();
+    for (int i = 0; it != columnNames.end(); ++i){
+        table << *it++;
+        table.column(i).set_cell_text_align(fort::text_align::center);
+    }
+
+    table << fort::endr;
+
+    int j = 1;
+    for(int i = 1; i < graph.getVertices().size(); i++){
+        table << j++ << graph[i].getName() << graph[i].getDistrict() << graph[i].getMunicipality() << graph[i].getLine() << fort::endr;
+    }
+
+    std::cout << table.to_string();
 }
