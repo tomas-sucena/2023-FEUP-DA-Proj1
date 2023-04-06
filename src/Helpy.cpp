@@ -155,7 +155,7 @@ double Helpy::readNumber(const string &instruction){
 
 /**
  * @brief reads the name of a Station from the console
- * @complexity O(n)
+ * @complexity O(n^2)
  * @return the name of the Station
  */
 string Helpy::readStation(){
