@@ -45,6 +45,10 @@ private:
     void guided_mode();
     bool process_command(string& s1, string& s2, string& s3);
 
+    void displayIncomingTrains(int index);
+
+    // commands
+    void displayAllStations();
     void displayOperatingMode();
     void displayBusiest(string& s);
     void displayBusiestPairs();

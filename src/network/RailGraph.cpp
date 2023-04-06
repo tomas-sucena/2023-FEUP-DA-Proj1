@@ -57,22 +57,6 @@ Station& RailGraph::operator[](int index){
 }
 
 /**
- * @brief calculates the maximum number of trains that can simultaneously arrive at a given Station, taking into account
- * the entire railway network
- * @param index index of the Station
- * @return maximum number of trains that can simultaneously arrive at the Station
- */
-double RailGraph::getMaximumTrains(int index){
-    getFullPicture();
-    double flow = 0;
-
-    for (const Edge* e : (*this)[index].inEdges())
-        flow += e->getFlow();
-
-    return flow;
-}
-
-/**
  * @brief computes the maximum amount of trains that can circulate (i.e. max flow), considering the entire railway network
  * @complexity O(|V| * |E|^2)
  */
