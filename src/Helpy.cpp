@@ -541,6 +541,31 @@ void Helpy::calculateMaximumTrains(){
  * @complexity O(n * |E|)
  */
 void Helpy::determineMostTrains(){
-    //int airport = readStation();
-    std::cout << BREAK;
+    double flow = 0;
+    std::list<std::pair<int,int>> busiestPairs = graph.getBusiestStationPairs(flow);
+
+    fort::char_table table;
+
+    table.set_border_style(FT_NICE_STYLE);
+    table.row(0).set_cell_content_text_style(fort::text_style::bold);
+    table.row(0).set_cell_content_fg_color(fort::color::yellow);
+    table << fort::header;
+
+    std::list<string> columnNames = {"N", "StationA","StationB", "Trains"};
+
+    auto it = columnNames.begin();
+    for (int i = 0; it != columnNames.end(); ++i){
+        table << *it++;
+        table.column(i).set_cell_text_align(fort::text_align::center);
+    }
+
+    table << fort::endr;
+
+    int i = 1;
+    for(auto& p: busiestPairs){
+        table << i++ << graph[p.first].getName() << graph[p.second].getName() << flow << fort::endr;
+    }
+
+    std::cout << table.to_string();
+
 }
