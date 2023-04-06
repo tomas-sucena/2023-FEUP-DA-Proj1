@@ -275,12 +275,8 @@ b2: std::cout << BREAK;
         std::cout << "* Most" << std::endl;
         std::cout << std::endl;
     }
-    else if (s1 == "quit"){
-        goto e2;
-    }
     else if (s1 == "determine"){
         std::cout << BREAK;
-        std::cout << "* Budget" << std::endl;
         std::cout << "* Affected" << std::endl;
         std::cout << std::endl;
     }
@@ -290,7 +286,10 @@ b2: std::cout << BREAK;
         std::cout << "* Busiest" << std::endl;
         std::cout << std::endl;
     }
-    else { // erro
+    else if (s1 == "quit" || s1 == "die"){
+        goto e2;
+    }
+    else { // error
         process_command(s1, s2, s3);
         goto b2;
     }
@@ -326,21 +325,20 @@ b2: std::cout << BREAK;
         std::cout << "* Mode" << std::endl;
         std::cout << std::endl;
     }
-    else if (s2 == "quit"){
+    else if (s2 == "quit" || s2 == "die"){
         goto e2;
     }
-    else{ // erro
+    else{ // error
         process_command(s1, s2, s3);
         goto b2;
     }
 
     std::cin >> s3; Utils::lowercase(s3);
 
-    if (s3 == "quit"){
+    if (s3 == "quit" || s3 == "die"){
         goto e2;
     }
 
-    // processar o comando
     if (!process_command(s1, s2, s3)){
         goto b2;
     }
@@ -354,9 +352,8 @@ t2: std::cout << BREAK;
     s_.clear(); s_.str(s1);
 
     while (s_ >> s1){
-        if (s1 == "yes" || s1 == "y"){
+        if (s1 == "yes" || s1 == "y")
             goto b2;
-        }
     }
 
 e2: std::cout << BREAK;
@@ -381,6 +378,10 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
             determineMostTrains();
             break;
         }
+        case(48) : {
+            determineAffectedStations();
+            break;
+        }
         case(51) : {
             displayBusiest(s3);
             break;
@@ -403,20 +404,28 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
 
     return true;
 }
+
+void Helpy::displayIncomingTrains(int index){
+    // Artur
+    graph.getFullPicture();
+
+    double flow = 0;
+    for (const Edge* e : graph[index].inEdges())
+        flow += e->getFlow();
+}
+
 /**
- * @brief changes the operating mode of the RailGraph
- * @complexity O(1)
+ * @brief displays the "company's" operating mode
+ * @complexity O(n^2)
 */
-void Helpy::changeOperatingMode(){
-    std::ostringstream instr;
-    instr << "Please select the " << BOLD << "operating mode" << RESET << " you would like:\n\n"
-          << "* Standard\n"
-          << "* Profit";
+void Helpy::displayOperatingMode(){
+    string mode = (graph.profitMode) ? "Profit" : "Standard";
+    std::cout << "The current " << BOLD << "operating mode" << RESET << " is " << YELLOW << mode << RESET << "." << std::endl;
 
-    uSet<string> modes = {"standard", "profit"};
-    string choice = readInput(instr.str(), modes);
+    string instruction = "Would you like to change it?";
+    uSet<string> options = {"yes", "no"};
 
-    graph.profitMode = (choice == "profit");
+    if (readInput(instruction, options) == "yes") changeOperatingMode();
 }
 
 /**
@@ -478,17 +487,19 @@ void Helpy::displayBusiest(string& s){
 }
 
 /**
- * @brief displays the "company's" operating mode
- * @complexity O(n^2)
+ * @brief changes the operating mode of the RailGraph
+ * @complexity O(1)
 */
-void Helpy::displayOperatingMode(){
-    string mode = (graph.profitMode) ? "Profit" : "Standard";
-    std::cout << "The current " << BOLD << "operating mode" << RESET << " is " << YELLOW << mode << RESET << "." << std::endl;
+void Helpy::changeOperatingMode(){
+    std::ostringstream instr;
+    instr << "Please select the " << BOLD << "operating mode" << RESET << " you would like:\n\n"
+          << "* Standard\n"
+          << "* Profit";
 
-    string instruction = "Would you like to change it?";
-    uSet<string> options = {"yes", "no"};
+    uSet<string> modes = {"standard", "profit"};
+    string choice = readInput(instr.str(), modes);
 
-    if (readInput(instruction, options) == "yes") changeOperatingMode();
+    graph.profitMode = (choice == "profit");
 }
 
 /**
