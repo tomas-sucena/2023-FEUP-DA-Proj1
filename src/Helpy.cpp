@@ -10,8 +10,9 @@
 // output colors
 #define RESET   "\033[0;m"
 #define RED     "\033[1;31m"
-#define YELLOW  "\033[33m"
 #define GREEN   "\033[32m"
+#define BLUE    "\033[34m"
+#define YELLOW  "\033[33m"
 #define BOLD    "\033[1m"
 
 // line breaks
@@ -489,8 +490,9 @@ void Helpy::displayBusiest(string& s){
     table.row(0).set_cell_content_fg_color(fort::color::yellow);
     table << fort::header;
 
-    properName(s);
-    std::list<string> columnNames = {"N", s, "Trains"};
+    uMap<string, string> singular = {{"stations", "Station"}, {"districts", "District"},
+                                     {"municipalities", "Municipality"}};
+    std::list<string> columnNames = {"N", singular[s], "Trains"};
 
     auto it = columnNames.begin();
     for (int i = 0; it != columnNames.end(); ++i){
@@ -506,6 +508,7 @@ void Helpy::displayBusiest(string& s){
         table << i++ << p.first << p.second << fort::endr;
     }
 
+    std::cout << "These are the results of my search:" << std::endl << std::endl;
     std::cout << table.to_string();
 }
 
@@ -572,10 +575,12 @@ void Helpy::calculateMaximumTrains(){
 /**
  * @brief computes the pairs of stations (if more than one) that require the most trains when taking full advantage of
  * the existing network capacity
- * @complexity O(n * |E|)
+ * @complexity O(|V|^3 * |E|^2)
  */
 void Helpy::determineBusiestPairs(){
     std::cout << BREAK;
+    std::cout << BLUE << "Loading..." << RESET << std::endl << std::endl;
+
     double flow = 0;
     std::list<std::pair<int,int>> busiestPairs = graph.getBusiestStationPairs(flow);
 
@@ -601,6 +606,7 @@ void Helpy::determineBusiestPairs(){
         table << i++ << graph[p.first].getName() << graph[p.second].getName() << flow << fort::endr;
     }
 
+    std::cout << "These are the busiest pairs of stations:" << std::endl << std::endl;
     std::cout << table.to_string();
 }
 
