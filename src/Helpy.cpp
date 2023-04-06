@@ -576,5 +576,34 @@ void Helpy::determineAffectedStations(){
     //sub.getFullPicture();
     //Iterar pelas stations ate encontrar as mais afetadas
     //Repetir este processo para cada edge a retirar (diria eu)
+
+
+    //a função mostAffected já faz isso tudo...
     return;
+}
+
+void Helpy::displayAllStations(){
+    fort::char_table table;
+
+    table.set_border_style(FT_NICE_STYLE);
+    table.row(0).set_cell_content_text_style(fort::text_style::bold);
+    table.row(0).set_cell_content_fg_color(fort::color::yellow);
+    table << fort::header;
+
+    std::list<string> columnNames = {"N", "Name", "District", "Municipality", "Line"};
+
+    auto it = columnNames.begin();
+    for (int i = 0; it != columnNames.end(); ++i){
+        table << *it++;
+        table.column(i).set_cell_text_align(fort::text_align::center);
+    }
+
+    table << fort::endr;
+
+    int j = 1;
+    for(int i = 1; i < graph.getVertices().size(); i++){
+        table << j++ << graph[i].getName() << graph[i].getDistrict() << graph[i].getMunicipality() << graph[i].getLine() << fort::endr;
+    }
+
+    std::cout << table.to_string();
 }
