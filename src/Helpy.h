@@ -45,7 +45,7 @@ private:
     void guided_mode();
     bool process_command(string& s1, string& s2, string& s3);
 
-    void displayIncomingTrains(int index);
+    double getIncomingTrains(int index, bool display = false);
 
     // commands
     void displayAllStations();
@@ -55,7 +55,6 @@ private:
 
     void changeOperatingMode();
     void calculateMaximumTrains();
-    void determineBusiestPairs();
     void determineAffectedStations();
 
 public:

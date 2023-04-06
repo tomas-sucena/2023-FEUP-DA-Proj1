@@ -18,17 +18,17 @@
 // line breaks
 #define BREAK   std::endl << YELLOW << "- - - - - - - - - - - - - - - - - - - - -" << RESET << std::endl << std::endl
 
-std::map<string, int> Helpy::command = {{"display", 2}, {"print", 2}, {"show", 2}, {"calculate", 2},
+std::map<string, int> Helpy::command = {{"display", 1}, {"print", 1}, {"show", 1}, {"calculate", 2},
                                         {"determine", 2}, {"change", 3}, {"switch", 3}, {"toggle", 3}};
 
 std::map<string, int> Helpy::target = {{"all", 4}, {"station", 6}, {"shortest", 8}, {"maximum", 10},
                                        {"most", 12}, {"budget", 14}, {"affected", 17}, {"operating", 19},
                                        {"busiest", 21}};
 
-std::map<string, int> Helpy::what = {{"information", 24}, {"info", 24}, {"route", 27},
-                                     {"routes", 27}, {"train", 27}, {"trains", 27}, {"pair", 27}, {"pairs", 27} ,{"station", 29},
-                                     {"stations", 29}, {"district", 29}, {"districts", 29}, {"municipality", 29},
-                                     {"municipalities", 29}, {"need", 31}, {"mode", 33}};
+std::map<string, int> Helpy::what = {{"information", 24}, {"info", 24}, {"route", 27},{"routes", 27},
+                                     {"train", 27}, {"trains", 27}, {"pair", 27}, {"pairs", 27},
+                                     {"station", 29},{"stations", 29}, {"district", 29},{"districts", 29},
+                                     {"municipality", 29},{"municipalities", 29}, {"need", 31}, {"mode", 33}};
 
 /**
  * @brief takes a user inputted string and modifies it so that it becomes well-written
@@ -360,27 +360,27 @@ e2: std::cout << "See you next time!" << std::endl << std::endl;
  */
 bool Helpy::process_command(string& s1, string& s2, string& s3){
     switch (command[s1] + target[s2] + what[s3]){
-        case (35) : {
+        case (34) : {
             displayAllStations();
             break;
         }
-        case(39) : {
+        case (39) : {
             calculateMaximumTrains();
             break;
         }
-        case(48) : {
+        case (48) : {
             determineAffectedStations();
             break;
         }
-        case(50) : {
-            determineBusiestPairs();
+        case (49) : {
+            displayBusiestPairs();
             break;
         }
-        case(52) : {
+        case (51) : {
             displayBusiest(s3);
             break;
         }
-        case (53) : {
+        case (52) : {
             displayOperatingMode();
             break;
         }
@@ -399,13 +399,45 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
     return true;
 }
 
-void Helpy::displayIncomingTrains(int index){
-    // Artur
+double Helpy::getIncomingTrains(int index, bool display){
+    double flow = 0;
     graph.getFullPicture();
 
-    double flow = 0;
-    for (const Edge* e : graph[index].inEdges())
+    // create the table
+    fort::char_table table;
+
+    table.set_border_style(FT_NICE_STYLE);
+    table.row(0).set_cell_content_text_style(fort::text_style::bold);
+    table.row(0).set_cell_content_fg_color(fort::color::yellow);
+    table << fort::header;
+
+    std::list<string> columnNames = {"Station", "Service", "Trains"};
+
+    auto it = columnNames.begin();
+    for (int i = 0; it != columnNames.end(); ++i){
+        table << *it++;
+        table.column(i).set_cell_text_align(fort::text_align::center);
+    }
+
+    table << fort::endr;
+
+    // compute the flow
+    for (const Edge* e : graph[index].inEdges()){
         flow += e->getFlow();
+
+        auto s = dynamic_cast<const Railway*>(e);
+        if (s == nullptr) continue;
+
+        table << graph[s->getSrc()].getName() << s->getService() << s->getFlow() << fort::endr;
+    }
+
+    // print the table
+    if (display){
+        std::cout << BREAK;
+        std::cout << table.to_string();
+    }
+
+    return flow;
 }
 
 /**
@@ -513,6 +545,43 @@ void Helpy::displayBusiest(string& s){
 }
 
 /**
+ * @brief computes the pairs of stations (if more than one) that require the most trains when taking full advantage of
+ * the existing network capacity
+ * @complexity O(|V|^3 * |E|^2)
+ */
+void Helpy::displayBusiestPairs(){
+    std::cout << BREAK;
+    std::cout << BLUE << "Loading..." << RESET << std::endl << std::endl;
+
+    double flow = 0;
+    std::list<std::pair<int,int>> busiestPairs = graph.getBusiestStationPairs(flow);
+
+    fort::char_table table;
+
+    table.set_border_style(FT_NICE_STYLE);
+    table.row(0).set_cell_content_text_style(fort::text_style::bold);
+    table.row(0).set_cell_content_fg_color(fort::color::yellow);
+    table << fort::header;
+
+    std::list<string> columnNames = {"N", "StationA", "StationB", "Trains"};
+
+    auto it = columnNames.begin();
+    for (int i = 0; it != columnNames.end(); ++i){
+        table << *it++;
+        table.column(i).set_cell_text_align(fort::text_align::center);
+    }
+
+    table << fort::endr;
+
+    int i = 1;
+    for(auto& p: busiestPairs)
+        table << i++ << graph[p.first].getName() << graph[p.second].getName() << flow << fort::endr;
+
+    std::cout << "These are the busiest pairs of stations:" << std::endl << std::endl;
+    std::cout << table.to_string();
+}
+
+/**
  * @brief changes the operating mode of the RailGraph
  * @complexity O(1)
 */
@@ -556,10 +625,11 @@ void Helpy::calculateMaximumTrains(){
             }
             case (2) : {
                 int station = stationIDs[readStation()];
+                double flow = getIncomingTrains(station, true);
 
-                /*std::cout << BREAK;
+                std::cout << BREAK;
                 std::cout << "The maximum number of trains that can simultaneously arrive at " << graph[station].getName()
-                          << " is " << BOLD << YELLOW << graph.getMaximumTrains(station) << RESET << '.' << std::endl;*/
+                          << " is " << BOLD << YELLOW << flow << RESET << '.' << std::endl;
 
                 return;
             }
@@ -570,44 +640,6 @@ void Helpy::calculateMaximumTrains(){
         std::cout << BREAK;
         std::cout << RED << "Invalid number! Please, try again." << RESET << std::endl;
     }
-}
-
-/**
- * @brief computes the pairs of stations (if more than one) that require the most trains when taking full advantage of
- * the existing network capacity
- * @complexity O(|V|^3 * |E|^2)
- */
-void Helpy::determineBusiestPairs(){
-    std::cout << BREAK;
-    std::cout << BLUE << "Loading..." << RESET << std::endl << std::endl;
-
-    double flow = 0;
-    std::list<std::pair<int,int>> busiestPairs = graph.getBusiestStationPairs(flow);
-
-    fort::char_table table;
-
-    table.set_border_style(FT_NICE_STYLE);
-    table.row(0).set_cell_content_text_style(fort::text_style::bold);
-    table.row(0).set_cell_content_fg_color(fort::color::yellow);
-    table << fort::header;
-
-    std::list<string> columnNames = {"N", "StationA","StationB", "Trains"};
-
-    auto it = columnNames.begin();
-    for (int i = 0; it != columnNames.end(); ++i){
-        table << *it++;
-        table.column(i).set_cell_text_align(fort::text_align::center);
-    }
-
-    table << fort::endr;
-
-    int i = 1;
-    for(auto& p: busiestPairs){
-        table << i++ << graph[p.first].getName() << graph[p.second].getName() << flow << fort::endr;
-    }
-
-    std::cout << "These are the busiest pairs of stations:" << std::endl << std::endl;
-    std::cout << table.to_string();
 }
 
 /**
