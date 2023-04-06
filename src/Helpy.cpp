@@ -608,6 +608,54 @@ void Helpy::determineBusiestPairs(){
  * @brief determines the top-k most affected stations per considered segment removed from the graph
 */
 void Helpy::determineAffectedStations(){
+    std::ostringstream instr;
+    instr << "Please enter the " << BOLD << "number" << RESET << " of " << YELLOW << "stations" << RESET
+          << " you would like to display:";
+
+    int k = (int) readNumber(instr.str());
+
+    graph.getFullPicture();
+    std::vector<std::pair<std::pair<double,double>, int>> beforeAndAfter;
+    for(int i = 1; i <= graph.countVertices(); i++){
+        beforeAndAfter.push_back({{graph.getIncomingTrains(i),0},i});
+    }
+    std::list<std::pair<int,int>> edges;
+    //get edges to remove
+    *original = graph;
+    graph = graph.subGraph(edges);
+    for(int i = 1; i <= graph.countVertices(); i++){
+        beforeAndAfter[i].first.second = graph.getIncomingTrains(i);
+    }
+    std::sort(beforeAndAfter.begin(), beforeAndAfter.end(),[](auto &left, auto &right) {
+        return (left.first.first - left.first.second) > (right.first.first - right.first.second);
+    });
+    beforeAndAfter.resize(k);
+    
+    fort::char_table table;
+
+    table.set_border_style(FT_NICE_STYLE);
+    table.row(0).set_cell_content_text_style(fort::text_style::bold);
+    table.row(0).set_cell_content_fg_color(fort::color::yellow);
+    table << fort::header;
+
+    std::list<string> columnNames = {"N", "Station","Before", "After"};
+
+    auto it = columnNames.begin();
+    for (int i = 0; it != columnNames.end(); ++i){
+        table << *it++;
+        table.column(i).set_cell_text_align(fort::text_align::center);
+    }
+
+    table << fort::endr;
+
+    int i = 1;
+    for(auto& p: busiestPairs){
+        table << i++ << graph[p.first].getName() << graph[p.second].getName() << flow << fort::endr;
+    }
+
+    std::cout << table.to_string();
+
+
     //Railgraph sub = graph.reducedConnectivity();
     //sub.getFullPicture();
     //Iterar pelas stations ate encontrar as mais afetadas

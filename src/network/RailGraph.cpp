@@ -93,8 +93,8 @@ std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxFlow
 
     resetAll();
     
-    for (int i = 1; i <= countVertices() - 2; ++i){
-        for (int j = i + 1; j <= countVertices() - 2; ++j){
+    for (int i = 1; i <= countVertices() - 1; ++i){
+        for (int j = i + 1; j <= countVertices(); ++j){
             resetEdges();
 
             double flow = maximumFlow(i, j);
@@ -129,11 +129,11 @@ double RailGraph::reducedConnectivity(int start, int end, RailGraph sub) {
     return sub.edmondsKarp(start, end);
 }
 
-std::vector<std::pair<int, int>> RailGraph::mostAffected(RailGraph sub, int k) {
+std::vector<std::pair<int, int>> RailGraph::mostAffected(int k) {
     std::vector<std::pair<int, int>> out;
-    sub.getFullPicture();
+    getFullPicture();
     for(int i = 1; i < vertices.size(); i++){
-        out.emplace_back(i, sub[i].inDegree());
+        out.emplace_back(i, (*this)[i].inDegree());
     }
     std::sort(out.begin(), out.end(), [](auto &left, auto &right) {
         return left.second < right.second;
