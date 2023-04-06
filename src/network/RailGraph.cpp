@@ -109,6 +109,7 @@ std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxFlow
         }
     }
 
+    reset = true;
     return busiestPairs;
 }
 
