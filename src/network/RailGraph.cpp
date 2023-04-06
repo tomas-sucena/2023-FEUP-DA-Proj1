@@ -93,8 +93,8 @@ std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxFlow
 
     resetAll();
     
-    for (int i = 1; i <= countVertices() - 2; ++i){
-        for (int j = i + 1; j <= countVertices() - 2; ++j){
+    for (int i = 1; i < countVertices(); ++i){
+        for (int j = i + 1; j <= countVertices(); ++j){
             resetEdges();
 
             double flow = maximumFlow(i, j);
@@ -109,6 +109,7 @@ std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxFlow
         }
     }
 
+    reset = true;
     return busiestPairs;
 }
 
