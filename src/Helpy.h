@@ -40,7 +40,7 @@ private:
     void guided_mode();
     bool process_command(string& s1, string& s2, string& s3);
 
-    double getIncomingTrains(int index, bool display = false);
+    double getIncomingTrains(int index, bool display = false, bool original = false);
 
     // commands
     void displayAllStations();

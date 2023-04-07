@@ -154,7 +154,6 @@ string Helpy::readStation(){
 
 void Helpy::readInputFromTable(std::list<std::pair<int,int>>& edges, std::vector<Edge*> ref, int station){
     int size = ref.size();
-    while(true){
     std::cout << std::endl << YELLOW << BREAK << RESET;
     std::cout << "Please type the " << BOLD << "indexes" << RESET << " of the " << YELLOW << "edges" << RESET << " you would like to " << RED << "remove"
         << RESET << ", separated by a comma (ex: 0,1,2,7,...).\n";
@@ -171,10 +170,9 @@ void Helpy::readInputFromTable(std::list<std::pair<int,int>>& edges, std::vector
         if(k > size) return; //preguiça depois faz-se
 
         edges.push_back({station, ref[k]->getDest()});
-        }
     }
-    
 }
+    
 
 
 /**
@@ -276,6 +274,7 @@ b2: std::cout << BREAK;
     else if (s1 == "change"){
         std::cout << "* Operating" << std::endl;
         std::cout << "* Busiest" << std::endl;
+        std::cout << "* Railway" << std::endl;
     }
     else if (s1 == "quit" || s1 == "die"){
         goto e2;
@@ -307,6 +306,9 @@ b2: std::cout << BREAK;
     }
     else if (s2 == "operating"){
         std::cout << "* Mode" << std::endl;
+    }
+    else if (s2 == "railway"){
+        std::cout << "* Network" << std::endl;
     }
     else if (s2 == "quit" || s2 == "die"){
         goto e2;
@@ -397,45 +399,87 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
     return true;
 }
 
-double Helpy::getIncomingTrains(int index, bool display){
-    double flow = 0;
-    graph.getFullPicture();
+double Helpy::getIncomingTrains(int index, bool display, bool ori){
+    if(ori){
+        double flow = 0;
+        (*original).getFullPicture();
 
-    // create the table
-    fort::utf8_table table;
+        // create the table
+        fort::utf8_table table;
 
-    table.set_border_style(FT_NICE_STYLE);
-    table.row(0).set_cell_content_text_style(fort::text_style::bold);
-    table.row(0).set_cell_content_fg_color(fort::color::yellow);
-    table << fort::header;
+        table.set_border_style(FT_NICE_STYLE);
+        table.row(0).set_cell_content_text_style(fort::text_style::bold);
+        table.row(0).set_cell_content_fg_color(fort::color::yellow);
+        table << fort::header;
 
-    std::list<string> columnNames = {"Station", "Service", "Trains"};
+        std::list<string> columnNames = {"Station", "Service", "Trains"};
 
-    auto it = columnNames.begin();
-    for (int i = 0; it != columnNames.end(); ++i){
-        table << *it++;
-        table.column(i).set_cell_text_align(fort::text_align::center);
+        auto it = columnNames.begin();
+        for (int i = 0; it != columnNames.end(); ++i){
+            table << *it++;
+            table.column(i).set_cell_text_align(fort::text_align::center);
+        }
+
+        table << fort::endr;
+
+        // compute the flow
+        for (const Edge* e : (*original)[index].inEdges()){
+            flow += e->getFlow();
+
+            auto s = dynamic_cast<const Railway*>(e);
+            if (s == nullptr) continue;
+
+            table << (*original)[s->getSrc()].getName() << s->getService() << s->getFlow() << fort::endr;
+        }
+
+        // print the table
+        if (display){
+            std::cout << BREAK;
+            std::cout << table.to_string();
+        }
+
+        return flow;
     }
+    else {
+        double flow = 0;
+        graph.getFullPicture();
 
-    table << fort::endr;
+        // create the table
+        fort::utf8_table table;
 
-    // compute the flow
-    for (const Edge* e : graph[index].inEdges()){
-        flow += e->getFlow();
+        table.set_border_style(FT_NICE_STYLE);
+        table.row(0).set_cell_content_text_style(fort::text_style::bold);
+        table.row(0).set_cell_content_fg_color(fort::color::yellow);
+        table << fort::header;
 
-        auto s = dynamic_cast<const Railway*>(e);
-        if (s == nullptr) continue;
+        std::list<string> columnNames = {"Station", "Service", "Trains"};
 
-        table << graph[s->getSrc()].getName() << s->getService() << s->getFlow() << fort::endr;
-    }
+        auto it = columnNames.begin();
+        for (int i = 0; it != columnNames.end(); ++i){
+            table << *it++;
+            table.column(i).set_cell_text_align(fort::text_align::center);
+        }
 
-    // print the table
-    if (display){
-        std::cout << BREAK;
-        std::cout << table.to_string();
-    }
+        table << fort::endr;
 
-    return flow;
+        // compute the flow
+        for (const Edge* e : graph[index].inEdges()){
+            flow += e->getFlow();
+
+            auto s = dynamic_cast<const Railway*>(e);
+            if (s == nullptr) continue;
+
+            table << graph[s->getSrc()].getName() << s->getService() << s->getFlow() << fort::endr;
+        }
+
+        // print the table
+        if (display){
+            std::cout << BREAK;
+            std::cout << table.to_string();
+        }
+
+        return flow;
+        }
 }
 
 /**
@@ -653,12 +697,8 @@ void Helpy::determineAffectedStations(){
     graph.getFullPicture();
     std::vector<std::pair<std::pair<double,double>, int>> beforeAndAfter;
     for(int i = 1; i <= graph.countVertices(); i++){
-        beforeAndAfter.push_back({{getIncomingTrains(i),0},i});
+        beforeAndAfter.push_back({{getIncomingTrains(i, false, true),0},i});
     }
-    std::list<std::pair<int,int>> edges;
-    //get edges to remove
-    *original = graph;
-    graph = graph.subGraph(edges);
     for(int i = 1; i <= graph.countVertices(); i++){
         beforeAndAfter[i].first.second = getIncomingTrains(i);
     }
@@ -720,6 +760,8 @@ std::vector<Edge*> Helpy::printEdges(int station){
         edges.push_back(e);
         table << i++ << graph[station].getName() << graph[e->getDest()].getName() << fort::endr;
     }
+    std::cout << table.to_string();
+    return edges;
 }
 
 
