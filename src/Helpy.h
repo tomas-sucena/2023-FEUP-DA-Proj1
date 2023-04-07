@@ -40,7 +40,7 @@ private:
     void guided_mode();
     bool process_command(string& s1, string& s2, string& s3);
 
-    double getIncomingTrains(int index, bool display = false);
+    double getIncomingTrains(int index, bool display = false, bool original = false);
 
     // commands
     void displayDataDirectory();
@@ -48,11 +48,14 @@ private:
     void displayOperatingMode();
     void displayBusiest(string& s);
     void displayBusiestPairs();
+    std::vector<Edge*> printEdges(int station);
 
     void changeDataDirectory();
     void changeOperatingMode();
     void calculateMaximumTrains();
     void determineAffectedStations();
+    void changeRailwayNetwork();
+    void readInputFromTable(std::list<std::pair<int,int>>& edges, std::vector<Edge*> ref, int station);
 
 public:
     void terminal();

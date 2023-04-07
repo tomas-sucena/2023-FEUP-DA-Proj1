@@ -21,12 +21,12 @@ std::map<string, int> Helpy::command = {{"display", 1}, {"print", 1}, {"show", 1
 
 std::map<string, int> Helpy::target = {{"all", 4}, {"data", 6}, {"shortest", 8}, {"maximum", 10},
                                        {"most", 12}, {"budget", 14}, {"affected", 17}, {"operating", 19},
-                                       {"busiest", 21}};
+                                       {"busiest", 21}, {"railway",23}};
 
 std::map<string, int> Helpy::what = {{"directory", 24},{"train", 27}, {"trains", 27}, {"pair", 27},
                                      {"pairs", 27},{"station", 29},{"stations", 29}, {"district", 29},
                                      {"districts", 29},{"municipality", 29},{"municipalities", 29},
-                                     {"need", 31}, {"mode", 33}};
+                                     {"need", 31}, {"mode", 33}, {"network", 35}}};
 
 /**
  * @brief Construct a new Helpy:: Helpy object
@@ -155,6 +155,28 @@ string Helpy::readStation(){
     return station;
 }
 
+void Helpy::readInputFromTable(std::list<std::pair<int,int>>& edges, std::vector<Edge*> ref, int station){
+    int size = ref.size();
+    std::cout << std::endl << YELLOW << BREAK << RESET;
+    std::cout << "Please type the " << BOLD << "indexes" << RESET << " of the " << YELLOW << "edges" << RESET << " you would like to " << RED << "remove"
+        << RESET << ", separated by a comma (ex: 0,1,2,7,...).\n";
+
+    // countries to USE
+    string line; getline(std::cin, line);
+    line += ",";
+
+    std::istringstream line_(line);
+
+    for (string temp; getline(line_, temp, ',');){
+        int k = std::stoi(temp);
+
+        if(k > size) return; //preguiça depois faz-se
+
+        edges.push_back({station, ref[k]->getDest()});
+    }
+}
+
+
 
 /**
  * @brief allows the user to choose the mode of the UI
@@ -256,6 +278,7 @@ b2: cout << BREAK;
     else if (s1 == "change"){
         cout << "* Data" << endl;
         cout << "* Operating" << endl;
+        cout << "* Railway" << endl;
     }
     else if (s1 == "quit" || s1 == "die"){
         goto e2;
@@ -290,6 +313,9 @@ b2: cout << BREAK;
     }
     else if (s2 == "operating"){
         cout << "* Mode" << endl;
+    }
+    else if (s2 == "railway"){
+        cout << "* Network" << endl;
     }
     else if (s2 == "quit" || s2 == "die"){
         goto e2;
@@ -373,6 +399,10 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
             changeOperatingMode();
             break;
         }
+        case(61) : {
+            changeRailwayNetwork();
+            break;
+        }
         default : {
             cout << BREAK;
             cout << RED << "Invalid command! Please, type another command." << RESET << endl;
@@ -384,43 +414,87 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
     return true;
 }
 
-double Helpy::getIncomingTrains(int index, bool display){
-    double flow = 0;
-    graph.getFullPicture();
+double Helpy::getIncomingTrains(int index, bool display, bool ori){
+    if(ori){
+        double flow = 0;
+        (*original).getFullPicture();
 
-    // create the table
-    fort::utf8_table table;
+        // create the table
+        fort::utf8_table table;
 
-    table.set_border_style(FT_NICE_STYLE);
-    table.row(0).set_cell_content_text_style(fort::text_style::bold);
-    table.row(0).set_cell_content_fg_color(fort::color::yellow);
-    table << fort::header;
+        table.set_border_style(FT_NICE_STYLE);
+        table.row(0).set_cell_content_text_style(fort::text_style::bold);
+        table.row(0).set_cell_content_fg_color(fort::color::yellow);
+        table << fort::header;
 
-    std::list<string> columnNames = {"Station", "Service", "Trains"};
+        std::list<string> columnNames = {"Station", "Service", "Trains"};
 
-    auto it = columnNames.begin();
-    for (int i = 0; it != columnNames.end(); ++i){
-        table << *it++;
-        table.column(i).set_cell_text_align(fort::text_align::center);
+        auto it = columnNames.begin();
+        for (int i = 0; it != columnNames.end(); ++i){
+            table << *it++;
+            table.column(i).set_cell_text_align(fort::text_align::center);
+        }
+
+        table << fort::endr;
+
+        // compute the flow
+        for (const Edge* e : (*original)[index].inEdges()){
+            flow += e->getFlow();
+
+            auto s = dynamic_cast<const Railway*>(e);
+            if (s == nullptr) continue;
+
+            table << (*original)[s->getSrc()].getName() << s->getService() << s->getFlow() << fort::endr;
+        }
+
+        // print the table
+        if (display){
+            std::cout << BREAK;
+            std::cout << table.to_string();
+        }
+
+        return flow;
     }
+    else {
+        double flow = 0;
+        graph.getFullPicture();
 
-    table << fort::endr;
+        // create the table
+        fort::utf8_table table;
 
-    // compute the flow
-    for (const Edge* e : graph[index].inEdges()){
-        flow += e->getFlow();
+        table.set_border_style(FT_NICE_STYLE);
+        table.row(0).set_cell_content_text_style(fort::text_style::bold);
+        table.row(0).set_cell_content_fg_color(fort::color::yellow);
+        table << fort::header;
 
-        auto r = (Railway*) e;
-        table << graph[r->getSrc()].getName() << r->getService() << r->getFlow() << fort::endr;
-    }
+        std::list<string> columnNames = {"Station", "Service", "Trains"};
 
-    // print the table
-    if (display){
-        cout << BREAK;
-        cout << table.to_string();
-    }
+        auto it = columnNames.begin();
+        for (int i = 0; it != columnNames.end(); ++i){
+            table << *it++;
+            table.column(i).set_cell_text_align(fort::text_align::center);
+        }
 
-    return flow;
+        table << fort::endr;
+
+        // compute the flow
+        for (const Edge* e : graph[index].inEdges()){
+            flow += e->getFlow();
+
+            auto s = dynamic_cast<const Railway*>(e);
+            if (s == nullptr) continue;
+
+            table << graph[s->getSrc()].getName() << s->getService() << s->getFlow() << fort::endr;
+        }
+
+        // print the table
+        if (display){
+            std::cout << BREAK;
+            std::cout << table.to_string();
+        }
+
+        return flow;
+        }
 }
 
 /**
@@ -662,12 +736,8 @@ void Helpy::determineAffectedStations(){
     graph.getFullPicture();
     std::vector<std::pair<std::pair<double,double>, int>> beforeAndAfter;
     for(int i = 1; i <= graph.countVertices(); i++){
-        beforeAndAfter.push_back({{getIncomingTrains(i),0},i});
+        beforeAndAfter.push_back({{getIncomingTrains(i, false, true),0},i});
     }
-    std::list<std::pair<int,int>> edges;
-    //get edges to remove
-    *original = graph;
-    graph = graph.subGraph(edges);
     for(int i = 1; i <= graph.countVertices(); i++){
         beforeAndAfter[i].first.second = getIncomingTrains(i);
     }
@@ -700,4 +770,56 @@ void Helpy::determineAffectedStations(){
     }
 
     cout << table.to_string();
+}
+
+/**
+ * @brief Prints the out edges of a station
+ * @param station considered station
+*/
+std::vector<Edge*> Helpy::printEdges(int station){
+    fort::utf8_table table;
+    table.set_border_style(FT_NICE_STYLE);
+    table.row(0).set_cell_content_text_style(fort::text_style::bold);
+    table.row(0).set_cell_content_fg_color(fort::color::yellow);
+    table << fort::header;
+
+    std::list<string> columnNames = {"N", "Source","Destination"};
+
+    auto it = columnNames.begin();
+    for (int i = 0; it != columnNames.end(); ++i){
+        table << *it++;
+        table.column(i).set_cell_text_align(fort::text_align::center);
+    }
+
+    table << fort::endr;
+
+    int i = 0;
+    std::vector<Edge*> edges;
+    for(auto e: graph[station].outEdges()){
+        edges.push_back(e);
+        table << i++ << graph[station].getName() << graph[e->getDest()].getName() << fort::endr;
+    }
+    std::cout << table.to_string();
+    return edges;
+}
+
+
+/**
+ * @brief changes the considered railway network while preserving the original network
+*/
+void Helpy::changeRailwayNetwork(){
+    std::list<std::pair<int,int>> edgesToRem;
+    while(true){
+        int station = stationIDs[readStation()];
+        std::vector<Edge*> edges = printEdges(station);
+        readInputFromTable(edgesToRem, edges, station);
+        std::cout << "Would you like to select more edges (y/n): \n" << std::endl;
+        std::string s; std::cin >> s;
+        if(s == "y" || s == "yes") continue;
+        break;
+
+    }
+    *original = graph;
+    graph = graph.subGraph(edgesToRem);
+
 }
