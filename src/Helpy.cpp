@@ -139,7 +139,7 @@ string Helpy::readStation(){
     while (true){
         cout << BREAK;
         cout << "Please type the " << BOLD << "name" << RESET << " of the " << YELLOW << "station" << RESET << ":"
-                  << endl << endl;
+             << endl << endl;
 
         getline(std::cin >> std::ws, station);
         Utils::lowercase(station);
@@ -242,6 +242,7 @@ b2: cout << BREAK;
     if (s1 == "display"){
         cout << "* All" << endl;
         cout << "* Busiest" << endl;
+        cout << "* Data" << endl;
         cout << "* Operating" << endl;
     }
     else if (s1 == "calculate"){
@@ -336,6 +337,10 @@ e2: cout << "See you next time!" << endl << endl;
  */
 bool Helpy::process_command(string& s1, string& s2, string& s3){
     switch (command[s1] + target[s2] + what[s3]){
+        case (31) : {
+            displayDataDirectory();
+            break;
+        }
         case (33) : {
             changeDataDirectory();
             break;
@@ -416,6 +421,14 @@ double Helpy::getIncomingTrains(int index, bool display){
     }
 
     return flow;
+}
+
+/**
+ * @brief display the directory where the data files are stored
+ */
+void Helpy::displayDataDirectory(){
+    cout << BREAK;
+    cout << "The current data directory is " << BOLD << YELLOW << reader.getPath() << RESET << '.' << endl;
 }
 
 /**

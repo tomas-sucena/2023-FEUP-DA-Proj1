@@ -43,6 +43,7 @@ private:
     double getIncomingTrains(int index, bool display = false);
 
     // commands
+    void displayDataDirectory();
     void displayAllStations();
     void displayOperatingMode();
     void displayBusiest(string& s);

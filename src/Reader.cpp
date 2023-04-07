@@ -25,6 +25,14 @@ RailGraph Reader::read(){
 }
 
 /**
+ * @brief returns the path to the directory where the data files are stored
+ * @return path to the directory where the data files are stored
+ */
+std::string Reader::getPath() const{
+    return path;
+}
+
+/**
  * @brief changes the path to the directory where the data files are stored
  * @param path path to the directory where the files to be read are
  */

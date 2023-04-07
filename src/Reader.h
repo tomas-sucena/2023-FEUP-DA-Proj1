@@ -27,6 +27,7 @@ private:
 
 public:
     RailGraph read();
+    std::string getPath() const;
     void setPath(std::string& path);
 
     uMap<std::string, int> getStations() const;
