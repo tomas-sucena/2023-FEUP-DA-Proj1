@@ -40,7 +40,9 @@ private:
     void guided_mode();
     bool process_command(string& s1, string& s2, string& s3);
 
+    static void printPath(Path& p);
     double getIncomingTrains(int index, bool display = false, bool original = false);
+    double getTrainsBetweenStations(int src, int sink);
 
     // commands
     void displayDataDirectory();

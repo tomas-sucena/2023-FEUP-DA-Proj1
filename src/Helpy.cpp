@@ -412,6 +412,27 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
     return true;
 }
 
+void Helpy::printPath(Path& p){
+    fort::utf8_table table;
+
+    table.set_border_style(FT_NICE_STYLE);
+    table.row(0).set_cell_content_text_style(fort::text_style::bold);
+    table.row(0).set_cell_content_fg_color(fort::color::yellow);
+    table << fort::header;
+
+    std::list<string> columnNames = {"Source", "Destination", "Service"};
+
+    auto it = columnNames.begin();
+    for (int i = 0; it != columnNames.end(); ++i){
+        table << *it++;
+        table.column(i).set_cell_text_align(fort::text_align::center);
+    }
+
+    table << fort::endr;
+
+    //for ()
+}
+
 double Helpy::getIncomingTrains(int index, bool display, bool ori){
     if(ori){
         double flow = 0;
@@ -493,6 +514,26 @@ double Helpy::getIncomingTrains(int index, bool display, bool ori){
 
         return flow;
         }
+}
+
+double Helpy::getTrainsBetweenStations(int src, int sink){
+    std::ostringstream instr;
+    instr << "Would you like to consider " << BOLD << "only" << RESET << " the paths that ensure " << YELLOW
+          << "minimum cost" << RESET << "for the company? (Yes/no)";
+
+    uSet<string> options = {"yes", "no"};
+    string res = readInput(instr.str(), options);
+
+    if (res == "yes") return graph.maximumFlow(src, sink);
+
+    // display the minimum cost paths
+    std::list<Path> paths = graph.getMinimumCostPaths(src, sink);
+
+    int optionNum = 1;
+    for (Path& p : paths){
+        cout << endl << endl << BOLD << "OPTION #" << optionNum++ << RESET << endl << endl;
+        printPath(p);
+    }
 }
 
 /**
@@ -670,29 +711,33 @@ void Helpy::calculateMaximumTrains(){
         std::ostringstream instr;
         instr << "Please enter the " << BOLD << "number" << RESET << " of the option you desire:" << endl << endl
               << "1. Between two stations" << endl
-              << "2. That can simultaneously arrive at a station";
+              << "2. That can simultaneously arrive at a station"
+              << "3. Between two stations, with minimum cost";
 
         int n = (int) readNumber(instr.str());
+        double maxTrains;
 
         switch (n){
             case (1) : {
                 int stationA = stationIDs[readStation()];
                 int stationB = stationIDs[readStation()];
 
+                maxTrains = getTrainsBetweenStations(stationA, stationB);
+
                 cout << BREAK;
                 cout << "The maximum number of trains that can simultaneously travel between "
-                          << graph[stationA].getName() << " and " << graph[stationB].getName() << " is " << BOLD
-                          << YELLOW << graph.maximumFlow(stationA, stationB) << RESET << '.' << endl;
+                     << graph[stationA].getName() << " and " << graph[stationB].getName() << " is " << BOLD
+                     << YELLOW << maxTrains << RESET << '.' << endl;
 
                 return;
             }
             case (2) : {
                 int station = stationIDs[readStation()];
-                double flow = getIncomingTrains(station, true);
+                maxTrains = getIncomingTrains(station, true);
 
                 cout << BREAK;
                 cout << "The maximum number of trains that can simultaneously arrive at " << graph[station].getName()
-                          << " is " << BOLD << YELLOW << flow << RESET << '.' << endl;
+                     << " is " << BOLD << YELLOW << maxTrains << RESET << '.' << endl;
 
                 return;
             }
