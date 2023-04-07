@@ -3,7 +3,10 @@
 #include <algorithm>
 #include <map>
 
-RailGraph::RailGraph(int n) : UGraph(n), profitMode(false), fullPicture(false) {}
+RailGraph::RailGraph(int n) : UGraph(n), fullPicture(false) {
+    servicePrices["STANDARD"] = 2;
+    servicePrices["ALFA PENDULAR"] = 4;
+}
 
 /**
  * adds a vertex (i.e. a Station) to the RailGraph
@@ -249,7 +252,17 @@ std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxFlow
     return busiestPairs;
 }
 
+/**
+ * @brief computes the minimum cost paths between two Stations
+ * @param src index of the source Station
+ * @param dest index of the destination Station
+ * @return list containing the minimum cost paths
+ */
 std::list<Path> RailGraph::getMinimumCostPaths(int src, int dest){
+    // compute the maximum flow
+    edmondsKarp(src, dest);
+
+    // compute the cheapest paths
     std::list<Path> allPaths = {Path(src)};
 
     (*this)[src].valid = false;
@@ -262,19 +275,23 @@ std::list<Path> RailGraph::getMinimumCostPaths(int src, int dest){
 
     while (!q.empty()){
         int curr = q.front();
-        if (curr == dest) break; // destination reached
+        if (curr == dest) continue; // destination reached
 
         for (const Edge* e : (*this)[curr].out){
-            int next = e->getDest();
+            auto r = (const Railway*) e;
+            if (r->getFlow() <= 0) continue;
+            
+            int next = r->getDest();
             Path path = allPaths.front();
+            double cost = r->getFlow() * servicePrices[r->getService()];
 
-            double cost = e->getFlow();
-            (*this)[next].dist = std::min((*this)[curr].dist + e->getWeight(), (*this)[next].dist);
+            (*this)[next].dist = std::min((*this)[curr].dist + cost, (*this)[next].dist);
+            (*this)[next].valid &= ((*this)[next].dist <= (*this)[dest].dist);
 
-            path.push_back(e);
+            path.push_back(r);
             allPaths.push_back(path);
 
-            if (!(*this)[next].valid || !e->valid || e->getFlow() <= 0) continue;
+            if (!(*this)[next].valid || !r->valid) continue;
             (*this)[next].valid = false;
 
             q.push(next);

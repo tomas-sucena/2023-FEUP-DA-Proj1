@@ -539,13 +539,6 @@ void Helpy::displayAllStations(){
  * @complexity O(n^2)
 */
 void Helpy::displayOperatingMode(){
-    string mode = (graph.profitMode) ? "Profit" : "Standard";
-    cout << "The current " << BOLD << "operating mode" << RESET << " is " << YELLOW << mode << RESET << "." << endl;
-
-    string instruction = "Would you like to change it?";
-    uSet<string> options = {"yes", "no"};
-
-    if (readInput(instruction, options) == "yes") changeOperatingMode();
 }
 
 /**
@@ -665,15 +658,6 @@ void Helpy::changeDataDirectory(){
  * @complexity O(1)
 */
 void Helpy::changeOperatingMode(){
-    std::ostringstream instr;
-    instr << "Please select the " << BOLD << "operating mode" << RESET << " you would like:\n\n"
-          << "* Standard\n"
-          << "* Profit";
-
-    uSet<string> modes = {"standard", "profit"};
-    string choice = readInput(instr.str(), modes);
-
-    graph.profitMode = (choice == "profit");
 }
 
 /**

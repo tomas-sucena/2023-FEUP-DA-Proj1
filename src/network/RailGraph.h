@@ -11,7 +11,8 @@ class RailGraph : public UGraph {
 
 /* ATTRIBUTES */
 private:
-    bool profitMode, fullPicture;
+    bool fullPicture;
+    uMap<std::string, double> servicePrices;
 
     // for searching
     uSet<int> networkSources, networkSinks;
