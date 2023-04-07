@@ -26,7 +26,7 @@ std::map<string, int> Helpy::target = {{"all", 4}, {"data", 6}, {"shortest", 8},
 std::map<string, int> Helpy::what = {{"directory", 24},{"train", 27}, {"trains", 27}, {"pair", 27},
                                      {"pairs", 27},{"station", 29},{"stations", 29}, {"district", 29},
                                      {"districts", 29},{"municipality", 29},{"municipalities", 29},
-                                     {"need", 31}, {"mode", 33}, {"network", 35}}};
+                                     {"need", 31}, {"mode", 33}, {"network", 35}};
 
 /**
  * @brief Construct a new Helpy:: Helpy object
@@ -516,7 +516,7 @@ void Helpy::displayAllStations(){
     table.row(0).set_cell_content_fg_color(fort::color::yellow);
     table << fort::header;
 
-    std::list<string> columnNames = {"N", "Name", "District", "Municipality", "Line"};
+    std::list<string> columnNames = {"N", "Name", "District", "Municipality", "Township", "Line"};
 
     auto it = columnNames.begin();
     for (int i = 0; it != columnNames.end(); ++i){
@@ -527,8 +527,8 @@ void Helpy::displayAllStations(){
     table << fort::endr;
 
     for(int i = 1; i <= graph.countVertices(); i++){
-        table << i << graph[i].getName() << graph[i].getDistrict() << graph[i].getMunicipality() << graph[i].getLine()
-              << fort::endr;
+        table << i << graph[i].getName() << graph[i].getDistrict() << graph[i].getMunicipality() << graph[i].getTownship()
+              << graph[i].getLine() << fort::endr;
     }
 
     cout << BREAK;
