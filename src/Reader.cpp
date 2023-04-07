@@ -17,6 +17,10 @@ Reader::Reader(string path, char valueDelim, char lineDelim) : valueDelim(valueD
  * @return directed graph which represents the railway network
  */
 RailGraph Reader::read(){
+    // reset the data structures
+    stationIDs.clear();
+    networkSinks.clear(); networkSources.clear();
+
     RailGraph graph;
     readStations(graph);
     readNetwork(graph);

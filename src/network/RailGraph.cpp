@@ -67,14 +67,14 @@ void RailGraph::getFullPicture() {
     fullPicture = true;
 
     // create the super source
-    addVertex();
+    UGraph::addVertex();
     int superSource = countVertices();
     
     for (int src : networkSources)
         UGraph::addEdge(superSource, src, INF);
 
     // create the super sink
-    addVertex();
+    UGraph::addVertex();
     int superSink = countVertices();
 
     for (int sink : networkSinks)
@@ -129,7 +129,7 @@ std::list<std::pair<string, double>> RailGraph::getBusiestStations(int k){
     // compute the total flow of each station
     std::vector<std::pair<int, double>> stationsFlow(countVertices());
     for (const Edge* e : edges){
-        auto& p = stationsFlow[e->getDest()];
+        auto& p = stationsFlow[e->getDest() - 1];
 
         p.first = e->getDest();
         p.second += e->getFlow();

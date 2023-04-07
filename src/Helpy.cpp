@@ -176,8 +176,6 @@ void Helpy::readInputFromTable(std::list<std::pair<int,int>>& edges, std::vector
     }
 }
 
-
-
 /**
  * @brief allows the user to choose the mode of the UI
  * @complexity O(n^2)
