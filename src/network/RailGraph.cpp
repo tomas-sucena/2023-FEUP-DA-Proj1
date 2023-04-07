@@ -85,34 +85,6 @@ void RailGraph::getFullPicture() {
     removeVertex(superSource);
 }
 
-std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxFlow){
-    std::list<std::pair<int, int>> busiestPairs;
-
-    reset = false;
-    fullPicture = false;
-
-    resetAll();
-    
-    for (int i = 1; i < countVertices(); ++i){
-        for (int j = i + 1; j <= countVertices(); ++j){
-            resetEdges();
-
-            double flow = maximumFlow(i, j);
-            if (flow < maxFlow) continue;
-
-            if (flow > maxFlow){
-                busiestPairs.clear();
-                maxFlow = flow;
-            }
-
-            busiestPairs.emplace_back(i, j);
-        }
-    }
-
-    reset = true;
-    return busiestPairs;
-}
-
 RailGraph RailGraph::subGraph(const list<std::pair<int, int>>& edgesList) {
     RailGraph copy = *this;
     for(auto i : edgesList){
@@ -239,4 +211,86 @@ std::list<std::pair<string, double>> RailGraph::getBusiestMunicipalities(int k){
         busiestMunicipalities.emplace_back(municipalitiesFlow[i].first, municipalitiesFlow[i].second);
 
     return busiestMunicipalities;
+}
+
+/**
+ * computes, from all pairs of stations, which ones require the most amount of trains when taking full advantage of the
+ * existing network capacity
+ * @param maxFlow attribute whose value will be the maximum number of trains that the pairs of stations require
+ * @return list containing the pairs of stations that require the most amount of trains
+ */
+std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxFlow){
+    std::list<std::pair<int, int>> busiestPairs;
+
+    reset = false;
+    fullPicture = false;
+
+    resetAll();
+
+    for (int i = 1; i < countVertices(); ++i){
+        for (int j = i + 1; j <= countVertices(); ++j){
+            resetEdges();
+
+            double flow = maximumFlow(i, j);
+            if (flow < maxFlow) continue;
+
+            if (flow > maxFlow){
+                busiestPairs.clear();
+                maxFlow = flow;
+            }
+
+            busiestPairs.emplace_back(i, j);
+        }
+    }
+
+    reset = true;
+    return busiestPairs;
+}
+
+std::list<Path> RailGraph::getMinimumCostPaths(int src, int dest){
+    std::list<Path> allPaths = {Path(src)};
+
+    (*this)[src].valid = false;
+    (*this)[src].dist = 0;
+
+    if (src == dest) return allPaths; // special case
+
+    std::queue<int> q;
+    q.push(src);
+
+    while (!q.empty()){
+        int curr = q.front();
+        if (curr == dest) break; // destination reached
+
+        for (const Edge* e : (*this)[curr].out){
+            int next = e->getDest();
+            Path path = allPaths.front();
+
+            double cost = e->getFlow();
+            (*this)[next].dist = std::min((*this)[curr].dist + e->getWeight(), (*this)[next].dist);
+
+            path.push_back(e);
+            allPaths.push_back(path);
+
+            if (!(*this)[next].valid || !e->valid || e->getFlow() <= 0) continue;
+            (*this)[next].valid = false;
+
+            q.push(next);
+        }
+
+        q.pop();
+        allPaths.pop_front();
+    }
+
+    // eliminate the paths that don't end in the destination
+    for (auto it = allPaths.begin(); it != allPaths.end();){
+        if (it->back()->getDest() == dest){
+            ++it;
+            continue;
+        }
+
+        it = allPaths.erase(it);
+    }
+
+    return allPaths;
 }

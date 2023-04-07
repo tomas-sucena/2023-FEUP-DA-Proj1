@@ -31,7 +31,6 @@ public:
     bool addEdge(int src, int dest, double weight = 1, std::string service = "STANDARD", bool valid = true);
     Station& operator[](int index) override;
 
-    std::list<std::pair<int, int>> getBusiestStationPairs(double& maxFlow);
     RailGraph subGraph(const list<std::pair<int, int>>& edgesList);
     double reducedConnectivity(int start, int end, RailGraph sub);
     std::vector<std::pair<int,int>> mostAffected(int k);
@@ -39,6 +38,9 @@ public:
     std::list<std::pair<string, double>> getBusiestStations(int k);
     std::list<std::pair<string, double>> getBusiestDistricts(int k);
     std::list<std::pair<string, double>> getBusiestMunicipalities(int k);
+    std::list<std::pair<int, int>> getBusiestStationPairs(double& maxFlow);
+
+    std::list<Path> getMinimumCostPaths(int src, int dest);
 };
 
 #endif //DA_TRAINS_RAILGRAPH_H

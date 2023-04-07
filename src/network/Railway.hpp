@@ -7,14 +7,19 @@
 #include "implementation/Edge.hpp"
 
 class Railway : public Edge {
+    friend class RailGraph;
+
+/* ATTRIBUTES */
+private:
     std::string service;
 
+/* CONSTRUCTOR */
 public:
-    // constructor
     Railway(int src, int dest, double weight, bool valid, std::string service)
         : Edge(src, dest, weight, valid), service(std::move(service)) {}
 
-    // methods
+/* METHODS */
+public:
     std::string getService() const{
         return service;
     }

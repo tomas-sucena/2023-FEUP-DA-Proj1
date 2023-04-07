@@ -8,18 +8,23 @@
 using std::string;
 
 class Station : public Vertex {
+    friend class RailGraph;
+
+/* ATTRIBUTES */
+private:
     string name;
     string district;
     string municipality;
     string township;
     string line;
 
+/* CONSTRUCTOR */
 public:
-    // constructor
     Station(string& name, string& district, string& municipality, string& township, string& line)
         : name(name), district(district), municipality(municipality), township(township), line(line) {}
 
-    // methods
+/* METHODS */
+public:
     string getName() const{
         return name;
     }
