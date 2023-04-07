@@ -20,6 +20,10 @@ public:
 
 /* METHODS */
 public:
+    Edge* clone() const override{
+        return new Railway(*this);
+    }
+
     std::string getService() const{
         return service;
     }

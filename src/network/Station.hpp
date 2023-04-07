@@ -25,6 +25,10 @@ public:
 
 /* METHODS */
 public:
+    Vertex* clone() const override{
+        return new Station(*this);
+    }
+
     string getName() const{
         return name;
     }
