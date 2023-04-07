@@ -11,8 +11,10 @@ RailGraph::RailGraph(int n) : UGraph(n), profitMode(false), fullPicture(false) {
  */
 void RailGraph::addVertex(Vertex* v){
     auto s = (Station*) v;
-    if (s == nullptr || !stationNames.insert(s->getName()).second)
+    if (s == nullptr || !stationNames.insert(s->getName()).second){
+        delete s;
         return;
+    }
 
     UGraph::addVertex(v);
 }

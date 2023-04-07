@@ -48,6 +48,7 @@ private:
     void displayBusiest(string& s);
     void displayBusiestPairs();
 
+    void changeDataDirectory();
     void changeOperatingMode();
     void calculateMaximumTrains();
     void determineAffectedStations();

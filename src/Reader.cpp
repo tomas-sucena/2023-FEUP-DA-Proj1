@@ -1,20 +1,15 @@
 #include "Reader.h"
 
-#include <sstream>
-
 #include "network/Station.hpp"
 
 using std::string;
 
 /**
  * @brief creates a Reader object
- * @param path the path to the directory where the files to be read are
+ * @param path path to the directory where the files to be read are
  */
 Reader::Reader(string path, char valueDelim, char lineDelim) : valueDelim(valueDelim), lineDelim(lineDelim) {
-    if (path.back() != '/')
-        path += '/';
-
-    this->path = path;
+    setPath(path);
 }
 
 /**
@@ -27,6 +22,17 @@ RailGraph Reader::read(){
     readNetwork(graph);
 
     return graph;
+}
+
+/**
+ * @brief changes the path to the directory where the data files are stored
+ * @param path path to the directory where the files to be read are
+ */
+void Reader::setPath(std::string& path){
+    if (path.back() != '/')
+        path += '/';
+
+    this->path = path;
 }
 
 /**

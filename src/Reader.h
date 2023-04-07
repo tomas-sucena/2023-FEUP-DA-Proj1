@@ -1,11 +1,6 @@
 #ifndef DA_TRAINS_READER_H
 #define DA_TRAINS_READER_H
 
-#include <fstream>
-#include <string>
-#include <unordered_map>
-#include <unordered_set>
-
 #include "network/RailGraph.h"
 #include "Utils.hpp"
 
@@ -32,6 +27,8 @@ private:
 
 public:
     RailGraph read();
+    void setPath(std::string& path);
+
     uMap<std::string, int> getStations() const;
     uSet<int> getNetworkSources() const;
     uSet<int> getNetworkSinks() const;
