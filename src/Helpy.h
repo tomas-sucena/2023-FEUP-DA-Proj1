@@ -60,6 +60,8 @@ private:
     void calculateMaximumTrains();
     void determineAffectedStations();
     void changeRailwayNetwork();
+    void changeRailwaySources();
+    void changeRailwaySinks();
     void readInputFromTable(std::list<std::pair<int,int>>& edges, std::vector<Edge*> ref, int station);
 
 public:

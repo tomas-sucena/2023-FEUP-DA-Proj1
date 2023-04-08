@@ -388,16 +388,20 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
             displayBusiestPairs();
             break;
         }
-        case (52) : {
-            displayOperatingMode();
-            break;
-        }
         case (47) : {
             displayRailwaySources();
             break;
         }
+        case (49) : {
+            changeRailwaySources();
+            break;
+        }
         case (50) : {
             displayRailwaySinks();
+            break;
+        }
+        case (52) : {
+            changeRailwaySinks();
             break;
         }
         case (55) : {
@@ -537,6 +541,8 @@ double Helpy::getTrainsBetweenStations(int src, int sink){
         cout << endl << endl << BOLD << "OPTION #" << optionNum++ << RESET << endl << endl;
         printPath(p);
     }
+
+    return 0;
 }
 
 /**
@@ -880,7 +886,97 @@ void Helpy::changeRailwayNetwork(){
         break;
 
     }
+
     *original = graph;
     graph = graph.subGraph(edgesToRem);
+}
 
+/**
+ * @brief changes the stations that are the railway sources
+ */
+void Helpy::changeRailwaySources(){
+    uSet<int>& railwaySources = graph.networkSources;
+
+    // ADD
+    cout << BREAK;
+    cout << "Please type the " << BOLD << "names" << RESET << " of the " << YELLOW << "sources" << RESET
+         << " you would like to " << GREEN << "add" << RESET << ", separated by a semicolon (ex: A;B;...)." << endl
+         << "If you do not wish to add any new source, simply type a semicolon and press Enter." << endl << endl;
+
+    string line; getline(std::cin >> std::ws, line);
+    Utils::lowercase(line);
+
+    if (line.back() != ';') line += ";";
+
+    std::istringstream line_(line);
+    for (string temp; getline(line_, temp, ';');){
+        if (stationIDs.find(temp) == stationIDs.end())
+            continue;
+
+        railwaySources.insert(stationIDs[temp]);
+    }
+
+    // REMOVE
+    cout << BREAK;
+    cout << "Please type the " << BOLD << "names" << RESET << " of the " << YELLOW << "sources" << RESET
+         << " you would like to " << RED << "remove" << RESET << ", separated by a semicolon (ex: A;B;...)." << endl
+         << "If you do not wish to remove any source, simply type a semicolon and press Enter." << endl << endl;
+
+    getline(std::cin >> std::ws, line);
+    Utils::lowercase(line);
+
+    if (line.back() != ';') line += ";";
+
+    line_.clear(); line_.str(line);
+    for (string temp; getline(line_, temp, ';');){
+        if (stationIDs.find(temp) == stationIDs.end())
+            continue;
+
+        railwaySources.erase(stationIDs[temp]);
+    }
+}
+
+/**
+ * @brief changes the stations that are the railway sinks
+ */
+void Helpy::changeRailwaySinks(){
+    uSet<int>& railwaySinks = graph.networkSinks;
+
+    // ADD
+    cout << BREAK;
+    cout << "Please type the " << BOLD << "names" << RESET << " of the " << YELLOW << "sinks" << RESET
+         << " you would like to " << GREEN << "add" << RESET << ", separated by a semicolon (ex: A;B;...)." << endl
+         << "If you do not wish to add any new sink, simply type a semicolon and press Enter." << endl << endl;
+
+    string line; getline(std::cin >> std::ws, line);
+    Utils::lowercase(line);
+
+    if (line.back() != ';') line += ";";
+
+    std::istringstream line_(line);
+    for (string temp; getline(line_, temp, ';');){
+        if (stationIDs.find(temp) == stationIDs.end())
+            continue;
+
+        railwaySinks.insert(stationIDs[temp]);
+    }
+
+    // REMOVE
+    cout << BREAK;
+    cout << "Please type the " << BOLD << "names" << RESET << " of the " << YELLOW << "sinks" << RESET
+         << " you would like to " << RED << "remove" << RESET << ", separated by a comma (ex: A;B;...)." << endl
+         << "If you do not wish to remove any sink, simply type a semicolon and press Enter." << endl << endl;
+
+    getline(std::cin >> std::ws, line);
+    Utils::lowercase(line);
+
+    if (line.back() != ';') line += ";";
+
+    line_.clear(); line_.str(line);
+    for (string temp; getline(line_, temp, ';');){
+        if (stationIDs.find(temp) == stationIDs.end())
+            continue;
+
+        railwaySinks.erase(stationIDs[temp]);
+    }
 }
