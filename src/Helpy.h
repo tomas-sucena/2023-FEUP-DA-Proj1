@@ -12,6 +12,7 @@ class Helpy {
 private:
     Reader reader;
     uMap<string, int> stationIDs;
+    uMap<int, string> stationNames;
 
     // graphs
     RailGraph graph;
@@ -45,11 +46,13 @@ private:
     double getTrainsBetweenStations(int src, int sink);
 
     // commands
-    void displayDataDirectory();
     void displayAllStations();
+    void displayDataDirectory();
     void displayOperatingMode();
     void displayBusiest(string& s);
     void displayBusiestPairs();
+    void displayRailwaySources();
+    void displayRailwaySinks();
     std::vector<Edge*> printEdges(int station);
 
     void changeDataDirectory();

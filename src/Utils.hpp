@@ -13,6 +13,8 @@
 #include <unordered_set>
 #include <utility>
 
+#include "libfort/fort.hpp"
+
 #define uMap std::unordered_map
 #define uSet std::unordered_set
 
@@ -53,6 +55,29 @@ public:
         }
 
         s = name;
+    }
+
+    /**
+     * @brief creates a fort::utf8_table used for displaying information in the terminal
+     * @param columnNames list containing the name of each column of the table
+     * @return fort::utf8_table object
+     */
+    static fort::utf8_table createTable(const std::list<std::string>& columnNames){
+        fort::utf8_table table;
+
+        table.set_border_style(FT_NICE_STYLE);
+        table.row(0).set_cell_content_text_style(fort::text_style::bold);
+        table.row(0).set_cell_content_fg_color(fort::color::yellow);
+        table << fort::header;
+
+        auto it = columnNames.begin();
+        for (int i = 0; it != columnNames.end(); ++i){
+            table << *it++;
+            table.column(i).set_cell_text_align(fort::text_align::center);
+        }
+
+        table << fort::endr;
+        return table;
     }
 };
 

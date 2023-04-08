@@ -14,6 +14,7 @@ private:
 
     // data structures
     uMap<std::string, int> stationIDs;
+    uMap<int, std::string> stationNames;
     uSet<int> networkSources, networkSinks;
 
 /* CONSTRUCTOR */
@@ -30,7 +31,8 @@ public:
     std::string getPath() const;
     void setPath(std::string& path);
 
-    uMap<std::string, int> getStations() const;
+    uMap<std::string, int> getStationIDs() const;
+    uMap<int, std::string> getStationNames() const;
     uSet<int> getNetworkSources() const;
     uSet<int> getNetworkSinks() const;
 };

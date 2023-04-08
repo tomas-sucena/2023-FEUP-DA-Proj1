@@ -1,7 +1,5 @@
 #include "Helpy.h"
 
-#include "libfort/fort.hpp"
-
 using std::cout;
 using std::endl;
 
@@ -19,14 +17,14 @@ using std::endl;
 std::map<string, int> Helpy::command = {{"display", 1}, {"print", 1}, {"show", 1}, {"calculate", 2},
                                         {"determine", 2}, {"change", 3}, {"switch", 3}, {"toggle", 3}};
 
-std::map<string, int> Helpy::target = {{"all", 4}, {"data", 6}, {"shortest", 8}, {"maximum", 10},
-                                       {"most", 12}, {"budget", 14}, {"affected", 17}, {"operating", 19},
-                                       {"busiest", 21}, {"railway",23}};
+std::map<string, int> Helpy::target = {{"all", 4}, {"data", 6}, {"maximum", 8},{"affected", 10},
+                                       {"operating", 12},{"busiest", 14},{"railway",16}};
 
-std::map<string, int> Helpy::what = {{"directory", 24},{"train", 27}, {"trains", 27}, {"pair", 27},
-                                     {"pairs", 27},{"station", 29},{"stations", 29}, {"district", 29},
-                                     {"districts", 29},{"municipality", 29},{"municipalities", 29},
-                                     {"need", 31}, {"mode", 33}, {"network", 35}};
+std::map<string, int> Helpy::what = {{"directory", 17}, {"dir", 17}, {"train", 20}, {"trains", 20},
+                                     {"station", 23},{"stations", 23},{"district", 23},{"districts", 23},
+                                     {"municipality", 23},{"municipalities", 23}, {"pairs", 26}, {"pair", 26},
+                                     {"sources", 30}, {"source", 30},{"sinks", 33},{"sink", 33},
+                                     {"network", 36}};
 
 /**
  * @brief Construct a new Helpy:: Helpy object
@@ -47,7 +45,8 @@ void Helpy::fetchData() {
     graph.networkSinks = reader.getNetworkSinks();
 
     original = &graph;
-    stationIDs = reader.getStations();
+    stationIDs = reader.getStationIDs();
+    stationNames = reader.getStationNames();
 }
 
 /**
@@ -156,7 +155,7 @@ string Helpy::readStation(){
 }
 
 void Helpy::readInputFromTable(std::list<std::pair<int,int>>& edges, std::vector<Edge*> ref, int station){
-    int size = ref.size();
+    int size = (int) ref.size();
     std::cout << std::endl << YELLOW << BREAK << RESET;
     std::cout << "Please type the " << BOLD << "indexes" << RESET << " of the " << YELLOW << "edges" << RESET << " you would like to " << RED << "remove"
         << RESET << ", separated by a comma (ex: 0,1,2,7,...).\n";
@@ -264,6 +263,7 @@ b2: cout << BREAK;
         cout << "* Busiest" << endl;
         cout << "* Data" << endl;
         cout << "* Operating" << endl;
+        cout << "* Railway" << endl;
     }
     else if (s1 == "calculate"){
         cout << "* Maximum" << endl;
@@ -291,7 +291,7 @@ b2: cout << BREAK;
     std::cin >> s2; Utils::lowercase(s2);
     cout << BREAK;
 
-    if (s2 == "all"){
+    if (s2 == "all" || s2 == "affected"){
         cout << "* Stations" << endl;
     }
     else if (s2 == "data"){
@@ -299,9 +299,6 @@ b2: cout << BREAK;
     }
     else if (s2 == "maximum" || s2 == "most"){
         cout << "* Trains" << endl;
-    }
-    else if (s2 == "affected"){
-        cout << "* Stations" << endl;
     }
     else if (s2 == "busiest"){
         cout << "* Stations" << endl;
@@ -314,6 +311,8 @@ b2: cout << BREAK;
     }
     else if (s2 == "railway"){
         cout << "* Network" << endl;
+        cout << "* Sources" << endl;
+        cout << "* Sinks" << endl;
     }
     else if (s2 == "quit" || s2 == "die"){
         goto e2;
@@ -361,43 +360,47 @@ e2: cout << "See you next time!" << endl << endl;
  */
 bool Helpy::process_command(string& s1, string& s2, string& s3){
     switch (command[s1] + target[s2] + what[s3]){
-        case (31) : {
+        case (24) : {
             displayDataDirectory();
             break;
         }
-        case (33) : {
+        case (26) : {
             changeDataDirectory();
             break;
         }
-        case (34) : {
+        case (28) : {
             displayAllStations();
             break;
         }
-        case (39) : {
+        case (30) : {
             calculateMaximumTrains();
             break;
         }
-        case (48) : {
+        case (35) : {
             determineAffectedStations();
             break;
         }
-        case (49) : {
-            displayBusiestPairs();
+        case (38) : {
+            displayBusiest(s3);
             break;
         }
-        case (51) : {
-            displayBusiest(s3);
+        case (41) : {
+            displayBusiestPairs();
             break;
         }
         case (52) : {
             displayOperatingMode();
             break;
         }
-        case(55) : {
-            changeOperatingMode();
+        case (47) : {
+            displayRailwaySources();
             break;
         }
-        case(61) : {
+        case (50) : {
+            displayRailwaySinks();
+            break;
+        }
+        case (55) : {
             changeRailwayNetwork();
             break;
         }
@@ -537,14 +540,6 @@ double Helpy::getTrainsBetweenStations(int src, int sink){
 }
 
 /**
- * @brief display the directory where the data files are stored
- */
-void Helpy::displayDataDirectory(){
-    cout << BREAK;
-    cout << "The current data directory is " << BOLD << YELLOW << reader.getPath() << RESET << '.' << endl;
-}
-
-/**
  * @brief displays all the stations that are part of the railway network
  */
 void Helpy::displayAllStations(){
@@ -576,10 +571,11 @@ void Helpy::displayAllStations(){
 }
 
 /**
- * @brief displays the "company's" operating mode
- * @complexity O(n^2)
-*/
-void Helpy::displayOperatingMode(){
+ * @brief display the directory where the data files are stored
+ */
+void Helpy::displayDataDirectory(){
+    cout << BREAK;
+    cout << "The current data directory is " << BOLD << YELLOW << reader.getPath() << RESET << '.' << endl;
 }
 
 /**
@@ -654,22 +650,7 @@ void Helpy::displayBusiestPairs(){
     double flow = 0;
     std::list<std::pair<int,int>> busiestPairs = graph.getBusiestStationPairs(flow);
 
-    fort::utf8_table table;
-
-    table.set_border_style(FT_NICE_STYLE);
-    table.row(0).set_cell_content_text_style(fort::text_style::bold);
-    table.row(0).set_cell_content_fg_color(fort::color::yellow);
-    table << fort::header;
-
-    std::list<string> columnNames = {"N", "StationA", "StationB", "Trains"};
-
-    auto it = columnNames.begin();
-    for (int i = 0; it != columnNames.end(); ++i){
-        table << *it++;
-        table.column(i).set_cell_text_align(fort::text_align::center);
-    }
-
-    table << fort::endr;
+    fort::utf8_table table = Utils::createTable({"N", "StationA", "StationB", "Trains"});
 
     int i = 1;
     for(auto& p: busiestPairs)
@@ -677,6 +658,59 @@ void Helpy::displayBusiestPairs(){
 
     cout << "These are the busiest pairs of stations:" << endl << endl;
     cout << table.to_string();
+}
+
+/**
+ * @brief displays the stations which are the sources of the railway network
+ */
+void Helpy::displayRailwaySources(){
+    fort::utf8_table table = Utils::createTable({"N", "Station"});
+
+    std::list<string> railwaySources;
+    for (int i : graph.networkSources)
+        railwaySources.push_back(stationNames[i]);
+
+    uSet<string> options = {"yes", "no"};
+    string res = readInput("Would you like to order the stations alphabetically? (Yes/no)", options);
+
+    if (res == "yes") railwaySources.sort();
+
+    for (int i = 1; !railwaySources.empty(); railwaySources.pop_front())
+        table << i++ << railwaySources.front() << fort::endr;
+
+    cout << BREAK;
+    cout << "The railway network has the following " << BOLD << YELLOW << "sources" << RESET << ':' << endl << endl;
+    cout << table.to_string();
+}
+
+/**
+ * @brief displays the stations which are the sinks of the railway network
+ */
+void Helpy::displayRailwaySinks(){
+    fort::utf8_table table = Utils::createTable({"N", "Station"});
+
+    std::list<string> railwaySinks;
+    for (int i : graph.networkSinks)
+        railwaySinks.push_back(stationNames[i]);
+
+    uSet<string> options = {"yes", "no"};
+    string res = readInput("Would you like to order the stations alphabetically? (Yes/no)", options);
+
+    if (res == "yes") railwaySinks.sort();
+
+    for (int i = 1; !railwaySinks.empty(); railwaySinks.pop_front())
+        table << i++ << railwaySinks.front() << fort::endr;
+
+    cout << BREAK;
+    cout << "The railway network has the following " << BOLD << YELLOW << "sinks" << RESET << ':' << endl << endl;
+    cout << table.to_string();
+}
+
+/**
+ * @brief displays the "company's" operating mode
+ * @complexity O(n^2)
+*/
+void Helpy::displayOperatingMode(){
 }
 
 /**

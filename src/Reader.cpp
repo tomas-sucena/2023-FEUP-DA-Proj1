@@ -83,8 +83,8 @@ void Reader::readStations(RailGraph& graph){
         // add the station to the graph
         graph.addVertex(new Station(name, district, municipality, township, trainLine));
 
-        Utils::lowercase(name);
-        stationIDs[name] = i;
+        stationNames[i] = name;
+        Utils::lowercase(name); stationIDs[name] = i;
 
         networkSources.insert(i);
         networkSinks.insert(i);
@@ -137,8 +137,12 @@ void Reader::readNetwork(RailGraph& graph){
     reader.clear();
 }
 
-uMap<std::string, int> Reader::getStations() const{
+uMap<std::string, int> Reader::getStationIDs() const{
     return stationIDs;
+}
+
+uMap<int, std::string> Reader::getStationNames() const{
+    return stationNames;
 }
 
 uSet<int> Reader::getNetworkSources() const{
