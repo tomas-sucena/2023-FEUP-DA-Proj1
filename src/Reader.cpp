@@ -80,11 +80,13 @@ void Reader::readStations(RailGraph& graph){
         string trainLine;
         getline(line_, trainLine, lineDelim);
 
+        // check if the station is repeated
+        string lowercaseName = name; Utils::lowercase(lowercaseName);
+        if (!stationIDs.insert({lowercaseName, i}).second) continue;
+
         // add the station to the graph
         graph.addVertex(new Station(name, district, municipality, township, trainLine));
-
         stationNames[i] = name;
-        Utils::lowercase(name); stationIDs[name] = i;
 
         networkSources.insert(i);
         networkSinks.insert(i);

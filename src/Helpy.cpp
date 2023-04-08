@@ -420,125 +420,28 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
 }
 
 void Helpy::printPath(Path& p){
-    fort::utf8_table table;
-
-    table.set_border_style(FT_NICE_STYLE);
-    table.row(0).set_cell_content_text_style(fort::text_style::bold);
-    table.row(0).set_cell_content_fg_color(fort::color::yellow);
-    table << fort::header;
-
-    std::list<string> columnNames = {"Source", "Destination", "Service"};
-
-    auto it = columnNames.begin();
-    for (int i = 0; it != columnNames.end(); ++i){
-        table << *it++;
-        table.column(i).set_cell_text_align(fort::text_align::center);
-    }
-
-    table << fort::endr;
+    fort::utf8_table table = Utils::createTable({"Source", "Destination", "Service"});
 
     //for ()
-}
-
-double Helpy::getIncomingTrains(int index, bool display, bool ori){
-    if(ori){
-        double flow = 0;
-        (*original).getFullPicture();
-
-        // create the table
-        fort::utf8_table table;
-
-        table.set_border_style(FT_NICE_STYLE);
-        table.row(0).set_cell_content_text_style(fort::text_style::bold);
-        table.row(0).set_cell_content_fg_color(fort::color::yellow);
-        table << fort::header;
-
-        std::list<string> columnNames = {"Station", "Service", "Trains"};
-
-        auto it = columnNames.begin();
-        for (int i = 0; it != columnNames.end(); ++i){
-            table << *it++;
-            table.column(i).set_cell_text_align(fort::text_align::center);
-        }
-
-        table << fort::endr;
-
-        // compute the flow
-        for (const Edge* e : (*original)[index].inEdges()){
-            flow += e->getFlow();
-
-            auto s = dynamic_cast<const Railway*>(e);
-            if (s == nullptr) continue;
-
-            table << (*original)[s->getSrc()].getName() << s->getService() << s->getFlow() << fort::endr;
-        }
-
-        // print the table
-        if (display){
-            std::cout << BREAK;
-            std::cout << table.to_string();
-        }
-
-        return flow;
-    }
-    else {
-        double flow = 0;
-        graph.getFullPicture();
-
-        // create the table
-        fort::utf8_table table;
-
-        table.set_border_style(FT_NICE_STYLE);
-        table.row(0).set_cell_content_text_style(fort::text_style::bold);
-        table.row(0).set_cell_content_fg_color(fort::color::yellow);
-        table << fort::header;
-
-        std::list<string> columnNames = {"Station", "Service", "Trains"};
-
-        auto it = columnNames.begin();
-        for (int i = 0; it != columnNames.end(); ++i){
-            table << *it++;
-            table.column(i).set_cell_text_align(fort::text_align::center);
-        }
-
-        table << fort::endr;
-
-        // compute the flow
-        for (const Edge* e : graph[index].inEdges()){
-            flow += e->getFlow();
-
-            auto s = dynamic_cast<const Railway*>(e);
-            if (s == nullptr) continue;
-
-            table << graph[s->getSrc()].getName() << s->getService() << s->getFlow() << fort::endr;
-        }
-
-        // print the table
-        if (display){
-            std::cout << BREAK;
-            std::cout << table.to_string();
-        }
-
-        return flow;
-        }
 }
 
 double Helpy::getTrainsBetweenStations(int src, int sink){
     std::ostringstream instr;
     instr << "Would you like to consider " << BOLD << "only" << RESET << " the paths that ensure " << YELLOW
-          << "minimum cost" << RESET << "for the company? (Yes/no)";
+          << "minimum cost" << RESET << " for the company? (Yes/no)";
 
     uSet<string> options = {"yes", "no"};
     string res = readInput(instr.str(), options);
 
-    if (res == "yes") return graph.maximumFlow(src, sink);
+    if (res == "no") return graph.maximumFlow(src, sink);
 
     // display the minimum cost paths
+    cout << BREAK;
     std::list<Path> paths = graph.getMinimumCostPaths(src, sink);
 
     int optionNum = 1;
     for (Path& p : paths){
-        cout << endl << endl << BOLD << "OPTION #" << optionNum++ << RESET << endl << endl;
+        cout << endl << endl << BOLD << YELLOW << "OPTION #" << optionNum++ << RESET << endl << endl;
         printPath(p);
     }
 
@@ -751,8 +654,7 @@ void Helpy::calculateMaximumTrains(){
         std::ostringstream instr;
         instr << "Please enter the " << BOLD << "number" << RESET << " of the option you desire:" << endl << endl
               << "1. Between two stations" << endl
-              << "2. That can simultaneously arrive at a station"
-              << "3. Between two stations, with minimum cost";
+              << "2. That can simultaneously arrive at a station";
 
         int n = (int) readNumber(instr.str());
         double maxTrains;
@@ -773,9 +675,12 @@ void Helpy::calculateMaximumTrains(){
             }
             case (2) : {
                 int station = stationIDs[readStation()];
-                maxTrains = getIncomingTrains(station, true);
+
+                fort::utf8_table table;
+                maxTrains = graph.getIncomingTrains(station, &table);
 
                 cout << BREAK;
+                cout << table.to_string() << endl << endl;
                 cout << "The maximum number of trains that can simultaneously arrive at " << graph[station].getName()
                      << " is " << BOLD << YELLOW << maxTrains << RESET << '.' << endl;
 
@@ -800,41 +705,25 @@ void Helpy::determineAffectedStations(){
 
     int k = (int) readNumber(instr.str());
 
-    graph.getFullPicture();
     std::vector<std::pair<std::pair<double,double>, int>> beforeAndAfter;
-    for(int i = 1; i <= graph.countVertices(); i++){
-        beforeAndAfter.push_back({{getIncomingTrains(i, false, true),0},i});
-    }
-    for(int i = 1; i <= graph.countVertices(); i++){
-        beforeAndAfter[i].first.second = getIncomingTrains(i);
-    }
+
+    for(int i = 1; i <= graph.countVertices(); i++)
+        beforeAndAfter.push_back({{original->getIncomingTrains(i), 0}, i});
+
+    for(int i = 1; i <= graph.countVertices(); i++)
+        beforeAndAfter[i].first.second = graph.getIncomingTrains(i);
+
     std::sort(beforeAndAfter.begin(), beforeAndAfter.end(),[](auto &left, auto &right) {
         return std::abs(left.first.first - left.first.second) > std::abs(right.first.first - right.first.second);
     });
     beforeAndAfter.resize(k);
 
     // create the table
-    fort::utf8_table table;
-
-    table.set_border_style(FT_NICE_STYLE);
-    table.row(0).set_cell_content_text_style(fort::text_style::bold);
-    table.row(0).set_cell_content_fg_color(fort::color::yellow);
-    table << fort::header;
-
-    std::list<string> columnNames = {"N", "Station","Before", "After"};
-
-    auto it = columnNames.begin();
-    for (int i = 0; it != columnNames.end(); ++i){
-        table << *it++;
-        table.column(i).set_cell_text_align(fort::text_align::center);
-    }
-
-    table << fort::endr;
+    fort::utf8_table table = Utils::createTable({"N", "Station","Before", "After"});
 
     int i = 1;
-    for(auto& p: beforeAndAfter){
+    for (auto& p: beforeAndAfter)
         table << i++ << graph[p.second].getName() << p.first.first << p.first.second << fort::endr;
-    }
 
     cout << table.to_string();
 }
@@ -844,21 +733,7 @@ void Helpy::determineAffectedStations(){
  * @param station considered station
 */
 std::vector<Edge*> Helpy::printEdges(int station){
-    fort::utf8_table table;
-    table.set_border_style(FT_NICE_STYLE);
-    table.row(0).set_cell_content_text_style(fort::text_style::bold);
-    table.row(0).set_cell_content_fg_color(fort::color::yellow);
-    table << fort::header;
-
-    std::list<string> columnNames = {"N", "Source","Destination"};
-
-    auto it = columnNames.begin();
-    for (int i = 0; it != columnNames.end(); ++i){
-        table << *it++;
-        table.column(i).set_cell_text_align(fort::text_align::center);
-    }
-
-    table << fort::endr;
+    fort::utf8_table table = Utils::createTable({"N", "Source", "Destination"});
 
     int i = 0;
     std::vector<Edge*> edges;
@@ -866,29 +741,29 @@ std::vector<Edge*> Helpy::printEdges(int station){
         edges.push_back(e);
         table << i++ << graph[station].getName() << graph[e->getDest()].getName() << fort::endr;
     }
+
     std::cout << table.to_string();
     return edges;
 }
-
 
 /**
  * @brief changes the considered railway network while preserving the original network
 */
 void Helpy::changeRailwayNetwork(){
     std::list<std::pair<int,int>> edgesToRem;
+
     while(true){
         int station = stationIDs[readStation()];
         std::vector<Edge*> edges = printEdges(station);
         readInputFromTable(edgesToRem, edges, station);
-        std::cout << "Would you like to select more edges (y/n): \n" << std::endl;
+        cout << "Would you like to select more edges (y/n): \n" << endl;
         std::string s; std::cin >> s;
         if(s == "y" || s == "yes") continue;
         break;
-
     }
 
     *original = graph;
-    graph = graph.subGraph(edgesToRem);
+    graph = graph.getSubgraph(edgesToRem);
 }
 
 /**
@@ -900,7 +775,7 @@ void Helpy::changeRailwaySources(){
     // ADD
     cout << BREAK;
     cout << "Please type the " << BOLD << "names" << RESET << " of the " << YELLOW << "sources" << RESET
-         << " you would like to " << GREEN << "add" << RESET << ", separated by a semicolon (ex: A;B;...)." << endl
+         << " you would like to " << GREEN << "add" << RESET << ", separated by a semicolon (ex: Src A;Src B;...)." << endl
          << "If you do not wish to add any new source, simply type a semicolon and press Enter." << endl << endl;
 
     string line; getline(std::cin >> std::ws, line);
@@ -913,13 +788,13 @@ void Helpy::changeRailwaySources(){
         if (stationIDs.find(temp) == stationIDs.end())
             continue;
 
-        railwaySources.insert(stationIDs[temp]);
+        graph.fullPicture &= !railwaySources.insert(stationIDs[temp]).second;
     }
 
     // REMOVE
     cout << BREAK;
     cout << "Please type the " << BOLD << "names" << RESET << " of the " << YELLOW << "sources" << RESET
-         << " you would like to " << RED << "remove" << RESET << ", separated by a semicolon (ex: A;B;...)." << endl
+         << " you would like to " << RED << "remove" << RESET << ", separated by a semicolon (ex: Src A;Src B;...)." << endl
          << "If you do not wish to remove any source, simply type a semicolon and press Enter." << endl << endl;
 
     getline(std::cin >> std::ws, line);
@@ -932,7 +807,7 @@ void Helpy::changeRailwaySources(){
         if (stationIDs.find(temp) == stationIDs.end())
             continue;
 
-        railwaySources.erase(stationIDs[temp]);
+        graph.fullPicture &= !railwaySources.erase(stationIDs[temp]);
     }
 }
 
@@ -945,7 +820,7 @@ void Helpy::changeRailwaySinks(){
     // ADD
     cout << BREAK;
     cout << "Please type the " << BOLD << "names" << RESET << " of the " << YELLOW << "sinks" << RESET
-         << " you would like to " << GREEN << "add" << RESET << ", separated by a semicolon (ex: A;B;...)." << endl
+         << " you would like to " << GREEN << "add" << RESET << ", separated by a semicolon (ex: Sink A;Sink B;...)." << endl
          << "If you do not wish to add any new sink, simply type a semicolon and press Enter." << endl << endl;
 
     string line; getline(std::cin >> std::ws, line);
@@ -958,13 +833,13 @@ void Helpy::changeRailwaySinks(){
         if (stationIDs.find(temp) == stationIDs.end())
             continue;
 
-        railwaySinks.insert(stationIDs[temp]);
+        graph.fullPicture &= !railwaySinks.insert(stationIDs[temp]).second;
     }
 
     // REMOVE
     cout << BREAK;
     cout << "Please type the " << BOLD << "names" << RESET << " of the " << YELLOW << "sinks" << RESET
-         << " you would like to " << RED << "remove" << RESET << ", separated by a comma (ex: A;B;...)." << endl
+         << " you would like to " << RED << "remove" << RESET << ", separated by a comma (ex: Sink A;Sink B;...)." << endl
          << "If you do not wish to remove any sink, simply type a semicolon and press Enter." << endl << endl;
 
     getline(std::cin >> std::ws, line);
@@ -977,6 +852,6 @@ void Helpy::changeRailwaySinks(){
         if (stationIDs.find(temp) == stationIDs.end())
             continue;
 
-        railwaySinks.erase(stationIDs[temp]);
+        graph.fullPicture &= !railwaySinks.erase(stationIDs[temp]);
     }
 }

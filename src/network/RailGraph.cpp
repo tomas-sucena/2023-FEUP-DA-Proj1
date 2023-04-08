@@ -3,6 +3,45 @@
 #include <algorithm>
 #include <map>
 
+/**
+ * @brief computes the maximum amount of trains that can circulate (i.e. max flow), considering the entire railway network
+ * @complexity O(|V| * |E|^2)
+ */
+void RailGraph::getFullPicture() {
+    if (fullPicture) return;
+    fullPicture = true;
+
+    // create the super source
+    UGraph::addVertex();
+    int superSource = countVertices();
+
+    for (int src : networkSources)
+        (*this)[superSource].out.push_back(new Edge(superSource, src, INF, true));
+
+    // create the super sink
+    UGraph::addVertex();
+    int superSink = countVertices();
+
+    for (int sink : networkSinks)
+        (*this)[sink].out.push_back(new Edge(sink, superSink, INF, true));
+
+    // compute the maximum flow of the entire network
+    maximumFlow(superSource, superSink);
+
+    // remove the super sink
+    vertices.pop_back();
+
+    for (int sink : networkSinks)
+        (*this)[sink].out.pop_back();
+
+    // remove the super source
+    vertices.pop_back();
+}
+
+/**
+ * @brief creates a new RailGraph object
+ * @param n number of vertices (i.e. Stations) the RailGraph will be initialized with
+ */
 RailGraph::RailGraph(int n) : UGraph(n), fullPicture(false) {
     servicePrices["STANDARD"] = 2;
     servicePrices["ALFA PENDULAR"] = 4;
@@ -61,63 +100,19 @@ Station& RailGraph::operator[](int index){
     return (Station&) Graph::operator[](index);
 }
 
-/**
- * @brief computes the maximum amount of trains that can circulate (i.e. max flow), considering the entire railway network
- * @complexity O(|V| * |E|^2)
- */
-void RailGraph::getFullPicture() {
-    if (fullPicture) return;
-    fullPicture = true;
+RailGraph RailGraph::getSubgraph(const list<std::pair<int, int>>& edgesList) {
+    RailGraph sub = *this;
 
-    // create the super source
-    UGraph::addVertex();
-    int superSource = countVertices();
-    
-    for (int src : networkSources)
-        UGraph::addEdge(superSource, src, INF);
+    for (auto& p : edgesList){
+        for (auto e: sub[p.first].outEdges()){
+            if (e->getDest() != p.second) continue;
 
-    // create the super sink
-    UGraph::addVertex();
-    int superSink = countVertices();
-
-    for (int sink : networkSinks)
-        UGraph::addEdge(sink, superSink, INF);
-
-    // compute the maximum flow of the entire network
-    maximumFlow(superSource, superSink);
-
-    removeVertex(superSink);
-    removeVertex(superSource);
-}
-
-RailGraph RailGraph::subGraph(const list<std::pair<int, int>>& edgesList) {
-    RailGraph copy = *this;
-    for(auto i : edgesList){
-        for(auto e: copy[i.first].outEdges()){
-            if(e->getDest() == i.second){
-                e->valid = false;
-                break;
-            }
+            e->valid = false;
+            break;
         }
     }
-    return copy;
-}
 
-double RailGraph::reducedConnectivity(int start, int end, RailGraph sub) {
-    return sub.edmondsKarp(start, end);
-}
-
-std::vector<std::pair<int, int>> RailGraph::mostAffected(int k) {
-    std::vector<std::pair<int, int>> out;
-    getFullPicture();
-    for(int i = 1; i < vertices.size(); i++){
-        out.emplace_back(i, (*this)[i].inDegree());
-    }
-    std::sort(out.begin(), out.end(), [](auto &left, auto &right) {
-        return left.second < right.second;
-    });
-    out.resize(k);
-    return out;
+    return sub;
 }
 
 /**
@@ -252,6 +247,26 @@ std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxFlow
     return busiestPairs;
 }
 
+double RailGraph::getIncomingTrains(int index, fort::utf8_table* table){
+    double flow = 0;
+    getFullPicture();
+
+    // create the table
+    if (table != nullptr) *table = Utils::createTable({"Station", "Service", "Trains"});
+
+    // compute the flow
+    for (const Edge* e : (*this)[index].inEdges()){
+        flow += e->getFlow();
+
+        if (table == nullptr) continue;
+
+        auto r = (Railway*) e;
+        *table << (*this)[r->getSrc()].getName() << r->getService() << r->getFlow() << fort::endr;
+    }
+
+    return flow;
+}
+
 /**
  * @brief computes the minimum cost paths between two Stations
  * @param src index of the source Station
@@ -275,6 +290,8 @@ std::list<Path> RailGraph::getMinimumCostPaths(int src, int dest){
 
     while (!q.empty()){
         int curr = q.front();
+        q.pop();
+
         if (curr == dest) continue; // destination reached
 
         for (const Edge* e : (*this)[curr].out){
@@ -297,7 +314,6 @@ std::list<Path> RailGraph::getMinimumCostPaths(int src, int dest){
             q.push(next);
         }
 
-        q.pop();
         allPaths.pop_front();
     }
 
