@@ -16,7 +16,6 @@ private:
 
     // for searching
     uSet<int> networkSources, networkSinks;
-    uSet<std::string> stationNames;
     uMap<std::string, std::list<Railway*>> districtRailways, municipalityRailways;
 
 /* CONSTRUCTOR */
@@ -28,7 +27,6 @@ private:
     void getFullPicture();
 
 public:
-    void addVertex(Vertex* v = nullptr) override;
     bool addEdge(int src, int dest, double weight = 1, std::string service = "STANDARD", bool valid = true);
     Station& operator[](int index) override;
     RailGraph getSubgraph(const list<std::pair<int, int>>& edgesList);
@@ -36,10 +34,10 @@ public:
     std::list<std::pair<string, double>> getBusiestStations(int k);
     std::list<std::pair<string, double>> getBusiestDistricts(int k);
     std::list<std::pair<string, double>> getBusiestMunicipalities(int k);
-    std::list<std::pair<int, int>> getBusiestStationPairs(double& maxFlow);
+    std::list<std::pair<int, int>> getBusiestStationPairs(double& maxTrains);
 
     double getIncomingTrains(int index, fort::utf8_table* table = nullptr);
-    std::list<Path> getMinimumCostPaths(int src, int dest);
+    std::list<Path> getMinimumCostPaths(int src, int sink, double& maxTrains, double& totalCost);
 };
 
 #endif //DA_TRAINS_RAILGRAPH_H

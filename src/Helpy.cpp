@@ -420,9 +420,16 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
 }
 
 void Helpy::printPath(Path& p){
-    fort::utf8_table table = Utils::createTable({"Source", "Destination", "Service"});
+    fort::utf8_table table = Utils::createTable({"N", "Source", "Destination", "Capacity", "Service"});
 
-    //for ()
+    int i = 1;
+    for (const Edge* e : p){
+        auto r = (Railway*) e;
+        table << i++ << stationNames[r->getSrc()] << stationNames[r->getDest()] << r->getWeight() << r->getService()
+              << fort::endr;
+    }
+
+    cout << table.to_string();
 }
 
 double Helpy::getTrainsBetweenStations(int src, int sink){
@@ -437,15 +444,20 @@ double Helpy::getTrainsBetweenStations(int src, int sink){
 
     // display the minimum cost paths
     cout << BREAK;
-    std::list<Path> paths = graph.getMinimumCostPaths(src, sink);
+
+    double maxTrains, totalCost;
+    std::list<Path> paths = graph.getMinimumCostPaths(src, sink, maxTrains, totalCost);
+
+    cout << "These are the results of my search:" << endl;
 
     int optionNum = 1;
     for (Path& p : paths){
-        cout << endl << endl << BOLD << YELLOW << "OPTION #" << optionNum++ << RESET << endl << endl;
+        cout << endl << BOLD << YELLOW << "OPTION #" << optionNum++ << RESET << endl << endl;
         printPath(p);
     }
 
-    return 0;
+    cout << endl << "Total cost: " << totalCost << "€" << endl << endl;
+    return maxTrains;
 }
 
 /**
@@ -666,7 +678,6 @@ void Helpy::calculateMaximumTrains(){
 
                 maxTrains = getTrainsBetweenStations(stationA, stationB);
 
-                cout << BREAK;
                 cout << "The maximum number of trains that can simultaneously travel between "
                      << graph[stationA].getName() << " and " << graph[stationB].getName() << " is " << BOLD
                      << YELLOW << maxTrains << RESET << '.' << endl;

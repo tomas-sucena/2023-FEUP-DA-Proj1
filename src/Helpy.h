@@ -41,7 +41,7 @@ private:
     void guided_mode();
     bool process_command(string& s1, string& s2, string& s3);
 
-    static void printPath(Path& p);
+    void printPath(Path& p);
     double getTrainsBetweenStations(int src, int sink);
 
     // commands

@@ -48,20 +48,6 @@ RailGraph::RailGraph(int n) : UGraph(n), fullPicture(false) {
 }
 
 /**
- * adds a vertex (i.e. a Station) to the RailGraph
- * @param v Station that will be added
- */
-void RailGraph::addVertex(Vertex* v){
-    auto s = (Station*) v;
-    if (s == nullptr || !stationNames.insert(s->getName()).second){
-        delete s;
-        return;
-    }
-
-    UGraph::addVertex(v);
-}
-
-/**
  * adds an edge (i.e. a Railway) to the RailGraph
  * @param src index of the source Station
  * @param dest index of the destination Station
@@ -216,10 +202,10 @@ std::list<std::pair<string, double>> RailGraph::getBusiestMunicipalities(int k){
 /**
  * computes, from all pairs of stations, which ones require the most amount of trains when taking full advantage of the
  * existing network capacity
- * @param maxFlow attribute whose value will be the maximum number of trains that the pairs of stations require
+ * @param maxTrains attribute whose value will be the maximum number of trains that the pairs of stations require
  * @return list containing the pairs of stations that require the most amount of trains
  */
-std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxFlow){
+std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxTrains){
     std::list<std::pair<int, int>> busiestPairs;
 
     reset = false;
@@ -232,11 +218,11 @@ std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxFlow
             resetEdges();
 
             double flow = maximumFlow(i, j);
-            if (flow < maxFlow) continue;
+            if (flow < maxTrains) continue;
 
-            if (flow > maxFlow){
+            if (flow > maxTrains){
                 busiestPairs.clear();
-                maxFlow = flow;
+                maxTrains = flow;
             }
 
             busiestPairs.emplace_back(i, j);
@@ -270,12 +256,14 @@ double RailGraph::getIncomingTrains(int index, fort::utf8_table* table){
 /**
  * @brief computes the minimum cost paths between two Stations
  * @param src index of the source Station
- * @param dest index of the destination Station
+ * @param sink index of the destination Station
+ * @param maxTrains variable that will store the maximum amount of trains that can simultaneously travel between the stations
+ * @param totalCost variable that will store the total cost of maintaining the paths
  * @return list containing the minimum cost paths
  */
-std::list<Path> RailGraph::getMinimumCostPaths(int src, int dest){
+std::list<Path> RailGraph::getMinimumCostPaths(int src, int sink, double& maxTrains, double& totalCost){
     // compute the maximum flow
-    edmondsKarp(src, dest);
+    maxTrains = edmondsKarp(src, sink);
 
     // compute the cheapest paths
     std::list<Path> allPaths = {Path(src)};
@@ -283,7 +271,7 @@ std::list<Path> RailGraph::getMinimumCostPaths(int src, int dest){
     (*this)[src].valid = false;
     (*this)[src].dist = 0;
 
-    if (src == dest) return allPaths; // special case
+    if (src == sink) return allPaths; // special case
 
     std::queue<int> q;
     q.push(src);
@@ -292,7 +280,7 @@ std::list<Path> RailGraph::getMinimumCostPaths(int src, int dest){
         int curr = q.front();
         q.pop();
 
-        if (curr == dest) continue; // destination reached
+        if (curr == sink) continue; // destination reached
 
         for (const Edge* e : (*this)[curr].out){
             auto r = (const Railway*) e;
@@ -300,10 +288,13 @@ std::list<Path> RailGraph::getMinimumCostPaths(int src, int dest){
             
             int next = r->getDest();
             Path path = allPaths.front();
+
             double cost = r->getFlow() * servicePrices[r->getService()];
 
             (*this)[next].dist = std::min((*this)[curr].dist + cost, (*this)[next].dist);
-            (*this)[next].valid &= ((*this)[next].dist <= (*this)[dest].dist);
+            totalCost = (*this)[next].dist;
+
+            (*this)[next].valid &= ((*this)[next].dist <= (*this)[sink].dist);
 
             path.push_back(r);
             allPaths.push_back(path);
@@ -319,7 +310,7 @@ std::list<Path> RailGraph::getMinimumCostPaths(int src, int dest){
 
     // eliminate the paths that don't end in the destination
     for (auto it = allPaths.begin(); it != allPaths.end();){
-        if (it->back()->getDest() == dest){
+        if (it->back()->getDest() == sink){
             ++it;
             continue;
         }
@@ -327,5 +318,6 @@ std::list<Path> RailGraph::getMinimumCostPaths(int src, int dest){
         it = allPaths.erase(it);
     }
 
+    totalCost = (*this)[sink].dist;
     return allPaths;
 }
