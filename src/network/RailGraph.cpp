@@ -63,6 +63,10 @@ bool RailGraph::addEdge(int src, int dest, double weight, std::string service, b
     auto r = new Railway(src, dest, weight, valid, std::move(service));
     if (!UGraph::addEdge(r)) return false;
 
+    // set the reverse edges
+    r->reverse = (Railway*) (*this)[src].inEdges().back();
+    r->reverse->reverse = r;
+
     // update the districts map
     std::string srcDistrict = (*this)[src].getDistrict();
     std::string destDistrict = (*this)[dest].getDistrict();
@@ -89,14 +93,23 @@ Station& RailGraph::operator[](int index){
     return (Station&) Graph::operator[](index);
 }
 
-RailGraph RailGraph::getSubgraph(const list<std::pair<int, int>>& edgesList) {
+/**
+ * @brief returns a railway network with reduced connectivity (i.e. a few Railways are invalid)
+ * @complexity O(|E|^2)
+ * @param edgesToRemove list containing the indices of the source and destination vertices of the edges that will be invalidated
+ * @return railway network with reduced connectivity (subgraph)
+ */
+RailGraph RailGraph::getSubgraph(const list<std::pair<int, int>>& edgesToRemove) {
     RailGraph sub = *this;
 
-    for (auto& p : edgesList){
+    for (auto& p : edgesToRemove){
         for (auto e: sub[p.first].outEdges()){
-            if (e->getDest() != p.second) continue;
+            auto r = (Railway*) e;
+            if (r->getDest() != p.second) continue;
 
-            e->valid = false;
+            r->valid = false;
+            r->reverse->valid = false;
+
             break;
         }
     }

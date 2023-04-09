@@ -29,7 +29,7 @@ private:
 public:
     bool addEdge(int src, int dest, double weight = 1, std::string service = "STANDARD", bool valid = true);
     Station& operator[](int index) override;
-    RailGraph getSubgraph(const list<std::pair<int, int>>& edgesList);
+    RailGraph getSubgraph(const list<std::pair<int, int>>& edgesToRemove);
 
     std::list<std::pair<string, double>> getBusiestStations(int k);
     std::list<std::pair<string, double>> getBusiestDistricts(int k);

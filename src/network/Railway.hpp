@@ -12,11 +12,12 @@ class Railway : public Edge {
 /* ATTRIBUTES */
 private:
     std::string service;
+    Railway* reverse;
 
 /* CONSTRUCTOR */
 public:
     Railway(int src, int dest, double weight, bool valid, std::string service)
-        : Edge(src, dest, weight, valid), service(std::move(service)) {}
+        : Edge(src, dest, weight, valid), service(std::move(service)), reverse(nullptr) {}
 
 /* METHODS */
 public:
