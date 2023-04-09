@@ -61,7 +61,7 @@ private:
     void changeRailwayNetwork();
     void changeRailwaySources();
     void changeRailwaySinks();
-    void readInputFromTable(std::list<std::pair<int,int>>& edges, std::vector<Edge*> ref, int station);
+    static void readInputFromTable(std::list<std::pair<int,int>>& edges, std::vector<Edge*> ref, int station);
 
 public:
     void terminal();

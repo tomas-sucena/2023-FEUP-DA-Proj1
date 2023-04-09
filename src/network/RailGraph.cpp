@@ -255,6 +255,7 @@ double RailGraph::getIncomingTrains(int index, fort::utf8_table* table){
 
 /**
  * @brief computes the minimum cost paths between two Stations
+ * @brief O(|V| * |E|^2)
  * @param src index of the source Station
  * @param sink index of the destination Station
  * @param maxTrains variable that will store the maximum amount of trains that can simultaneously travel between the stations
@@ -263,61 +264,48 @@ double RailGraph::getIncomingTrains(int index, fort::utf8_table* table){
  */
 std::list<Path> RailGraph::getMinimumCostPaths(int src, int sink, double& maxTrains, double& totalCost){
     // compute the maximum flow
-    maxTrains = edmondsKarp(src, sink);
+    std::list<Path> paths;
+    maximumFlow(src, sink, &paths);
 
-    // compute the cheapest paths
-    std::list<Path> allPaths = {Path(src)};
+    // compute the flow and cost of each path
+    totalCost = INF;
+    std::list<std::pair<double, double>> flowAndCost;
 
-    (*this)[src].valid = false;
-    (*this)[src].dist = 0;
+    for (auto it = paths.begin(); it != paths.end();){
+        double pathFlow = INF;
+        double pathCost = 0;
 
-    if (src == sink) return allPaths; // special case
+        for (const Edge* e : *it){
+            auto r = (Railway*) e;
 
-    std::queue<int> q;
-    q.push(src);
-
-    while (!q.empty()){
-        int curr = q.front();
-        q.pop();
-
-        if (curr == sink) continue; // destination reached
-
-        for (const Edge* e : (*this)[curr].out){
-            auto r = (const Railway*) e;
-            if (r->getFlow() <= 0) continue;
-            
-            int next = r->getDest();
-            Path path = allPaths.front();
-
-            double cost = r->getFlow() * servicePrices[r->getService()];
-
-            (*this)[next].dist = std::min((*this)[curr].dist + cost, (*this)[next].dist);
-            totalCost = (*this)[next].dist;
-
-            (*this)[next].valid &= ((*this)[next].dist <= (*this)[sink].dist);
-
-            path.push_back(r);
-            allPaths.push_back(path);
-
-            if (!(*this)[next].valid || !r->valid) continue;
-            (*this)[next].valid = false;
-
-            q.push(next);
+            pathFlow = std::min(r->getFlow(), pathFlow);
+            pathCost += servicePrices[r->getService()];
         }
 
-        allPaths.pop_front();
-    }
-
-    // eliminate the paths that don't end in the destination
-    for (auto it = allPaths.begin(); it != allPaths.end();){
-        if (it->back()->getDest() == sink){
-            ++it;
+        if ((pathCost *= pathFlow) > totalCost){
+            it = paths.erase(it);
             continue;
         }
 
-        it = allPaths.erase(it);
+        totalCost = pathCost;
+        flowAndCost.emplace_back(pathFlow, pathCost);
+
+        ++it;
     }
 
-    totalCost = (*this)[sink].dist;
-    return allPaths;
+    // delete the paths that don't have minimum cost
+    auto it = paths.begin();
+
+    for (auto& p : flowAndCost){
+        if (p.second <= totalCost){
+            maxTrains += p.first;
+            ++it;
+
+            continue;
+        }
+
+        it = paths.erase(it);
+    }
+
+    return paths;
 }

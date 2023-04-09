@@ -17,8 +17,8 @@ using std::endl;
 std::map<string, int> Helpy::command = {{"display", 1}, {"print", 1}, {"show", 1}, {"calculate", 2},
                                         {"determine", 2}, {"change", 3}, {"switch", 3}, {"toggle", 3}};
 
-std::map<string, int> Helpy::target = {{"all", 4}, {"data", 6}, {"maximum", 8},{"affected", 10},
-                                       {"operating", 12},{"busiest", 14},{"railway",16}};
+std::map<string, int> Helpy::target = {{"all", 4}, {"data", 6}, {"maximum", 8},{"max", 8}, {"affected", 10},
+                                       {"operating", 12}, {"busiest", 14}, {"railway",16}};
 
 std::map<string, int> Helpy::what = {{"directory", 17}, {"dir", 17}, {"train", 20}, {"trains", 20},
                                      {"station", 23},{"stations", 23},{"district", 23},{"districts", 23},
@@ -168,10 +168,9 @@ void Helpy::readInputFromTable(std::list<std::pair<int,int>>& edges, std::vector
 
     for (string temp; getline(line_, temp, ',');){
         int k = std::stoi(temp);
+        if (k > size) continue;
 
-        if(k > size) return; //preguiça depois faz-se
-
-        edges.push_back({station, ref[k]->getDest()});
+        edges.emplace_back(station, ref[k]->getDest());
     }
 }
 
@@ -456,7 +455,7 @@ double Helpy::getTrainsBetweenStations(int src, int sink){
         printPath(p);
     }
 
-    cout << endl << "Total cost: " << totalCost << "€" << endl << endl;
+    cout << endl << YELLOW << "* Total cost: " << RESET << totalCost << "€" << endl << endl;
     return maxTrains;
 }
 
@@ -749,6 +748,8 @@ std::vector<Edge*> Helpy::printEdges(int station){
     int i = 0;
     std::vector<Edge*> edges;
     for(auto e: graph[station].outEdges()){
+        if (!e->valid) continue;
+
         edges.push_back(e);
         table << i++ << graph[station].getName() << graph[e->getDest()].getName() << fort::endr;
     }
