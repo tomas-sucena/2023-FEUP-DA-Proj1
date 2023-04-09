@@ -262,16 +262,16 @@ double RailGraph::getIncomingTrains(int index, fort::utf8_table* table){
  * @param src index of the source Station
  * @param sink index of the destination Station
  * @param maxTrains variable that will store the maximum amount of trains that can simultaneously travel between the stations
- * @param totalCost variable that will store the total cost of maintaining the paths
+ * @param minCost variable that will store the cost of the minimum cost paths
  * @return list containing the minimum cost paths
  */
-std::list<Path> RailGraph::getMinimumCostPaths(int src, int sink, double& maxTrains, double& totalCost){
+std::list<Path> RailGraph::getMinimumCostPaths(int src, int sink, double& maxTrains, double& minCost){
     // compute the maximum flow
     std::list<Path> paths;
     maximumFlow(src, sink, &paths);
 
     // compute the flow and cost of each path
-    totalCost = INF;
+    minCost = INF;
     std::list<std::pair<double, double>> flowAndCost;
 
     for (auto it = paths.begin(); it != paths.end();){
@@ -285,12 +285,12 @@ std::list<Path> RailGraph::getMinimumCostPaths(int src, int sink, double& maxTra
             pathCost += servicePrices[r->getService()];
         }
 
-        if ((pathCost *= pathFlow) > totalCost){
+        if (pathCost > minCost){
             it = paths.erase(it);
             continue;
         }
 
-        totalCost = pathCost;
+        minCost = pathCost;
         flowAndCost.emplace_back(pathFlow, pathCost);
 
         ++it;
@@ -300,14 +300,13 @@ std::list<Path> RailGraph::getMinimumCostPaths(int src, int sink, double& maxTra
     auto it = paths.begin();
 
     for (auto& p : flowAndCost){
-        if (p.second <= totalCost){
-            maxTrains += p.first;
-            ++it;
-
+        if (p.second > minCost){
+            it = paths.erase(it);
             continue;
         }
 
-        it = paths.erase(it);
+        maxTrains += p.first;
+        ++it;
     }
 
     return paths;

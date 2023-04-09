@@ -441,13 +441,13 @@ double Helpy::getTrainsBetweenStations(int src, int sink){
     string res = readInput(instr.str(), options);
 
     // compute the max flow
-    double maxTrains, totalCost = 0;
+    double maxTrains, minCost = 0;
     std::list<Path> paths;
 
     if (res == "no")
         maxTrains = graph.maximumFlow(src, sink, &paths);
     else
-        paths = graph.getMinimumCostPaths(src, sink, maxTrains, totalCost);
+        paths = graph.getMinimumCostPaths(src, sink, maxTrains, minCost);
 
     // display the augmenting paths
     cout << BREAK;
@@ -460,7 +460,10 @@ double Helpy::getTrainsBetweenStations(int src, int sink){
     }
 
     cout << endl;
-    if (res != "no") cout << YELLOW << "* Total cost: " << RESET << totalCost << "€" << endl << endl;
+    if (res == "yes"){
+        cout << YELLOW << "* Minimum cost: " << RESET << minCost << "€" << endl;
+        cout << YELLOW << "* Total cost: " << RESET << minCost * maxTrains << "€" << endl << endl;
+    }
 
     return maxTrains;
 }

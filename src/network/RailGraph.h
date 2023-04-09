@@ -37,7 +37,7 @@ public:
     std::list<std::pair<int, int>> getBusiestStationPairs(double& maxTrains);
 
     double getIncomingTrains(int index, fort::utf8_table* table = nullptr);
-    std::list<Path> getMinimumCostPaths(int src, int sink, double& maxTrains, double& totalCost);
+    std::list<Path> getMinimumCostPaths(int src, int sink, double& maxTrains, double& minCost);
 };
 
 #endif //DA_TRAINS_RAILGRAPH_H
