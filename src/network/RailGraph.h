@@ -13,6 +13,7 @@ class RailGraph : public UGraph {
 private:
     bool fullPicture;
     uMap<std::string, double> servicePrices;
+    std::list<Edge*> underMaintenance;
 
     // for searching
     uSet<int> railwaySources, railwaySinks;
@@ -25,11 +26,13 @@ public:
 /* METHODS */
 private:
     void getFullPicture();
+    void reduceConnectivity(const list<Edge*>& edgesToRemove);
 
 public:
     bool addEdge(int src, int dest, double weight = 1, std::string service = "STANDARD", bool valid = true);
     Station& operator[](int index) override;
-    RailGraph getSubgraph(const list<std::pair<int, int>>& edgesToRemove);
+    void reduceConnectivity(const list<std::pair<int, int>>& edgesToRemove);
+    void restoreNetwork();
 
     std::list<std::pair<string, double>> getBusiestStations(int k);
     std::list<std::pair<string, double>> getBusiestDistricts(int k);

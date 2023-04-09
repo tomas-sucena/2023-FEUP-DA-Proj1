@@ -11,9 +11,10 @@ using std::endl;
 #define YELLOW  "\033[33m"
 #define BOLD    "\033[1m"
 
-// line breaks
+// text
 #define DASHED_LINE "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
 #define BREAK       endl << YELLOW << DASHED_LINE << RESET << endl << endl
+#define YES_NO      " (" << GREEN << "Yes" << RESET << '/' << RED << "No" << RESET << ')'
 
 std::map<string, int> Helpy::command = {{"display", 1}, {"print", 1}, {"show", 1}, {"calculate", 2},
                                         {"calc", 2}, {"determine", 2}, {"change", 3}, {"switch", 3}};
@@ -30,7 +31,7 @@ std::map<string, int> Helpy::what = {{"directory", 17}, {"dir", 17}, {"train", 2
 /**
  * @brief creates a new Helpy object
  */
-Helpy::Helpy() : reader("../data", ';'), original(nullptr) {
+Helpy::Helpy() : reader("../data", ';') {
     fetchData();
 }
 
@@ -42,8 +43,6 @@ void Helpy::fetchData() {
     graph = reader.read();
     graph.railwaySources = reader.getRailwaySources();
     graph.railwaySinks = reader.getRailwaySinks();
-
-    original = &graph;
 
     // fill the data structures
     stationIDs = reader.getStationIDs();
@@ -284,7 +283,7 @@ b1: cout << BREAK;
     }
 
     cout << BREAK;
-    cout << "Anything else? (Yes/No)" << endl << endl;
+    cout << "Anything else?" << YES_NO << endl << endl;
 
     s1.clear(); getline(std::cin >> std::ws, s1);
     Utils::lowercase(s1);
@@ -395,8 +394,8 @@ b2: cout << BREAK;
         goto b2;
     }
 
-t2: cout << BREAK;
-    cout << "Anything else? (Yes/No)" << endl << endl;
+    cout << BREAK;
+    cout << "Anything else?" << YES_NO << endl << endl;
 
     s1.clear(); getline(std::cin >> std::ws, s1);
     Utils::lowercase(s1);
@@ -528,7 +527,7 @@ void Helpy::printPath(Path& p){
 double Helpy::getTrainsBetweenStations(int src, int sink){
     std::ostringstream instr;
     instr << "Would you like to consider " << BOLD << "only" << RESET << " the paths that ensure " << YELLOW
-          << "minimum cost" << RESET << " for the company? (Yes/no)";
+          << "minimum cost" << RESET << " for the company?" << YES_NO;
 
     uSet<string> options = {"yes", "no"};
     string res = readInput(instr.str(), options);
@@ -566,24 +565,9 @@ double Helpy::getTrainsBetweenStations(int src, int sink){
  * @complexity O(|V|)
  */
 void Helpy::displayAllStations(){
-    fort::utf8_table table;
+    fort::utf8_table table = Utils::createTable({"N", "Name", "District", "Municipality", "Township", "Line"});
 
-    table.set_border_style(FT_NICE_STYLE);
-    table.row(0).set_cell_content_text_style(fort::text_style::bold);
-    table.row(0).set_cell_content_fg_color(fort::color::yellow);
-    table << fort::header;
-
-    std::list<string> columnNames = {"N", "Name", "District", "Municipality", "Township", "Line"};
-
-    auto it = columnNames.begin();
-    for (int i = 0; it != columnNames.end(); ++i){
-        table << *it++;
-        table.column(i).set_cell_text_align(fort::text_align::center);
-    }
-
-    table << fort::endr;
-
-    for(int i = 1; i <= graph.countVertices(); i++){
+    for (int i = 1; i <= graph.countVertices(); i++){
         table << i << graph[i].getName() << graph[i].getDistrict() << graph[i].getMunicipality() << graph[i].getTownship()
               << graph[i].getLine() << fort::endr;
     }
@@ -694,8 +678,11 @@ void Helpy::displayRailwaySources(){
     for (int i : graph.railwaySources)
         railwaySources.push_back(stationNames[i]);
 
+    std::ostringstream instr;
+    instr << "Would you like to order the stations alphabetically?" << YES_NO;
+
     uSet<string> options = {"yes", "no"};
-    string res = readInput("Would you like to order the stations alphabetically? (Yes/no)", options);
+    string res = readInput(instr.str(), options);
 
     if (res == "yes") railwaySources.sort();
 
@@ -718,8 +705,11 @@ void Helpy::displayRailwaySinks(){
     for (int i : graph.railwaySinks)
         railwaySinks.push_back(stationNames[i]);
 
+    std::ostringstream instr;
+    instr << "Would you like to order the stations alphabetically?" << YES_NO;
+
     uSet<string> options = {"yes", "no"};
-    string res = readInput("Would you like to order the stations alphabetically? (Yes/no)", options);
+    string res = readInput(instr.str(), options);
 
     if (res == "yes") railwaySinks.sort();
 
@@ -828,17 +818,26 @@ void Helpy::determineAffectedStations(){
 
     int k = (int) readNumber(instr.str());
 
-    std::vector<std::pair<std::pair<double,double>, int>> beforeAndAfter;
+    // compute the flow in the reduced network
+    std::vector<std::pair<int, std::pair<double, double>>> beforeAndAfter;
 
     for(int i = 1; i <= graph.countVertices(); i++)
-        beforeAndAfter.push_back({{original->getIncomingTrains(i), 0}, i});
+        beforeAndAfter.push_back({i, {0, graph.getIncomingTrains(i)}});
+
+    // compute the flow in the original network
+    std::list<Edge*> removedEdges = graph.underMaintenance;
+    graph.restoreNetwork();
 
     for(int i = 1; i <= graph.countVertices(); i++)
-        beforeAndAfter[i].first.second = graph.getIncomingTrains(i);
+        beforeAndAfter[i].second.first = graph.getIncomingTrains(i);
 
-    std::sort(beforeAndAfter.begin(), beforeAndAfter.end(),[](auto &left, auto &right) {
-        return std::abs(left.first.first - left.first.second) > std::abs(right.first.first - right.first.second);
+    graph.reduceConnectivity(removedEdges);
+
+    // order the results
+    std::sort(beforeAndAfter.begin(), beforeAndAfter.end(),[](auto &lhs, auto &rhs) {
+        return std::abs(lhs.second.first - lhs.second.second) > std::abs(rhs.second.first - rhs.second.second);
     });
+
     beforeAndAfter.resize(k);
 
     // create the table
@@ -846,7 +845,7 @@ void Helpy::determineAffectedStations(){
 
     int i = 1;
     for (auto& p: beforeAndAfter)
-        table << i++ << graph[p.second].getName() << p.first.first << p.first.second << fort::endr;
+        table << i++ << graph[p.first].getName() << p.second.first << p.second.second << fort::endr;
 
     cout << table.to_string();
 }
@@ -855,20 +854,36 @@ void Helpy::determineAffectedStations(){
  * @brief changes the considered railway network while preserving the original network
 */
 void Helpy::changeRailwayNetwork(){
-    std::list<std::pair<int,int>> edgesToRem;
+    // check if the user is already working with a reduced network
+    if (!graph.underMaintenance.empty()){
+        std::ostringstream instr;
+        instr << "It seems that you are currently working with a railway network of " << YELLOW << "reduced connectivity"
+              << RESET << '.' << endl << "Would you like to revert to the " << BOLD << "original" << RESET << " network?"
+              << YES_NO;
+
+        uSet<string> options = {"yes", "no"};
+        string choice = readInput(instr.str(), options);
+
+        if (choice == "yes"){
+            graph.restoreNetwork();
+            return;
+        }
+    }
+
+    // reduce the current network
+    std::list<std::pair<int,int>> edgesToRemove;
 
     while(true){
         int station = stationIDs[readLocation()];
         std::vector<Edge*> edges = printEdges(station);
-        readInputFromTable(edgesToRem, edges, station);
+        readInputFromTable(edgesToRemove, edges, station);
         cout << "Would you like to select more edges (y/n): \n" << endl;
         std::string s; std::cin >> s;
-        if(s == "y" || s == "yes") continue;
+        if (s == "y" || s == "yes") continue;
         break;
     }
 
-    *original = graph;
-    graph = graph.getSubgraph(edgesToRem);
+    graph.reduceConnectivity(edgesToRemove);
 }
 
 /**

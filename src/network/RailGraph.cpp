@@ -4,6 +4,18 @@
 #include <map>
 
 /**
+ * @brief creates a new RailGraph object
+ * @param n number of vertices (i.e. stations) the RailGraph will be initialized with
+ */
+RailGraph::RailGraph(int n) : UGraph(n), fullPicture(false) {
+    servicePrices["STANDARD"] = 2;
+    servicePrices["ALFA PENDULAR"] = 4;
+
+    // ensure invalid Railways are not reset
+    autoResetSettings.edgeValid = false;
+}
+
+/**
  * @brief computes the maximum amount of trains that can circulate (i.e. max flow), considering the entire railway network
  * @complexity O(|V| * |E|^2)
  */
@@ -39,21 +51,25 @@ void RailGraph::getFullPicture() {
 }
 
 /**
- * @brief creates a new RailGraph object
- * @param n number of vertices (i.e. Stations) the RailGraph will be initialized with
+ * @brief reduces the connectivity of the railway network by invalidating certain edges (i.e. railways)
+ * @complexity O(|E|)
+ * @param edgesToRemove list containing the edges that will be invalidated
  */
-RailGraph::RailGraph(int n) : UGraph(n), fullPicture(false) {
-    servicePrices["STANDARD"] = 2;
-    servicePrices["ALFA PENDULAR"] = 4;
+void RailGraph::reduceConnectivity(const list<Edge*>& edgesToRemove){
+    underMaintenance = edgesToRemove;
 
-    // ensure invalid Railways are not reset
-    autoResetSettings.edgeValid = false;
+    for (Edge* e : underMaintenance){
+        auto r = (Railway*) e;
+
+        r->valid = false;
+        r->reverse->valid = false;
+    }
 }
 
 /**
  * adds an edge (i.e. a Railway) to the RailGraph
- * @param src index of the source Station
- * @param dest index of the destination Station
+ * @param src index of the source station
+ * @param dest index of the destination station
  * @param weight number of trains that can simultaneously travel on the new Railway
  * @param service type of service that is provided in the Railway
  * @param valid bool indicating if the Railway should be considered in the algorithms
@@ -85,7 +101,7 @@ bool RailGraph::addEdge(int src, int dest, double weight, std::string service, b
 }
 
 /**
- * @brief accesses a vertex (i.e. a Station) of the Graph and allows modifications to be made to it
+ * @brief accesses a vertex (i.e. a station) of the Graph and allows modifications to be made to it
  * @param index index of the vertex
  * @return reference of the vertex
  */
@@ -94,27 +110,34 @@ Station& RailGraph::operator[](int index){
 }
 
 /**
- * @brief returns a railway network with reduced connectivity (i.e. a few Railways are invalid)
+ * @brief reduces the connectivity of the railway network by invalidating certain edges (i.e. railways)
  * @complexity O(|E|^2)
  * @param edgesToRemove list containing the indices of the source and destination vertices of the edges that will be invalidated
- * @return railway network with reduced connectivity (subgraph)
  */
-RailGraph RailGraph::getSubgraph(const list<std::pair<int, int>>& edgesToRemove) {
-    RailGraph sub = *this;
-
+void RailGraph::reduceConnectivity(const list<std::pair<int, int>>& edgesToRemove){
     for (auto& p : edgesToRemove){
-        for (auto e: sub[p.first].outEdges()){
+        for (auto e: (*this)[p.first].outEdges()){
             auto r = (Railway*) e;
             if (r->getDest() != p.second) continue;
 
             r->valid = false;
             r->reverse->valid = false;
 
+            underMaintenance.push_back(r);
             break;
         }
     }
+}
 
-    return sub;
+/**
+ * @brief restores the original railway network
+ * @complexity O(|E|)
+ */
+void RailGraph::restoreNetwork(){
+    for (auto it = underMaintenance.begin(); it != underMaintenance.end();){
+        (*it)->valid = true;
+        it = underMaintenance.erase(it);
+    }
 }
 
 /**
@@ -249,6 +272,12 @@ std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxTrai
     return busiestPairs;
 }
 
+/**
+ * @brief computes the maximum number of trains that can simultaneously arrive at a station
+ * @param index index of the station
+ * @param table fort::utf8_table which will store information about the incoming trains
+ * @return maximum number of trains that can simultaneously arrive at the station
+ */
 double RailGraph::getIncomingTrains(int index, fort::utf8_table* table){
     double flow = 0;
     getFullPicture();
@@ -270,10 +299,10 @@ double RailGraph::getIncomingTrains(int index, fort::utf8_table* table){
 }
 
 /**
- * @brief computes the minimum cost paths between two Stations
+ * @brief computes the minimum cost paths between two stations
  * @brief O(|V| * |E|^2)
- * @param src index of the source Station
- * @param sink index of the destination Station
+ * @param src index of the source station
+ * @param sink index of the destination station
  * @param maxTrains variable that will store the maximum amount of trains that can simultaneously travel between the stations
  * @param minCost variable that will store the price of maintaining each minimum cost path
  * @return list containing the minimum cost paths

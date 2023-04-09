@@ -14,10 +14,7 @@ private:
     uMap<string, int> stationIDs;
     uMap<int, string> stationNames;
 
-    // graphs
     RailGraph graph;
-    RailGraph* original;
-
     uMap<string, uSet<string>> districts, municipalities, trainLines;
 
     // maps used to process commands
