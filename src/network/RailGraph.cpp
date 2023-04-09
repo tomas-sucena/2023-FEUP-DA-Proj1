@@ -45,6 +45,9 @@ void RailGraph::getFullPicture() {
 RailGraph::RailGraph(int n) : UGraph(n), fullPicture(false) {
     servicePrices["STANDARD"] = 2;
     servicePrices["ALFA PENDULAR"] = 4;
+
+    // ensure invalid Railways are not reset
+    autoResetSettings.edgeValid = false;
 }
 
 /**
@@ -208,7 +211,7 @@ std::list<std::pair<string, double>> RailGraph::getBusiestMunicipalities(int k){
 std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxTrains){
     std::list<std::pair<int, int>> busiestPairs;
 
-    reset = false;
+    autoReset = false;
     fullPicture = false;
 
     resetAll();
@@ -229,7 +232,7 @@ std::list<std::pair<int, int>> RailGraph::getBusiestStationPairs(double& maxTrai
         }
     }
 
-    reset = true;
+    autoReset = true;
     return busiestPairs;
 }
 
@@ -238,7 +241,7 @@ double RailGraph::getIncomingTrains(int index, fort::utf8_table* table){
     getFullPicture();
 
     // create the table
-    if (table != nullptr) *table = Utils::createTable({"Station", "Service", "Trains"});
+    if (table != nullptr) *table = Utils::createTable({"Station", "Service", "Capacity", "Trains"});
 
     // compute the flow
     for (const Edge* e : (*this)[index].inEdges()){
@@ -247,7 +250,7 @@ double RailGraph::getIncomingTrains(int index, fort::utf8_table* table){
         if (table == nullptr) continue;
 
         auto r = (Railway*) e;
-        *table << (*this)[r->getSrc()].getName() << r->getService() << r->getFlow() << fort::endr;
+        *table << (*this)[r->getSrc()].getName() << r->getService() << r->getWeight() << r->getFlow() << fort::endr;
     }
 
     return flow;

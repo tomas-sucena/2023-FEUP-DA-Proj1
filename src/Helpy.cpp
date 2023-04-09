@@ -12,7 +12,8 @@ using std::endl;
 #define BOLD    "\033[1m"
 
 // line breaks
-#define BREAK   endl << YELLOW << "- - - - - - - - - - - - - - - - - - - - - - - - - -" << RESET << endl << endl
+#define DASHED_LINE "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
+#define BREAK       endl << YELLOW << DASHED_LINE << RESET << endl << endl
 
 std::map<string, int> Helpy::command = {{"display", 1}, {"print", 1}, {"show", 1}, {"calculate", 2},
                                         {"determine", 2}, {"change", 3}, {"switch", 3}, {"toggle", 3}};
@@ -31,7 +32,7 @@ std::map<string, int> Helpy::what = {{"directory", 17}, {"dir", 17}, {"train", 2
  * @param graph graph that contains all the data regarding Stations and Trips between stations
  * @param ids unordered map that contains information regarding stations (for search purposes)
  */
-Helpy::Helpy() : reader("../data", ';') {
+Helpy::Helpy() : reader("../data", ';'), original(nullptr) {
     fetchData();
 }
 
@@ -419,12 +420,12 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
 }
 
 void Helpy::printPath(Path& p){
-    fort::utf8_table table = Utils::createTable({"N", "Source", "Destination", "Capacity", "Service"});
+    fort::utf8_table table = Utils::createTable({"N", "Source", "Destination", "Service", "Capacity"});
 
     int i = 1;
     for (const Edge* e : p){
         auto r = (Railway*) e;
-        table << i++ << stationNames[r->getSrc()] << stationNames[r->getDest()] << r->getWeight() << r->getService()
+        table << i++ << stationNames[r->getSrc()] << stationNames[r->getDest()] << r->getService() << r->getWeight()
               << fort::endr;
     }
 
@@ -439,23 +440,28 @@ double Helpy::getTrainsBetweenStations(int src, int sink){
     uSet<string> options = {"yes", "no"};
     string res = readInput(instr.str(), options);
 
-    if (res == "no") return graph.maximumFlow(src, sink);
+    // compute the max flow
+    double maxTrains, totalCost = 0;
+    std::list<Path> paths;
 
-    // display the minimum cost paths
+    if (res == "no")
+        maxTrains = graph.maximumFlow(src, sink, &paths);
+    else
+        paths = graph.getMinimumCostPaths(src, sink, maxTrains, totalCost);
+
+    // display the augmenting paths
     cout << BREAK;
-
-    double maxTrains, totalCost;
-    std::list<Path> paths = graph.getMinimumCostPaths(src, sink, maxTrains, totalCost);
-
     cout << "These are the results of my search:" << endl;
 
     int optionNum = 1;
     for (Path& p : paths){
-        cout << endl << BOLD << YELLOW << "OPTION #" << optionNum++ << RESET << endl << endl;
+        cout << endl << BOLD << YELLOW << "PATH #" << optionNum++ << RESET << endl;
         printPath(p);
     }
 
-    cout << endl << YELLOW << "* Total cost: " << RESET << totalCost << "€" << endl << endl;
+    cout << endl;
+    if (res != "no") cout << YELLOW << "* Total cost: " << RESET << totalCost << "€" << endl << endl;
+
     return maxTrains;
 }
 
@@ -677,9 +683,9 @@ void Helpy::calculateMaximumTrains(){
 
                 maxTrains = getTrainsBetweenStations(stationA, stationB);
 
-                cout << "The maximum number of trains that can simultaneously travel between "
-                     << graph[stationA].getName() << " and " << graph[stationB].getName() << " is " << BOLD
-                     << YELLOW << maxTrains << RESET << '.' << endl;
+                cout << "The maximum number of trains that can simultaneously travel between " << BOLD
+                     << stationNames[stationA] << RESET << " and " << BOLD << stationNames[stationB] << RESET
+                     << " is " << BOLD << YELLOW << maxTrains << RESET << '.' << endl;
 
                 return;
             }
@@ -690,9 +696,12 @@ void Helpy::calculateMaximumTrains(){
                 maxTrains = graph.getIncomingTrains(station, &table);
 
                 cout << BREAK;
-                cout << table.to_string() << endl << endl;
-                cout << "The maximum number of trains that can simultaneously arrive at " << graph[station].getName()
-                     << " is " << BOLD << YELLOW << maxTrains << RESET << '.' << endl;
+                cout << "These are all the stations that are connected to " << BOLD << stationNames[station] << RESET
+                     << ':' << endl << endl;
+
+                cout << table.to_string() << endl;
+                cout << "The maximum number of trains that can simultaneously arrive at " << BOLD << stationNames[station]
+                     << RESET << " is " << BOLD << YELLOW << maxTrains << RESET << '.' << endl;
 
                 return;
             }
