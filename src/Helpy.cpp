@@ -318,21 +318,24 @@ b2: cout << BREAK;
     std::istringstream s_;
 
     std::cin >> s1; Utils::lowercase(s1);
-    cout << BREAK;
 
     if (s1 == "display"){
+        cout << BREAK;
         cout << "* All" << endl;
         cout << "* Busiest" << endl;
         cout << "* Data" << endl;
         cout << "* Railway" << endl;
     }
     else if (s1 == "calculate"){
+        cout << BREAK;
         cout << "* Maximum" << endl;
     }
     else if (s1 == "determine"){
+        cout << BREAK;
         cout << "* Affected" << endl;
     }
     else if (s1 == "change"){
+        cout << BREAK;
         cout << "* Data" << endl;
         cout << "* Railway" << endl;
     }
@@ -347,24 +350,28 @@ b2: cout << BREAK;
     cout << endl;
 
     std::cin >> s2; Utils::lowercase(s2);
-    cout << BREAK;
 
     if (s2 == "all" || s2 == "affected"){
+        cout << BREAK;
         cout << "* Stations" << endl;
     }
     else if (s2 == "data"){
+        cout << BREAK;
         cout << "* Directory" << endl;
     }
     else if (s2 == "maximum"){
+        cout << BREAK;
         cout << "* Trains" << endl;
     }
     else if (s2 == "busiest"){
+        cout << BREAK;
         cout << "* Stations" << endl;
         cout << "* Districts" << endl;
         cout << "* Municipalities" << endl;
         cout << "* Pairs" << endl;
     }
     else if (s2 == "railway"){
+        cout << BREAK;
         cout << "* Network" << endl;
         cout << "* Sources" << endl;
         cout << "* Sinks" << endl;
@@ -756,11 +763,29 @@ void Helpy::calculateMaximumTrains(){
 
         switch (n){
             case (1) : {
-                int stationA = stationIDs[readLocation()];
-                int stationB = stationIDs[readLocation()];
+                // source
+                instr.clear(); instr.str("");
+                instr << "With which of the following would you like to define the " << BOLD << YELLOW << "source"
+                      << RESET << "?" << endl << endl
+                      << "* Name" << endl
+                      << "* District" << endl
+                      << "* Municipality" << endl
+                      << "* Line";
+
+                int stationA = stationIDs[readLocation(instr.str())];
+
+                // destination
+                instr.clear(); instr.str("");
+                instr << "With which of the following would you like to define the " << BOLD << YELLOW << "destination"
+                      << RESET << "?" << endl << endl
+                      << "* Name" << endl
+                      << "* District" << endl
+                      << "* Municipality" << endl
+                      << "* Line";
+
+                int stationB = stationIDs[readLocation(instr.str())];
 
                 maxTrains = getTrainsBetweenStations(stationA, stationB);
-
                 cout << "The maximum number of trains that can simultaneously travel between " << BOLD
                      << stationNames[stationA] << RESET << " and " << BOLD << stationNames[stationB] << RESET
                      << " is " << BOLD << YELLOW << maxTrains << RESET << '.' << endl;
