@@ -15,14 +15,14 @@ void RailGraph::getFullPicture() {
     UGraph::addVertex();
     int superSource = countVertices();
 
-    for (int src : networkSources)
+    for (int src : railwaySources)
         (*this)[superSource].out.push_back(new Edge(superSource, src, INF, true));
 
     // create the super sink
     UGraph::addVertex();
     int superSink = countVertices();
 
-    for (int sink : networkSinks)
+    for (int sink : railwaySinks)
         (*this)[sink].out.push_back(new Edge(sink, superSink, INF, true));
 
     // compute the maximum flow of the entire network
@@ -31,7 +31,7 @@ void RailGraph::getFullPicture() {
     // remove the super sink
     vertices.pop_back();
 
-    for (int sink : networkSinks)
+    for (int sink : railwaySinks)
         (*this)[sink].out.pop_back();
 
     // remove the super source
@@ -262,7 +262,7 @@ double RailGraph::getIncomingTrains(int index, fort::utf8_table* table){
  * @param src index of the source Station
  * @param sink index of the destination Station
  * @param maxTrains variable that will store the maximum amount of trains that can simultaneously travel between the stations
- * @param minCost variable that will store the cost of the minimum cost paths
+ * @param minCost variable that will store the price of maintaining each minimum cost path
  * @return list containing the minimum cost paths
  */
 std::list<Path> RailGraph::getMinimumCostPaths(int src, int sink, double& maxTrains, double& minCost){

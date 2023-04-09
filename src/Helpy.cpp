@@ -16,7 +16,7 @@ using std::endl;
 #define BREAK       endl << YELLOW << DASHED_LINE << RESET << endl << endl
 
 std::map<string, int> Helpy::command = {{"display", 1}, {"print", 1}, {"show", 1}, {"calculate", 2},
-                                        {"determine", 2}, {"change", 3}, {"switch", 3}, {"toggle", 3}};
+                                        {"calc", 2}, {"determine", 2}, {"change", 3}, {"switch", 3}};
 
 std::map<string, int> Helpy::target = {{"all", 4}, {"data", 6}, {"maximum", 8},{"max", 8}, {"affected", 10},
                                        {"operating", 12}, {"busiest", 14}, {"railway",16}};
@@ -28,9 +28,7 @@ std::map<string, int> Helpy::what = {{"directory", 17}, {"dir", 17}, {"train", 2
                                      {"network", 36}};
 
 /**
- * @brief Construct a new Helpy:: Helpy object
- * @param graph graph that contains all the data regarding Stations and Trips between stations
- * @param ids unordered map that contains information regarding stations (for search purposes)
+ * @brief creates a new Helpy object
  */
 Helpy::Helpy() : reader("../data", ';'), original(nullptr) {
     fetchData();
@@ -42,17 +40,21 @@ Helpy::Helpy() : reader("../data", ';'), original(nullptr) {
 void Helpy::fetchData() {
     // create the graph
     graph = reader.read();
-    graph.networkSources = reader.getNetworkSources();
-    graph.networkSinks = reader.getNetworkSinks();
+    graph.railwaySources = reader.getRailwaySources();
+    graph.railwaySinks = reader.getRailwaySinks();
 
     original = &graph;
+
+    // fill the data structures
     stationIDs = reader.getStationIDs();
     stationNames = reader.getStationNames();
+    districts = reader.getDistricts();
+    municipalities = reader.getMunicipalities();
+    trainLines = reader.getTrainLines();
 }
 
 /**
  * @brief reads a line of user input
- * @complexity O(n^2)
  * @param instruction the instruction that will be displayed before prompting the user to type
  * @param options the options that will be displayed to the user
  * @return read input
@@ -89,7 +91,6 @@ string Helpy::readInput(const string& instruction, uSet<string>& options){
 
 /**
  * @brief reads a number from the console
- * @complexity O(n^2)
  * @param instruction the instruction that will be displayed before prompting the user to input the number
  * @return the number inputted by the user
  */
@@ -128,6 +129,26 @@ double Helpy::readNumber(const string &instruction){
     return res;
 }
 
+void Helpy::readInputFromTable(std::list<std::pair<int,int>>& edges, std::vector<Edge*> ref, int station){
+    int size = (int) ref.size();
+    std::cout << std::endl << YELLOW << BREAK << RESET;
+    std::cout << "Please type the " << BOLD << "indexes" << RESET << " of the " << YELLOW << "edges" << RESET << " you would like to " << RED << "remove"
+              << RESET << ", separated by a comma (ex: 0,1,2,7,...).\n";
+
+    // countries to USE
+    string line; getline(std::cin, line);
+    line += ",";
+
+    std::istringstream line_(line);
+
+    for (string temp; getline(line_, temp, ',');){
+        int k = std::stoi(temp);
+        if (k > size) continue;
+
+        edges.emplace_back(station, ref[k]->getDest());
+    }
+}
+
 /**
  * @brief reads the name of a Station from the console
  * @complexity O(n)
@@ -155,47 +176,89 @@ string Helpy::readStation(){
     return station;
 }
 
-void Helpy::readInputFromTable(std::list<std::pair<int,int>>& edges, std::vector<Edge*> ref, int station){
-    int size = (int) ref.size();
-    std::cout << std::endl << YELLOW << BREAK << RESET;
-    std::cout << "Please type the " << BOLD << "indexes" << RESET << " of the " << YELLOW << "edges" << RESET << " you would like to " << RED << "remove"
-        << RESET << ", separated by a comma (ex: 0,1,2,7,...).\n";
+/**
+ * @brief reads a location, prints the stations that are situated there and prompts the user to choose one of them
+ * @param instruction instruction that will be displayed in the console
+ * @return name of the station chosen by the user
+ */
+string Helpy::readLocation(const string& instruction){
+    uSet<string> options = {"name", "district", "municipality", "line"};
+    string choice = readInput(instruction, options);
 
-    // countries to USE
-    string line; getline(std::cin, line);
-    line += ",";
+    if (choice == "name")
+        return readStation();
 
-    std::istringstream line_(line);
-
-    for (string temp; getline(line_, temp, ',');){
-        int k = std::stoi(temp);
-        if (k > size) continue;
-
-        edges.emplace_back(station, ref[k]->getDest());
+    uMap<string, uSet<string>> locations;
+    if (choice == "district"){
+        locations = districts;
     }
+    else if (choice == "municipality"){
+        locations = municipalities;
+    }
+    else{
+        choice = "train line";
+        locations = trainLines;
+    }
+
+    // read the station
+    string station;
+
+    while (true){
+        cout << BREAK;
+        cout << "Please type the " << BOLD << "name" << RESET << " of the " << YELLOW << choice << RESET << ':'
+             << endl << endl;
+
+        string line; getline(std::cin >> std::ws, line);
+        Utils::lowercase(line);
+
+        if (locations.find(line) == locations.end()){
+            cout << BREAK;
+            cout << RED << "Invalid input! The " << choice << " you entered does not exist. "
+                 << "Please, try again." << RESET << endl;
+
+            continue;
+        }
+
+        uSet<string> stations = locations[line];
+
+        if (stations.size() == 1){
+            station = *stations.begin();
+            break;
+        }
+
+        Utils::properName(line);
+
+        cout << BREAK;
+        cout << BOLD << line << RESET << " has the following " << YELLOW << "stations" << RESET << ':' << endl << endl;
+
+        for (const string& s : stations)
+            cout << "* " << s << endl;
+
+        station = readStation();
+        break;
+    }
+
+    return station;
 }
 
 /**
- * @brief allows the user to choose the mode of the UI
- * @complexity O(n^2)
+ * @brief reads a location, prints the stations that are situated there and prompts the user to choose one of them
+ * @return name of the station chosen by the user
  */
-void Helpy::terminal(){
-    string instruction = "Which mode would you prefer?\n\n"
-                         "* Guided\n"
-                         "* Advanced";
-    uSet<string> options = {"guided", "advanced", "adv"};
+string Helpy::readLocation(){
+    std::ostringstream instr;
+    instr << "With which of the following would you like to define the desired " << YELLOW << "station"
+          << RESET << "?" << endl << endl
+          << "* Name" << endl
+          << "* District" << endl
+          << "* Municipality" << endl
+          << "* Line";
 
-    if (readInput(instruction, options) == "guided"){
-        guided_mode();
-    }
-    else{
-        advanced_mode();
-    }
+    return readLocation(instr.str());
 }
 
 /**
  * @brief executes the advanced mode of the UI
- * @complexity O(1)
  */
 void Helpy::advanced_mode(){
 b1: cout << BREAK;
@@ -240,7 +303,6 @@ e1: cout << BREAK;
 
 /**
  * @brief executes the guided mode of the UI
- * @complexity O(1)
  */
 void Helpy::guided_mode(){
 b2: cout << BREAK;
@@ -262,20 +324,16 @@ b2: cout << BREAK;
         cout << "* All" << endl;
         cout << "* Busiest" << endl;
         cout << "* Data" << endl;
-        cout << "* Operating" << endl;
         cout << "* Railway" << endl;
     }
     else if (s1 == "calculate"){
         cout << "* Maximum" << endl;
-        cout << "* Most" << endl;
     }
     else if (s1 == "determine"){
         cout << "* Affected" << endl;
-        cout << "* Busiest" << endl;
     }
     else if (s1 == "change"){
         cout << "* Data" << endl;
-        cout << "* Operating" << endl;
         cout << "* Railway" << endl;
     }
     else if (s1 == "quit" || s1 == "die"){
@@ -297,7 +355,7 @@ b2: cout << BREAK;
     else if (s2 == "data"){
         cout << "* Directory" << endl;
     }
-    else if (s2 == "maximum" || s2 == "most"){
+    else if (s2 == "maximum"){
         cout << "* Trains" << endl;
     }
     else if (s2 == "busiest"){
@@ -305,9 +363,6 @@ b2: cout << BREAK;
         cout << "* Districts" << endl;
         cout << "* Municipalities" << endl;
         cout << "* Pairs" << endl;
-    }
-    else if (s2 == "operating"){
-        cout << "* Mode" << endl;
     }
     else if (s2 == "railway"){
         cout << "* Network" << endl;
@@ -352,7 +407,6 @@ e2: cout << "See you next time!" << endl << endl;
 
 /**
  * @brief processes the commands that were inputted
- * @complexity O(n^2 * log(n))
  * @param s1 first word of the command
  * @param s2 second word of the command
  * @param s3 third word of the command
@@ -419,6 +473,31 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
     return true;
 }
 
+/**
+ * @brief prints the outgoing edges of a station
+ * @param station index of the station
+*/
+std::vector<Edge*> Helpy::printEdges(int station){
+    fort::utf8_table table = Utils::createTable({"N", "Source", "Destination"});
+
+    int i = 0;
+    std::vector<Edge*> edges;
+    for(auto e: graph[station].outEdges()){
+        if (!e->valid) continue;
+
+        edges.push_back(e);
+        table << i++ << graph[station].getName() << graph[e->getDest()].getName() << fort::endr;
+    }
+
+    std::cout << table.to_string();
+    return edges;
+}
+
+/**
+ * @brief prints a table with the information of a path
+ * @complexity O(|E|)
+ * @param p path to be printed
+ */
 void Helpy::printPath(Path& p){
     fort::utf8_table table = Utils::createTable({"N", "Source", "Destination", "Service", "Capacity"});
 
@@ -432,6 +511,13 @@ void Helpy::printPath(Path& p){
     cout << table.to_string();
 }
 
+/**
+ * @brief computes the maximum amount of trains that can simultaneously travel between two stations
+ * @complexity O(|V| * |E|^2)
+ * @param src index of the source station
+ * @param sink index of the sink station
+ * @return maximum amount of trains that can simultaneously travel between the stations
+ */
 double Helpy::getTrainsBetweenStations(int src, int sink){
     std::ostringstream instr;
     instr << "Would you like to consider " << BOLD << "only" << RESET << " the paths that ensure " << YELLOW
@@ -470,6 +556,7 @@ double Helpy::getTrainsBetweenStations(int src, int sink){
 
 /**
  * @brief displays all the stations that are part of the railway network
+ * @complexity O(|V|)
  */
 void Helpy::displayAllStations(){
     fort::utf8_table table;
@@ -500,7 +587,7 @@ void Helpy::displayAllStations(){
 }
 
 /**
- * @brief display the directory where the data files are stored
+ * @brief displays the directory where the data files are stored
  */
 void Helpy::displayDataDirectory(){
     cout << BREAK;
@@ -509,7 +596,7 @@ void Helpy::displayDataDirectory(){
 
 /**
  * @brief computes the top-k stations/districts/municipalities with the most amount of trains circulating in them
- * @complexity O(n^2)
+ * @complexity O(|V| * |E|^2)
  * @param s what to display
 */
 void Helpy::displayBusiest(string& s){
@@ -591,12 +678,13 @@ void Helpy::displayBusiestPairs(){
 
 /**
  * @brief displays the stations which are the sources of the railway network
+ * @complexity O(|V|)
  */
 void Helpy::displayRailwaySources(){
     fort::utf8_table table = Utils::createTable({"N", "Station"});
 
     std::list<string> railwaySources;
-    for (int i : graph.networkSources)
+    for (int i : graph.railwaySources)
         railwaySources.push_back(stationNames[i]);
 
     uSet<string> options = {"yes", "no"};
@@ -614,12 +702,13 @@ void Helpy::displayRailwaySources(){
 
 /**
  * @brief displays the stations which are the sinks of the railway network
+ * @brief 0(|V|)
  */
 void Helpy::displayRailwaySinks(){
     fort::utf8_table table = Utils::createTable({"N", "Station"});
 
     std::list<string> railwaySinks;
-    for (int i : graph.networkSinks)
+    for (int i : graph.railwaySinks)
         railwaySinks.push_back(stationNames[i]);
 
     uSet<string> options = {"yes", "no"};
@@ -633,13 +722,6 @@ void Helpy::displayRailwaySinks(){
     cout << BREAK;
     cout << "The railway network has the following " << BOLD << YELLOW << "sinks" << RESET << ':' << endl << endl;
     cout << table.to_string();
-}
-
-/**
- * @brief displays the "company's" operating mode
- * @complexity O(n^2)
-*/
-void Helpy::displayOperatingMode(){
 }
 
 /**
@@ -658,14 +740,7 @@ void Helpy::changeDataDirectory(){
 }
 
 /**
- * @brief changes the operating mode of the RailGraph
- * @complexity O(1)
-*/
-void Helpy::changeOperatingMode(){
-}
-
-/**
- * @brief calculates either the maximum amount of trains that can simultaneously travel between two stations or the
+ * @brief calculates either the maximum amount of trains that can simultaneously travel between two stations OR the
  * maximum amount of trains that simultaneously arrive at a station
  * @complexity O(|V| * |E|^2)
  */
@@ -681,8 +756,8 @@ void Helpy::calculateMaximumTrains(){
 
         switch (n){
             case (1) : {
-                int stationA = stationIDs[readStation()];
-                int stationB = stationIDs[readStation()];
+                int stationA = stationIDs[readLocation()];
+                int stationB = stationIDs[readLocation()];
 
                 maxTrains = getTrainsBetweenStations(stationA, stationB);
 
@@ -693,7 +768,7 @@ void Helpy::calculateMaximumTrains(){
                 return;
             }
             case (2) : {
-                int station = stationIDs[readStation()];
+                int station = stationIDs[readLocation()];
 
                 fort::utf8_table table;
                 maxTrains = graph.getIncomingTrains(station, &table);
@@ -719,6 +794,7 @@ void Helpy::calculateMaximumTrains(){
 
 /**
  * @brief determines the top-k most affected stations per considered segment removed from the graph
+ * @complexity O(|V| * |E|^2)
 */
 void Helpy::determineAffectedStations(){
     std::ostringstream instr;
@@ -751,33 +827,13 @@ void Helpy::determineAffectedStations(){
 }
 
 /**
- * @brief Prints the out edges of a station
- * @param station considered station
-*/
-std::vector<Edge*> Helpy::printEdges(int station){
-    fort::utf8_table table = Utils::createTable({"N", "Source", "Destination"});
-
-    int i = 0;
-    std::vector<Edge*> edges;
-    for(auto e: graph[station].outEdges()){
-        if (!e->valid) continue;
-
-        edges.push_back(e);
-        table << i++ << graph[station].getName() << graph[e->getDest()].getName() << fort::endr;
-    }
-
-    std::cout << table.to_string();
-    return edges;
-}
-
-/**
  * @brief changes the considered railway network while preserving the original network
 */
 void Helpy::changeRailwayNetwork(){
     std::list<std::pair<int,int>> edgesToRem;
 
     while(true){
-        int station = stationIDs[readStation()];
+        int station = stationIDs[readLocation()];
         std::vector<Edge*> edges = printEdges(station);
         readInputFromTable(edgesToRem, edges, station);
         cout << "Would you like to select more edges (y/n): \n" << endl;
@@ -794,7 +850,7 @@ void Helpy::changeRailwayNetwork(){
  * @brief changes the stations that are the railway sources
  */
 void Helpy::changeRailwaySources(){
-    uSet<int>& railwaySources = graph.networkSources;
+    uSet<int>& railwaySources = graph.railwaySources;
 
     // ADD
     cout << BREAK;
@@ -839,7 +895,7 @@ void Helpy::changeRailwaySources(){
  * @brief changes the stations that are the railway sinks
  */
 void Helpy::changeRailwaySinks(){
-    uSet<int>& railwaySinks = graph.networkSinks;
+    uSet<int>& railwaySinks = graph.railwaySinks;
 
     // ADD
     cout << BREAK;
@@ -878,4 +934,16 @@ void Helpy::changeRailwaySinks(){
 
         graph.fullPicture &= !railwaySinks.erase(stationIDs[temp]);
     }
+}
+
+/**
+ * @brief allows the user to choose the mode of the UI
+ */
+void Helpy::terminal(){
+    string instruction = "Which mode would you prefer?\n\n"
+                         "* Guided\n"
+                         "* Advanced";
+    uSet<string> options = {"guided", "advanced", "adv"};
+
+    (readInput(instruction, options) == "guided") ? guided_mode() : advanced_mode();
 }

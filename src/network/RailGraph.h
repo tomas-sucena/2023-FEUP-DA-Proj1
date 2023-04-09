@@ -15,7 +15,7 @@ private:
     uMap<std::string, double> servicePrices;
 
     // for searching
-    uSet<int> networkSources, networkSinks;
+    uSet<int> railwaySources, railwaySinks;
     uMap<std::string, std::list<Railway*>> districtRailways, municipalityRailways;
 
 /* CONSTRUCTOR */

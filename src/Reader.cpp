@@ -2,8 +2,6 @@
 
 #include "network/Station.hpp"
 
-using std::string;
-
 /**
  * @brief creates a Reader object
  * @param path path to the directory where the files to be read are
@@ -19,7 +17,8 @@ Reader::Reader(string path, char valueDelim, char lineDelim) : valueDelim(valueD
 RailGraph Reader::read(){
     // reset the data structures
     stationIDs.clear();
-    networkSinks.clear(); networkSources.clear();
+    railwaySinks.clear(); railwaySources.clear();
+    districts.clear(); municipalities.clear(); trainLines.clear();
 
     RailGraph graph;
     readStations(graph);
@@ -88,8 +87,17 @@ void Reader::readStations(RailGraph& graph){
         graph.addVertex(new Station(name, district, municipality, township, trainLine));
         stationNames[i] = name;
 
-        networkSources.insert(i);
-        networkSinks.insert(i);
+        railwaySources.insert(i);
+        railwaySinks.insert(i);
+
+        Utils::lowercase(district);
+        districts[district].insert(name);
+
+        Utils::lowercase(municipality);
+        municipalities[municipality].insert(name);
+
+        Utils::lowercase(trainLine);
+        trainLines[trainLine].insert(name);
     }
     
     reader.close();
@@ -131,8 +139,8 @@ void Reader::readNetwork(RailGraph& graph){
 
         graph.addEdge(stationIDs[stationA], stationIDs[stationB], std::stod(capacity), service);
 
-        networkSources.erase(stationIDs[stationB]);
-        networkSinks.erase(stationIDs[stationA]);
+        railwaySources.erase(stationIDs[stationB]);
+        railwaySinks.erase(stationIDs[stationA]);
     }
 
     reader.close();
@@ -147,10 +155,22 @@ uMap<int, std::string> Reader::getStationNames() const{
     return stationNames;
 }
 
-uSet<int> Reader::getNetworkSources() const{
-    return networkSources;
+uSet<int> Reader::getRailwaySources() const{
+    return railwaySources;
 }
 
-uSet<int> Reader::getNetworkSinks() const{
-    return networkSinks;
+uSet<int> Reader::getRailwaySinks() const{
+    return railwaySinks;
+}
+
+uMap<string, uSet<string>> Reader::getDistricts() const{
+    return districts;
+}
+
+uMap<string, uSet<string>> Reader::getMunicipalities() const{
+    return municipalities;
+}
+
+uMap<string, uSet<string>> Reader::getTrainLines() const{
+    return trainLines;
 }

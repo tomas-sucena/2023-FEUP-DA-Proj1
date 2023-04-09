@@ -18,8 +18,7 @@ private:
     RailGraph graph;
     RailGraph* original;
 
-    uSet<string> districts, municipalities;
-    uMap<string, string> districtStations, municipalityStations;
+    uMap<string, uSet<string>> districts, municipalities, trainLines;
 
     // maps used to process commands
     static std::map<string, int> command, target, what;
@@ -34,34 +33,33 @@ private:
 
     static string readInput(const string& instruction, uSet<string>& options);
     static double readNumber(const string& instruction);
+    static void readInputFromTable(std::list<std::pair<int,int>>& edges, std::vector<Edge*> ref, int station);
     string readStation();
-    string readCity();
+    string readLocation(const string& instruction);
+    string readLocation();
 
     void advanced_mode();
     void guided_mode();
     bool process_command(string& s1, string& s2, string& s3);
 
+    std::vector<Edge*> printEdges(int station);
     void printPath(Path& p);
     double getTrainsBetweenStations(int src, int sink);
 
     // commands
     void displayAllStations();
     void displayDataDirectory();
-    void displayOperatingMode();
     void displayBusiest(string& s);
     void displayBusiestPairs();
     void displayRailwaySources();
     void displayRailwaySinks();
-    std::vector<Edge*> printEdges(int station);
 
     void changeDataDirectory();
-    void changeOperatingMode();
     void calculateMaximumTrains();
     void determineAffectedStations();
     void changeRailwayNetwork();
     void changeRailwaySources();
     void changeRailwaySinks();
-    static void readInputFromTable(std::list<std::pair<int,int>>& edges, std::vector<Edge*> ref, int station);
 
 public:
     void terminal();

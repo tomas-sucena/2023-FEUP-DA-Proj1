@@ -4,18 +4,21 @@
 #include "network/RailGraph.h"
 #include "Utils.hpp"
 
+using std::string;
+
 class Reader {
 /* ATTRIBUTES */
 private:
     // for reading
     std::ifstream reader;
-    std::string path;
+    string path;
     char valueDelim, lineDelim; // delimiters
 
     // data structures
-    uMap<std::string, int> stationIDs;
-    uMap<int, std::string> stationNames;
-    uSet<int> networkSources, networkSinks;
+    uMap<string, int> stationIDs;
+    uMap<int, string> stationNames;
+    uSet<int> railwaySources, railwaySinks;
+    uMap<string, uSet<string>> districts, municipalities, trainLines;
 
 /* CONSTRUCTOR */
 public:
@@ -33,8 +36,11 @@ public:
 
     uMap<std::string, int> getStationIDs() const;
     uMap<int, std::string> getStationNames() const;
-    uSet<int> getNetworkSources() const;
-    uSet<int> getNetworkSinks() const;
+    uSet<int> getRailwaySources() const;
+    uSet<int> getRailwaySinks() const;
+    uMap<string, uSet<string>> getDistricts() const;
+    uMap<string, uSet<string>> getMunicipalities() const;
+    uMap<string, uSet<string>> getTrainLines() const;
 };
 
 #endif //DA_TRAINS_READER_H
