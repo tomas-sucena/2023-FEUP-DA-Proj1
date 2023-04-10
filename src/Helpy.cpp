@@ -920,6 +920,7 @@ void Helpy::changeRailwayNetwork(){
  */
 void Helpy::changeRailwaySources(){
     uSet<int>& railwaySources = graph.railwaySources;
+    uSet<int>& railwaySinks = graph.railwaySinks;
 
     // ADD
     cout << BREAK;
@@ -938,6 +939,7 @@ void Helpy::changeRailwaySources(){
             continue;
 
         graph.fullPicture &= !railwaySources.insert(stationIDs[temp]).second;
+        railwaySinks.erase(stationIDs[temp]);
     }
 
     // REMOVE
@@ -964,6 +966,7 @@ void Helpy::changeRailwaySources(){
  * @brief changes the stations that are the railway sinks
  */
 void Helpy::changeRailwaySinks(){
+    uSet<int>& railwaySources = graph.railwaySources;
     uSet<int>& railwaySinks = graph.railwaySinks;
 
     // ADD
@@ -983,6 +986,7 @@ void Helpy::changeRailwaySinks(){
             continue;
 
         graph.fullPicture &= !railwaySinks.insert(stationIDs[temp]).second;
+        railwaySources.erase(stationIDs[temp]);
     }
 
     // REMOVE
