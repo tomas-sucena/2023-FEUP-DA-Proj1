@@ -1,0 +1,71 @@
+\hypertarget{_helpy_8h_source}{}\doxysection{Helpy.\+h}
+\label{_helpy_8h_source}\index{Helpy.h@{Helpy.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ DA\_TRAINS\_HELPY\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ DA\_TRAINS\_HELPY\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}network/RailGraph.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}Reader.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Utils.hpp"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{using\ }std::string;}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_helpy}{Helpy}}\ \{}
+\DoxyCodeLine{00011\ \textcolor{comment}{/*\ ATTRIBUTES\ */}}
+\DoxyCodeLine{00012\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00013\ \ \ \ \ \mbox{\hyperlink{class_reader}{Reader}}\ reader;}
+\DoxyCodeLine{00014\ \ \ \ \ uMap<string,\ int>\ stationIDs;}
+\DoxyCodeLine{00015\ \ \ \ \ uMap<int,\ string>\ stationNames;}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \ \ \ \ \mbox{\hyperlink{class_rail_graph}{RailGraph}}\ graph;}
+\DoxyCodeLine{00018\ \ \ \ \ uMap<string,\ uSet<string>>\ districts,\ municipalities,\ trainLines;}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{comment}{//\ maps\ used\ to\ process\ commands}}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{static}\ std::map<string,\ int>\ command,\ target,\ what;}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{comment}{/*\ CONSTRUCTOR\ */}}
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ \mbox{\hyperlink{class_helpy_a8bab5605460bfb9911281ba3327df1c2}{Helpy}}();}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{comment}{/*\ METHODS\ */}}
+\DoxyCodeLine{00028\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{void}\ fetchData();}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{string}\ readInput(\textcolor{keyword}{const}\ \textcolor{keywordtype}{string}\&\ instruction,\ uSet<string>\&\ options);}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ readNumber(\textcolor{keyword}{const}\ \textcolor{keywordtype}{string}\&\ instruction);}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ readInputFromTable(std::vector<Edge*>\ ref,\ std::list<Edge*>\&\ edges);}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{string}\ readStation();}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{string}\ readLocation(\textcolor{keyword}{const}\ \textcolor{keywordtype}{string}\&\ instruction);}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{string}\ readLocation();}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{void}\ advanced\_mode();}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{void}\ guided\_mode();}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{bool}\ process\_command(\textcolor{keywordtype}{string}\&\ s1,\ \textcolor{keywordtype}{string}\&\ s2,\ \textcolor{keywordtype}{string}\&\ s3);}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ std::vector<Edge*>\ printEdges(\textcolor{keywordtype}{int}\ station);}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{void}\ printPath(Path\&\ p);}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{double}\ getTrainsBetweenStations(\textcolor{keywordtype}{int}\ src,\ \textcolor{keywordtype}{int}\ sink);}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{comment}{//\ commands}}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{void}\ displayAllStations();}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{void}\ displayDataDirectory();}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{void}\ displayBusiest(\textcolor{keywordtype}{string}\&\ s);}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{void}\ displayBusiestPairs();}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{void}\ displayRailwaySources();}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{void}\ displayRailwaySinks();}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ changeDataDirectory();}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{void}\ calculateMaximumTrains();}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{void}\ determineAffectedStations();}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{void}\ changeRailwayNetwork();}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{void}\ changeRailwaySources();}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{void}\ changeRailwaySinks();}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_helpy_aaa754efec4177b0c763859b5847d10d3}{terminal}}();}
+\DoxyCodeLine{00063\ \};}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

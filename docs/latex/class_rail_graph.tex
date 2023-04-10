@@ -1,0 +1,237 @@
+\hypertarget{class_rail_graph}{}\doxysection{Rail\+Graph Class Reference}
+\label{class_rail_graph}\index{RailGraph@{RailGraph}}
+Inheritance diagram for Rail\+Graph\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_rail_graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_rail_graph_a398d0396eb07a24516bdf37b85053b60}{Rail\+Graph}} (int n=0)
+\begin{DoxyCompactList}\small\item\em creates a new \mbox{\hyperlink{class_rail_graph}{Rail\+Graph}} object \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_rail_graph_a9dca239d93b2dce4cc4eff62c9162c74}{add\+Edge}} (int src, int dest, double weight=1, std\+::string service=\char`\"{}STANDARD\char`\"{}, bool valid=true)
+\item 
+\mbox{\hyperlink{class_station}{Station}} \& \mbox{\hyperlink{class_rail_graph_a0e1002c4b5ec04ccb21f23847710ba05}{operator\mbox{[}$\,$\mbox{]}}} (int index) override
+\begin{DoxyCompactList}\small\item\em accesses a vertex (i.\+e. a station) of the Graph and allows modifications to be made to it \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_rail_graph_a74bd528d59c2bef4b9efeece12ccb0af}{reduce\+Connectivity}} (const list$<$ Edge $\ast$ $>$ \&edges\+To\+Remove)
+\begin{DoxyCompactList}\small\item\em reduces the connectivity of the railway network by invalidating certain edges (i.\+e. railways) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_rail_graph_aa131cbb0d76d59b986b2604bbaa77f1e}{restore\+Network}} ()
+\begin{DoxyCompactList}\small\item\em restores the original railway network \end{DoxyCompactList}\item 
+std\+::list$<$ std\+::pair$<$ string, double $>$ $>$ \mbox{\hyperlink{class_rail_graph_a1e4cc4a2eb5cc7434a8f2927251a13e6}{get\+Busiest\+Stations}} (int k)
+\item 
+std\+::list$<$ std\+::pair$<$ string, double $>$ $>$ \mbox{\hyperlink{class_rail_graph_a0b86a58601b4badcc5cbfcf03c302f61}{get\+Busiest\+Districts}} (int k)
+\item 
+std\+::list$<$ std\+::pair$<$ string, double $>$ $>$ \mbox{\hyperlink{class_rail_graph_a77f4f4777315af471b80c2bf3d5110c7}{get\+Busiest\+Municipalities}} (int k)
+\item 
+std\+::list$<$ std\+::pair$<$ int, int $>$ $>$ \mbox{\hyperlink{class_rail_graph_a2c2afd869f1bd222b23481b5747a0b1e}{get\+Busiest\+Station\+Pairs}} (double \&max\+Trains)
+\item 
+double \mbox{\hyperlink{class_rail_graph_a72f7ebce8b34512c48c1b785926b8059}{get\+Incoming\+Trains}} (int index, \mbox{\hyperlink{fort_8hpp_a508f5a472ab557708969fc946380cfc4}{fort\+::utf8\+\_\+table}} $\ast$table=nullptr)
+\begin{DoxyCompactList}\small\item\em computes the maximum number of trains that can simultaneously arrive at a station \end{DoxyCompactList}\item 
+std\+::list$<$ Path $>$ \mbox{\hyperlink{class_rail_graph_ad8a1cc26c02611547971b2110620860b}{get\+Minimum\+Cost\+Paths}} (int src, int sink, double \&max\+Trains, double \&min\+Cost)
+\begin{DoxyCompactList}\small\item\em computes the minimum cost paths between two stations \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_rail_graph_afa7adfde61b53d32c5a1e49ceeca451b}\label{class_rail_graph_afa7adfde61b53d32c5a1e49ceeca451b}} 
+class {\bfseries Helpy}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_rail_graph_a398d0396eb07a24516bdf37b85053b60}\label{class_rail_graph_a398d0396eb07a24516bdf37b85053b60}} 
+\index{RailGraph@{RailGraph}!RailGraph@{RailGraph}}
+\index{RailGraph@{RailGraph}!RailGraph@{RailGraph}}
+\doxysubsubsection{\texorpdfstring{RailGraph()}{RailGraph()}}
+{\footnotesize\ttfamily Rail\+Graph\+::\+Rail\+Graph (\begin{DoxyParamCaption}\item[{int}]{n = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+creates a new \mbox{\hyperlink{class_rail_graph}{Rail\+Graph}} object 
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & number of vertices (i.\+e. stations) the \mbox{\hyperlink{class_rail_graph}{Rail\+Graph}} will be initialized with \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_rail_graph_a9dca239d93b2dce4cc4eff62c9162c74}\label{class_rail_graph_a9dca239d93b2dce4cc4eff62c9162c74}} 
+\index{RailGraph@{RailGraph}!addEdge@{addEdge}}
+\index{addEdge@{addEdge}!RailGraph@{RailGraph}}
+\doxysubsubsection{\texorpdfstring{addEdge()}{addEdge()}}
+{\footnotesize\ttfamily bool Rail\+Graph\+::add\+Edge (\begin{DoxyParamCaption}\item[{int}]{src,  }\item[{int}]{dest,  }\item[{double}]{weight = {\ttfamily 1},  }\item[{std\+::string}]{service = {\ttfamily \char`\"{}STANDARD\char`\"{}},  }\item[{bool}]{valid = {\ttfamily true} }\end{DoxyParamCaption})}
+
+adds an edge (i.\+e. a \mbox{\hyperlink{class_railway}{Railway}}) to the \mbox{\hyperlink{class_rail_graph}{Rail\+Graph}} 
+\begin{DoxyParams}{Parameters}
+{\em src} & index of the source station \\
+\hline
+{\em dest} & index of the destination station \\
+\hline
+{\em weight} & number of trains that can simultaneously travel on the new \mbox{\hyperlink{class_railway}{Railway}} \\
+\hline
+{\em service} & type of service that is provided in the \mbox{\hyperlink{class_railway}{Railway}} \\
+\hline
+{\em valid} & bool indicating if the \mbox{\hyperlink{class_railway}{Railway}} should be considered in the algorithms \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\textquotesingle{}true\textquotesingle{} if the insertion occurs, \textquotesingle{}false\textquotesingle{} otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_rail_graph_a0b86a58601b4badcc5cbfcf03c302f61}\label{class_rail_graph_a0b86a58601b4badcc5cbfcf03c302f61}} 
+\index{RailGraph@{RailGraph}!getBusiestDistricts@{getBusiestDistricts}}
+\index{getBusiestDistricts@{getBusiestDistricts}!RailGraph@{RailGraph}}
+\doxysubsubsection{\texorpdfstring{getBusiestDistricts()}{getBusiestDistricts()}}
+{\footnotesize\ttfamily std\+::list$<$ std\+::pair$<$ string, double $>$ $>$ Rail\+Graph\+::get\+Busiest\+Districts (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption})}
+
+computes the top-\/k districts with the most trains circulating in them (i.\+e. most flow) 
+\begin{DoxyParams}{Parameters}
+{\em k} & number of districts that will be selected \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+list with the names and the number of trains circulating in the top-\/k districts 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_rail_graph_a77f4f4777315af471b80c2bf3d5110c7}\label{class_rail_graph_a77f4f4777315af471b80c2bf3d5110c7}} 
+\index{RailGraph@{RailGraph}!getBusiestMunicipalities@{getBusiestMunicipalities}}
+\index{getBusiestMunicipalities@{getBusiestMunicipalities}!RailGraph@{RailGraph}}
+\doxysubsubsection{\texorpdfstring{getBusiestMunicipalities()}{getBusiestMunicipalities()}}
+{\footnotesize\ttfamily std\+::list$<$ std\+::pair$<$ string, double $>$ $>$ Rail\+Graph\+::get\+Busiest\+Municipalities (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption})}
+
+computes the top-\/k municipalities with the most trains circulating in them (i.\+e. most flow) 
+\begin{DoxyParams}{Parameters}
+{\em k} & number of municipalities that will be selected \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+list with the names and the number of trains circulating in the top-\/k municipalities 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_rail_graph_a2c2afd869f1bd222b23481b5747a0b1e}\label{class_rail_graph_a2c2afd869f1bd222b23481b5747a0b1e}} 
+\index{RailGraph@{RailGraph}!getBusiestStationPairs@{getBusiestStationPairs}}
+\index{getBusiestStationPairs@{getBusiestStationPairs}!RailGraph@{RailGraph}}
+\doxysubsubsection{\texorpdfstring{getBusiestStationPairs()}{getBusiestStationPairs()}}
+{\footnotesize\ttfamily std\+::list$<$ std\+::pair$<$ int, int $>$ $>$ Rail\+Graph\+::get\+Busiest\+Station\+Pairs (\begin{DoxyParamCaption}\item[{double \&}]{max\+Trains }\end{DoxyParamCaption})}
+
+computes, from all pairs of stations, which ones require the most amount of trains when taking full advantage of the existing network capacity 
+\begin{DoxyParams}{Parameters}
+{\em max\+Trains} & attribute whose value will be the maximum number of trains that the pairs of stations require \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+list containing the pairs of stations that require the most amount of trains 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_rail_graph_a1e4cc4a2eb5cc7434a8f2927251a13e6}\label{class_rail_graph_a1e4cc4a2eb5cc7434a8f2927251a13e6}} 
+\index{RailGraph@{RailGraph}!getBusiestStations@{getBusiestStations}}
+\index{getBusiestStations@{getBusiestStations}!RailGraph@{RailGraph}}
+\doxysubsubsection{\texorpdfstring{getBusiestStations()}{getBusiestStations()}}
+{\footnotesize\ttfamily std\+::list$<$ std\+::pair$<$ string, double $>$ $>$ Rail\+Graph\+::get\+Busiest\+Stations (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption})}
+
+computes the top-\/k stations with the most trains circulating in them (i.\+e. most flow) 
+\begin{DoxyParams}{Parameters}
+{\em k} & number of stations that will be selected \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+list with the names and the number of trains circulating in the top-\/k stations 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_rail_graph_a72f7ebce8b34512c48c1b785926b8059}\label{class_rail_graph_a72f7ebce8b34512c48c1b785926b8059}} 
+\index{RailGraph@{RailGraph}!getIncomingTrains@{getIncomingTrains}}
+\index{getIncomingTrains@{getIncomingTrains}!RailGraph@{RailGraph}}
+\doxysubsubsection{\texorpdfstring{getIncomingTrains()}{getIncomingTrains()}}
+{\footnotesize\ttfamily double Rail\+Graph\+::get\+Incoming\+Trains (\begin{DoxyParamCaption}\item[{int}]{index,  }\item[{\mbox{\hyperlink{fort_8hpp_a508f5a472ab557708969fc946380cfc4}{fort\+::utf8\+\_\+table}} $\ast$}]{table = {\ttfamily nullptr} }\end{DoxyParamCaption})}
+
+
+
+computes the maximum number of trains that can simultaneously arrive at a station 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & index of the station \\
+\hline
+{\em table} & \mbox{\hyperlink{fort_8hpp_a508f5a472ab557708969fc946380cfc4}{fort\+::utf8\+\_\+table}} which will store information about the incoming trains \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+maximum number of trains that can simultaneously arrive at the station 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_rail_graph_ad8a1cc26c02611547971b2110620860b}\label{class_rail_graph_ad8a1cc26c02611547971b2110620860b}} 
+\index{RailGraph@{RailGraph}!getMinimumCostPaths@{getMinimumCostPaths}}
+\index{getMinimumCostPaths@{getMinimumCostPaths}!RailGraph@{RailGraph}}
+\doxysubsubsection{\texorpdfstring{getMinimumCostPaths()}{getMinimumCostPaths()}}
+{\footnotesize\ttfamily std\+::list$<$ Path $>$ Rail\+Graph\+::get\+Minimum\+Cost\+Paths (\begin{DoxyParamCaption}\item[{int}]{src,  }\item[{int}]{sink,  }\item[{double \&}]{max\+Trains,  }\item[{double \&}]{min\+Cost }\end{DoxyParamCaption})}
+
+
+
+computes the minimum cost paths between two stations 
+
+O($\vert$\+V$\vert$ $\ast$ $\vert$\+E$\vert$$^\wedge$2) 
+\begin{DoxyParams}{Parameters}
+{\em src} & index of the source station \\
+\hline
+{\em sink} & index of the destination station \\
+\hline
+{\em max\+Trains} & variable that will store the maximum amount of trains that can simultaneously travel between the stations \\
+\hline
+{\em min\+Cost} & variable that will store the price of maintaining each minimum cost path \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+list containing the minimum cost paths 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_rail_graph_a0e1002c4b5ec04ccb21f23847710ba05}\label{class_rail_graph_a0e1002c4b5ec04ccb21f23847710ba05}} 
+\index{RailGraph@{RailGraph}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!RailGraph@{RailGraph}}
+\doxysubsubsection{\texorpdfstring{operator[]()}{operator[]()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_station}{Station}} \& Rail\+Graph\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{int}]{index }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}}
+
+
+
+accesses a vertex (i.\+e. a station) of the Graph and allows modifications to be made to it 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & index of the vertex \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+reference of the vertex 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_rail_graph_a74bd528d59c2bef4b9efeece12ccb0af}\label{class_rail_graph_a74bd528d59c2bef4b9efeece12ccb0af}} 
+\index{RailGraph@{RailGraph}!reduceConnectivity@{reduceConnectivity}}
+\index{reduceConnectivity@{reduceConnectivity}!RailGraph@{RailGraph}}
+\doxysubsubsection{\texorpdfstring{reduceConnectivity()}{reduceConnectivity()}}
+{\footnotesize\ttfamily void Rail\+Graph\+::reduce\+Connectivity (\begin{DoxyParamCaption}\item[{const list$<$ Edge $\ast$ $>$ \&}]{edges\+To\+Remove }\end{DoxyParamCaption})}
+
+
+
+reduces the connectivity of the railway network by invalidating certain edges (i.\+e. railways) 
+
+\begin{DoxyParagraph}{Time Complexity\+:}
+O($\vert$\+E$\vert$) 
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em edges\+To\+Remove} & list containing the edges that will be invalidated \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_rail_graph_aa131cbb0d76d59b986b2604bbaa77f1e}\label{class_rail_graph_aa131cbb0d76d59b986b2604bbaa77f1e}} 
+\index{RailGraph@{RailGraph}!restoreNetwork@{restoreNetwork}}
+\index{restoreNetwork@{restoreNetwork}!RailGraph@{RailGraph}}
+\doxysubsubsection{\texorpdfstring{restoreNetwork()}{restoreNetwork()}}
+{\footnotesize\ttfamily void Rail\+Graph\+::restore\+Network (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+restores the original railway network 
+
+\begin{DoxyParagraph}{Time Complexity\+:}
+O($\vert$\+E$\vert$) 
+\end{DoxyParagraph}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Rail\+Graph.\+h\item 
+Rail\+Graph.\+cpp\end{DoxyCompactItemize}

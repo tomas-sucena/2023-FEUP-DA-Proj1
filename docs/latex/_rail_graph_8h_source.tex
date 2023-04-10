@@ -1,0 +1,51 @@
+\hypertarget{_rail_graph_8h_source}{}\doxysection{Rail\+Graph.\+h}
+\label{_rail_graph_8h_source}\index{RailGraph.h@{RailGraph.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ DA\_TRAINS\_RAILGRAPH\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ DA\_TRAINS\_RAILGRAPH\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}../Utils.hpp"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}Railway.hpp"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Station.hpp"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}UGraph.h"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_rail_graph}{RailGraph}}\ :\ \textcolor{keyword}{public}\ UGraph\ \{}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_helpy}{Helpy}};}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{comment}{/*\ ATTRIBUTES\ */}}
+\DoxyCodeLine{00013\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordtype}{bool}\ fullPicture;}
+\DoxyCodeLine{00015\ \ \ \ \ uMap<std::string,\ double>\ servicePrices;}
+\DoxyCodeLine{00016\ \ \ \ \ std::list<Edge*>\ underMaintenance;}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{comment}{//\ for\ searching}}
+\DoxyCodeLine{00019\ \ \ \ \ uSet<int>\ railwaySources,\ railwaySinks;}
+\DoxyCodeLine{00020\ \ \ \ \ uMap<std::string,\ std::list<Railway*>>\ districtRailways,\ municipalityRailways;}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{comment}{/*\ CONSTRUCTOR\ */}}
+\DoxyCodeLine{00023\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_rail_graph}{RailGraph}}(\textcolor{keywordtype}{int}\ n\ =\ 0);}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{comment}{/*\ METHODS\ */}}
+\DoxyCodeLine{00027\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ getFullPicture();}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_rail_graph_a9dca239d93b2dce4cc4eff62c9162c74}{addEdge}}(\textcolor{keywordtype}{int}\ src,\ \textcolor{keywordtype}{int}\ dest,\ \textcolor{keywordtype}{double}\ weight\ =\ 1,\ std::string\ service\ =\ \textcolor{stringliteral}{"{}STANDARD"{}},\ \textcolor{keywordtype}{bool}\ valid\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00032\ \ \ \ \ \mbox{\hyperlink{class_station}{Station}}\&\ \mbox{\hyperlink{class_rail_graph_a0e1002c4b5ec04ccb21f23847710ba05}{operator[]}}(\textcolor{keywordtype}{int}\ index)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_rail_graph_a74bd528d59c2bef4b9efeece12ccb0af}{reduceConnectivity}}(\textcolor{keyword}{const}\ list<Edge*>\&\ edgesToRemove);}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_rail_graph_aa131cbb0d76d59b986b2604bbaa77f1e}{restoreNetwork}}();}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \ \ std::list<std::pair<string,\ double>>\ \mbox{\hyperlink{class_rail_graph_a1e4cc4a2eb5cc7434a8f2927251a13e6}{getBusiestStations}}(\textcolor{keywordtype}{int}\ k);}
+\DoxyCodeLine{00037\ \ \ \ \ std::list<std::pair<string,\ double>>\ \mbox{\hyperlink{class_rail_graph_a0b86a58601b4badcc5cbfcf03c302f61}{getBusiestDistricts}}(\textcolor{keywordtype}{int}\ k);}
+\DoxyCodeLine{00038\ \ \ \ \ std::list<std::pair<string,\ double>>\ \mbox{\hyperlink{class_rail_graph_a77f4f4777315af471b80c2bf3d5110c7}{getBusiestMunicipalities}}(\textcolor{keywordtype}{int}\ k);}
+\DoxyCodeLine{00039\ \ \ \ \ std::list<std::pair<int,\ int>>\ \mbox{\hyperlink{class_rail_graph_a2c2afd869f1bd222b23481b5747a0b1e}{getBusiestStationPairs}}(\textcolor{keywordtype}{double}\&\ maxTrains);}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_rail_graph_a72f7ebce8b34512c48c1b785926b8059}{getIncomingTrains}}(\textcolor{keywordtype}{int}\ index,\ \mbox{\hyperlink{classfort_1_1table}{fort::utf8\_table}}*\ table\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00042\ \ \ \ \ std::list<Path>\ \mbox{\hyperlink{class_rail_graph_ad8a1cc26c02611547971b2110620860b}{getMinimumCostPaths}}(\textcolor{keywordtype}{int}\ src,\ \textcolor{keywordtype}{int}\ sink,\ \textcolor{keywordtype}{double}\&\ maxTrains,\ \textcolor{keywordtype}{double}\&\ minCost);}
+\DoxyCodeLine{00043\ \};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//DA\_TRAINS\_RAILGRAPH\_H}}
+
+\end{DoxyCode}

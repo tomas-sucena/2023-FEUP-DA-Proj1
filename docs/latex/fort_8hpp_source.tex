@@ -1,0 +1,773 @@
+\hypertarget{fort_8hpp_source}{}\doxysection{fort.\+hpp}
+\label{fort_8hpp_source}\index{fort.hpp@{fort.hpp}}
+\mbox{\hyperlink{fort_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{libfort}}
+\DoxyCodeLine{00003\ \textcolor{comment}{MIT\ License}}
+\DoxyCodeLine{00004\ \textcolor{comment}{Copyright\ (c)\ 2017\ -\/\ 2020\ Seleznev\ Anton}}
+\DoxyCodeLine{00005\ \textcolor{comment}{Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ obtaining\ a\ copy}}
+\DoxyCodeLine{00006\ \textcolor{comment}{of\ this\ software\ and\ associated\ documentation\ files\ (the\ "{}Software"{}),\ to\ deal}}
+\DoxyCodeLine{00007\ \textcolor{comment}{in\ the\ Software\ without\ restriction,\ including\ without\ limitation\ the\ rights}}
+\DoxyCodeLine{00008\ \textcolor{comment}{to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute,\ sublicense,\ and/or\ sell}}
+\DoxyCodeLine{00009\ \textcolor{comment}{copies\ of\ the\ Software,\ and\ to\ permit\ persons\ to\ whom\ the\ Software\ is}}
+\DoxyCodeLine{00010\ \textcolor{comment}{furnished\ to\ do\ so,\ subject\ to\ the\ following\ conditions:}}
+\DoxyCodeLine{00011\ \textcolor{comment}{The\ above\ copyright\ notice\ and\ this\ permission\ notice\ shall\ be\ included\ in\ all}}
+\DoxyCodeLine{00012\ \textcolor{comment}{copies\ or\ substantial\ portions\ of\ the\ Software.}}
+\DoxyCodeLine{00013\ \textcolor{comment}{THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR}}
+\DoxyCodeLine{00014\ \textcolor{comment}{IMPLIED,\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,}}
+\DoxyCodeLine{00015\ \textcolor{comment}{FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE}}
+\DoxyCodeLine{00016\ \textcolor{comment}{AUTHORS\ OR\ COPYRIGHT\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER}}
+\DoxyCodeLine{00017\ \textcolor{comment}{LIABILITY,\ WHETHER\ IN\ AN\ ACTION\ OF\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,}}
+\DoxyCodeLine{00018\ \textcolor{comment}{OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN\ THE}}
+\DoxyCodeLine{00019\ \textcolor{comment}{SOFTWARE.}}
+\DoxyCodeLine{00020\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#ifndef\ LIBFORT\_HPP}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#define\ LIBFORT\_HPP}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#include\ <iomanip>}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#include\ <sstream>}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#include\ <stdexcept>}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{fort_8h}{fort.h}}"{}}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{keyword}{namespace\ }fort}
+\DoxyCodeLine{00041\ \{}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{fort_8hpp_a895f73752fc847c22853fd363a575b04}{text\_align}}\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ left\ \ \ =\ \mbox{\hyperlink{fort_8h_a3ce6dedcf688e310a3cfbb5cdae9d32ca62837cbc7c859d5d38d608f51806e66d}{FT\_ALIGNED\_LEFT}},}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ center\ =\ \mbox{\hyperlink{fort_8h_a3ce6dedcf688e310a3cfbb5cdae9d32cac43d09334b02f1300989a8789455183e}{FT\_ALIGNED\_CENTER}},}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ right\ \ =\ \mbox{\hyperlink{fort_8h_a3ce6dedcf688e310a3cfbb5cdae9d32ca31bdf997c2db055fe5669e9e174277cc}{FT\_ALIGNED\_RIGHT}}}
+\DoxyCodeLine{00050\ \ \ \ \ \};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{fort_8hpp_a28370d69d653e7ae3cb80c61cf2469aa}{row\_type}}\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ common\ =\ \mbox{\hyperlink{fort_8h_a06d9536a2e476d68f5055820535d3b34ae50a530e078dd8425784ca02e66d2433}{FT\_ROW\_COMMON}},}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{fort_8hpp_a6b60404c249df2f612d990c603d49517}{header}}\ =\ \mbox{\hyperlink{fort_8h_a06d9536a2e476d68f5055820535d3b34a2a0a31078eac88202029c3e9bdaa614a}{FT\_ROW\_HEADER}}}
+\DoxyCodeLine{00058\ \ \ \ \ \};}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{fort_8hpp_a90d7e4b53ec42f4eddd9e63eb02abca4}{add\_strategy}}\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ replace\ =\ \mbox{\hyperlink{fort_8h_aeed2958a1823084ca6e71883b075baa5aa620d123a0ac00710153d28a6ab65842}{FT\_STRATEGY\_REPLACE}},}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ insert\ \ =\ \mbox{\hyperlink{fort_8h_aeed2958a1823084ca6e71883b075baa5acc1102bce0611e414231a7e41357300f}{FT\_STRATEGY\_INSERT}}}
+\DoxyCodeLine{00069\ \ \ \ \ \};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{fort_8hpp_a3cac6d8954776afa43e4d389ff70fbba}{color}}\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ default\_color\ \ =\ \mbox{\hyperlink{fort_8h_a8a64c62f618f7c34310da2e2ef31f63face2e85ce681b17d9334eb832a1558445}{FT\_COLOR\_DEFAULT}},}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ black\ \ \ \ \ \ \ \ \ \ =\ \mbox{\hyperlink{fort_8h_a8a64c62f618f7c34310da2e2ef31f63fa6e1eb39443ae233746378aa84548f553}{FT\_COLOR\_BLACK}},}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ red\ \ \ \ \ \ \ \ \ \ \ \ =\ \mbox{\hyperlink{fort_8h_a8a64c62f618f7c34310da2e2ef31f63faf31632500abf110557632f09e267472d}{FT\_COLOR\_RED}},}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ green\ \ \ \ \ \ \ \ \ \ =\ \mbox{\hyperlink{fort_8h_a8a64c62f618f7c34310da2e2ef31f63fac27875bf7bc9bb9fec8e7beb79a308a0}{FT\_COLOR\_GREEN}},}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ yellow\ \ \ \ \ \ \ \ \ =\ \mbox{\hyperlink{fort_8h_a8a64c62f618f7c34310da2e2ef31f63fae1942de73f0c49658b208f9c42a136a8}{FT\_COLOR\_YELLOW}},}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ blue\ \ \ \ \ \ \ \ \ \ \ =\ \mbox{\hyperlink{fort_8h_a8a64c62f618f7c34310da2e2ef31f63fa646c06e02caa66410e13dc212242ef16}{FT\_COLOR\_BLUE}},}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ magenta\ \ \ \ \ \ \ \ =\ \mbox{\hyperlink{fort_8h_a8a64c62f618f7c34310da2e2ef31f63fa0f97227c2b13f6c2d88ca06761563a68}{FT\_COLOR\_MAGENTA}},}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ cyan\ \ \ \ \ \ \ \ \ \ \ =\ \mbox{\hyperlink{fort_8h_a8a64c62f618f7c34310da2e2ef31f63fa2e3e4b314fc75407fa5b38cee9fd5a5c}{FT\_COLOR\_CYAN}},}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ light\_gray\ \ \ \ \ =\ \mbox{\hyperlink{fort_8h_a8a64c62f618f7c34310da2e2ef31f63fa10c39c7d62795e90c3188f0b6a476f10}{FT\_COLOR\_LIGHT\_GRAY}},}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ dark\_gray\ \ \ \ \ \ =\ \mbox{\hyperlink{fort_8h_a8a64c62f618f7c34310da2e2ef31f63fa4f7814c857a35ace99e77c721bdea819}{FT\_COLOR\_DARK\_GRAY}},}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ light\_red\ \ \ \ \ \ =\ \mbox{\hyperlink{fort_8h_a8a64c62f618f7c34310da2e2ef31f63faee5e46a4b6fbeb64b6eddca826bdc7ae}{FT\_COLOR\_LIGHT\_RED}},}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ light\_green\ \ \ \ =\ \mbox{\hyperlink{fort_8h_a8a64c62f618f7c34310da2e2ef31f63fa37dd75f161f83ea176f74a70a19e763f}{FT\_COLOR\_LIGHT\_GREEN}},}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ light\_yellow\ \ \ =\ \mbox{\hyperlink{fort_8h_a8a64c62f618f7c34310da2e2ef31f63fa84816257c9a5f38a20d0e2ea848a5489}{FT\_COLOR\_LIGHT\_YELLOW}},}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ light\_blue\ \ \ \ \ =\ \mbox{\hyperlink{fort_8h_a8a64c62f618f7c34310da2e2ef31f63facebf9e4fe6e259bc0892bd1183c73800}{FT\_COLOR\_LIGHT\_BLUE}},}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ light\_magenta\ \ =\ \mbox{\hyperlink{fort_8h_a8a64c62f618f7c34310da2e2ef31f63fac181922016e12de1a32116b2f1eb5a1f}{FT\_COLOR\_LIGHT\_MAGENTA}},}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ light\_cyan\ \ \ \ \ =\ \mbox{\hyperlink{fort_8h_a8a64c62f618f7c34310da2e2ef31f63fa3b5bdee67bbfca060a31ae3d700cb5c4}{FT\_COLOR\_LIGHT\_CYAN}},}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ light\_whyte\ \ \ \ =\ \mbox{\hyperlink{fort_8h_a8a64c62f618f7c34310da2e2ef31f63faebf36fa4c0f9ae7e8aaa651988686e42}{FT\_COLOR\_LIGHT\_WHYTE}}}
+\DoxyCodeLine{00092\ \ \ \ \ \};}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{fort_8hpp_aca558b21bbb52c9c28de9811bec32061}{text\_style}}\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ default\_style\ =\ \mbox{\hyperlink{fort_8h_abc496f06f2a4c7fb58b1730ce813be0bad81d0dad8f26df01c149638ccbb6b3e2}{FT\_TSTYLE\_DEFAULT}},}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ bold\ \ \ \ \ \ \ \ \ \ =\ \mbox{\hyperlink{fort_8h_abc496f06f2a4c7fb58b1730ce813be0ba04256f30849c7cd2b4822e5030fa07fb}{FT\_TSTYLE\_BOLD}},}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ dim\ \ \ \ \ \ \ \ \ \ \ =\ \mbox{\hyperlink{fort_8h_abc496f06f2a4c7fb58b1730ce813be0baf9c6c97ae4ea6c404ae2e57b8dfab101}{FT\_TSTYLE\_DIM}},}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ italic\ \ \ \ \ \ \ \ =\ \mbox{\hyperlink{fort_8h_abc496f06f2a4c7fb58b1730ce813be0ba29c6547c7ae5a297a4547de1b15a3133}{FT\_TSTYLE\_ITALIC}},}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ underlined\ \ \ \ =\ \mbox{\hyperlink{fort_8h_abc496f06f2a4c7fb58b1730ce813be0ba41f3dc969345e99fda4ef48130184745}{FT\_TSTYLE\_UNDERLINED}},}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ blink\ \ \ \ \ \ \ \ \ =\ \mbox{\hyperlink{fort_8h_abc496f06f2a4c7fb58b1730ce813be0ba36c9e2fd7b64982a8f7229fe965440d4}{FT\_TSTYLE\_BLINK}},}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ inverted\ \ \ \ \ \ =\ \mbox{\hyperlink{fort_8h_abc496f06f2a4c7fb58b1730ce813be0ba3a4c44c718da5e229c01ab7d6eb05366}{FT\_TSTYLE\_INVERTED}},}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ hidden\ \ \ \ \ \ \ \ =\ \mbox{\hyperlink{fort_8h_abc496f06f2a4c7fb58b1730ce813be0ba016fa7d5df89fd09ba7ed6daa7021b16}{FT\_TSTYLE\_HIDDEN}}}
+\DoxyCodeLine{00106\ \ \ \ \ \};}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keyword}{enum\ class}\ table\_type\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ character,}
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#ifdef\ FT\_HAVE\_UTF8}}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ utf8}
+\DoxyCodeLine{00113\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ FT\_HAVE\_UTF8\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00114\ \ \ \ \ \};}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfort_1_1table__manipulator}{table\_manipulator}}}
+\DoxyCodeLine{00123\ \ \ \ \ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classfort_1_1table__manipulator}{table\_manipulator}}(\textcolor{keywordtype}{int}\ i)}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ value(i)}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}\ <table\_type\ TT>}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfort_1_1table}{table}};}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ value;}
+\DoxyCodeLine{00133\ \ \ \ \ \};}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classfort_1_1table__manipulator}{table\_manipulator}}\ \mbox{\hyperlink{fort_8hpp_a6b60404c249df2f612d990c603d49517}{header}}(0);}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classfort_1_1table__manipulator}{table\_manipulator}}\ \mbox{\hyperlink{fort_8hpp_aee4e27c8d266e9b1be499e052fbc6c53}{endr}}(1);}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classfort_1_1table__manipulator}{table\_manipulator}}\ \mbox{\hyperlink{fort_8hpp_af61eccb3d2f66403d238b94e59dd7e4a}{separator}}(2);}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \textcolor{comment}{//\ Utility\ functions\ for\ internal\ library\ usage.}}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keyword}{namespace\ }detail}
+\DoxyCodeLine{00152\ \ \ \ \ \{}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_stream\_manipulator\_impl()\ noexcept}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }Tdec\ =\ \textcolor{keyword}{typename}\ std::decay<T>::type;}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Manipulators\ for\ integral\ types}}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::is\_same<Tdec,\ \textcolor{keyword}{typename}\ std::decay<\textcolor{keyword}{decltype}(std::dec)>::type>::value}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ std::is\_same<Tdec,\ \textcolor{keyword}{typename}\ std::decay<\textcolor{keyword}{decltype}(std::hex)>::type>::value}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ std::is\_same<Tdec,\ \textcolor{keyword}{typename}\ std::decay<\textcolor{keyword}{decltype}(std::oct)>::type>::value}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Floating-\/point\ manipulators}}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ std::is\_same<Tdec,\ \textcolor{keyword}{typename}\ std::decay<\textcolor{keyword}{decltype}(std::fixed)>::type>::value}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ std::is\_same<Tdec,\ \textcolor{keyword}{typename}\ std::decay<\textcolor{keyword}{decltype}(std::scientific)>::type>::value}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Misc}}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ std::is\_same<Tdec,\ \textcolor{keyword}{typename}\ std::decay<\textcolor{keyword}{decltype}(std::setbase(0))>::type>::value}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ std::is\_same<Tdec,\ \textcolor{keyword}{typename}\ std::decay<\textcolor{keyword}{decltype}(std::setfill(\textcolor{charliteral}{'\(\backslash\)0'}))>::type>::value}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ std::is\_same<Tdec,\ \textcolor{keyword}{typename}\ std::decay<\textcolor{keyword}{decltype}(std::setprecision(0))>::type>::value}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ std::is\_same<Tdec,\ \textcolor{keyword}{typename}\ std::decay<\textcolor{keyword}{decltype}(std::setw(0))>::type>::value;}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00170\ \ \ \ \ \}}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{fort_8hpp_a27a2b1ed051093b5132048bcb9454465}{is\_stream\_manipulator}}()\ noexcept}
+\DoxyCodeLine{00179\ \ \ \ \ \{}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ detail::is\_stream\_manipulator\_impl<T>();}
+\DoxyCodeLine{00181\ \ \ \ \ \}}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ table>}
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfort_1_1property__owner}{property\_owner}}}
+\DoxyCodeLine{00191\ \ \ \ \ \{}
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00193\ }
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1property__owner}{property\_owner}}(std::size\_t\ row\_idx,\ std::size\_t\ coll\_idx,\ \mbox{\hyperlink{classfort_1_1table}{table}}\ *tbl,\ \textcolor{keywordtype}{bool}\ def\ =\ \textcolor{keyword}{false})}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ ps\_row\_idx\_(row\_idx),\ ps\_coll\_idx\_(coll\_idx),}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ps\_table\_(tbl),\ set\_default\_properties\_(def)\ \{\}}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1property__owner_a271ffa111ba27a68715044826298b42b}{set\_cell\_min\_width}}(\textcolor{keywordtype}{unsigned}\ value)}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ set\_property(\mbox{\hyperlink{fort_8h_aaa59596ed65b02b3c698e9aaf8d16bbd}{FT\_CPROP\_MIN\_WIDTH}},\ value);}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00211\ }
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1property__owner_aa0c34eb1dde00dc3b172ede4699e0cdc}{set\_cell\_text\_align}}(\mbox{\hyperlink{fort_8hpp_a895f73752fc847c22853fd363a575b04}{fort::text\_align}}\ value)}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ set\_property(\mbox{\hyperlink{fort_8h_ae5586130d3dd258d477e370923d0889e}{FT\_CPROP\_TEXT\_ALIGN}},\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(value));}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1property__owner_a1b6a5415016a2a93c25795ed2b99ec44}{set\_cell\_top\_padding}}(\textcolor{keywordtype}{unsigned}\ value)}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ set\_property(\mbox{\hyperlink{fort_8h_a2a5fd97edb51283e0baddcf896555e9d}{FT\_CPROP\_TOP\_PADDING}},\ value);}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00239\ }
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1property__owner_aab88ac28d70ea5d630aa55d7c97defd5}{set\_cell\_bottom\_padding}}(\textcolor{keywordtype}{unsigned}\ value)}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ set\_property(\mbox{\hyperlink{fort_8h_a47c8f3a9d83e32ac8f3ab5997dc5b542}{FT\_CPROP\_BOTTOM\_PADDING}},\ value);}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00253\ }
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1property__owner_a8ae9305903c8467e8c43065bd6ebbde4}{set\_cell\_left\_padding}}(\textcolor{keywordtype}{unsigned}\ value)}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ set\_property(\mbox{\hyperlink{fort_8h_a536d5cbb92b59dbc2e28891fa5bcd114}{FT\_CPROP\_LEFT\_PADDING}},\ value);}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1property__owner_a4bb870a7101fad9df8e6d3b78afccd86}{set\_cell\_right\_padding}}(\textcolor{keywordtype}{unsigned}\ value)}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ set\_property(\mbox{\hyperlink{fort_8h_a11cdcb1be7737d1f65f2b6bc4b8b7e86}{FT\_CPROP\_RIGHT\_PADDING}},\ value);}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00281\ }
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1property__owner_a7a36fdadc9095cb969488ca03e28de6d}{set\_cell\_row\_type}}(\mbox{\hyperlink{fort_8hpp_a28370d69d653e7ae3cb80c61cf2469aa}{fort::row\_type}}\ value)}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ set\_property(\mbox{\hyperlink{fort_8h_abd5e4b5a6cb494024967f9d22a50c708}{FT\_CPROP\_ROW\_TYPE}},\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(value));}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00295\ }
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1property__owner_ab04fde5f089d89a16c10c4c6fe9ee41c}{set\_cell\_empty\_str\_height}}(\textcolor{keywordtype}{unsigned}\ value)}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ set\_property(\mbox{\hyperlink{fort_8h_aadf8488e2ae0a4e7c2e4ecbc715d2b18}{FT\_CPROP\_EMPTY\_STR\_HEIGHT}},\ value);}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00309\ }
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1property__owner_a84c20f3c799287d706c9d8e052fff6ec}{set\_cell\_content\_fg\_color}}(\mbox{\hyperlink{fort_8hpp_a3cac6d8954776afa43e4d389ff70fbba}{fort::color}}\ value)}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ set\_property(\mbox{\hyperlink{fort_8h_ad078aa3c64959b51e29ddbc52dc42edc}{FT\_CPROP\_CONT\_FG\_COLOR}},\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(value));}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00323\ }
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1property__owner_a8780bb5cf0e2918e3d6db3439414f0b6}{set\_cell\_bg\_color}}(\mbox{\hyperlink{fort_8hpp_a3cac6d8954776afa43e4d389ff70fbba}{fort::color}}\ value)}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ set\_property(\mbox{\hyperlink{fort_8h_a8eec90e0b1b004749b85052422c48671}{FT\_CPROP\_CELL\_BG\_COLOR}},\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(value));}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00337\ }
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1property__owner_a5d83c216797e222d79e47c500bc98571}{set\_cell\_content\_bg\_color}}(\mbox{\hyperlink{fort_8hpp_a3cac6d8954776afa43e4d389ff70fbba}{fort::color}}\ value)}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ set\_property(\mbox{\hyperlink{fort_8h_a979f10a47f0977e563ebf79d2144a8b1}{FT\_CPROP\_CONT\_BG\_COLOR}},\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(value));}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00351\ }
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1property__owner_ad762b2bec6d78559b1393e003054e894}{set\_cell\_text\_style}}(\mbox{\hyperlink{fort_8hpp_aca558b21bbb52c9c28de9811bec32061}{fort::text\_style}}\ value)}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ set\_property(\mbox{\hyperlink{fort_8h_a82551a6b4f9bdc48c57fec86faa05052}{FT\_CPROP\_CELL\_TEXT\_STYLE}},\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(value));}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00365\ }
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1property__owner_acec5096b143be35e12284601f27eceb9}{set\_cell\_content\_text\_style}}(\mbox{\hyperlink{fort_8hpp_aca558b21bbb52c9c28de9811bec32061}{fort::text\_style}}\ value)}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ set\_property(\mbox{\hyperlink{fort_8h_aef6afa765c79403917d52a565db47b65}{FT\_CPROP\_CONT\_TEXT\_STYLE}},\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(value));}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00379\ }
+\DoxyCodeLine{00380\ \ \ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \ \ std::size\_t\ ps\_row\_idx\_;}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \ \ std::size\_t\ ps\_coll\_idx\_;}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table}{table}}\ *ps\_table\_;}
+\DoxyCodeLine{00384\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ set\_default\_properties\_;}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ set\_property(uint32\_t\ property,\ \textcolor{keywordtype}{int}\ value)}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ status;}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (set\_default\_properties\_)\ \{}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ status\ =\ ft\_set\_default\_cell\_prop(property,\ value);}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ status\ =\ ft\_set\_cell\_prop(ps\_table\_-\/>table\_,\ ps\_row\_idx\_,\ ps\_coll\_idx\_,\ property,\ value);}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FT\_IS\_SUCCESS(status);}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00396\ \ \ \ \ \};}
+\DoxyCodeLine{00397\ }
+\DoxyCodeLine{00398\ }
+\DoxyCodeLine{00406\ \ \ \ \ \textcolor{keyword}{template}\ <table\_type\ TT\ =\ table\_type::\textcolor{keywordtype}{char}acter>}
+\DoxyCodeLine{00407\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfort_1_1table}{table}}:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classfort_1_1property__owner}{property\_owner}}<table<TT>>}
+\DoxyCodeLine{00408\ \ \ \ \ \{}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classfort_1_1table}{table\_t}}\ =\ \mbox{\hyperlink{classfort_1_1table}{table<TT>}};}
+\DoxyCodeLine{00413\ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classfort_1_1property__owner}{property\_owner\_t}}\ =\ \mbox{\hyperlink{classfort_1_1property__owner}{property\_owner<table\_t>}};}
+\DoxyCodeLine{00414\ }
+\DoxyCodeLine{00415\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00416\ }
+\DoxyCodeLine{00420\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table_af2a0e281e31bcbb3dfd0a14fd73a8fe6}{table}}()}
+\DoxyCodeLine{00421\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{classfort_1_1property__owner}{property\_owner\_t}}(\mbox{\hyperlink{fort_8h_a18fe66b5bbb33d73be7ba06518c1f40d}{FT\_ANY\_ROW}},\ \mbox{\hyperlink{fort_8h_ad5b6b32262309f37874d11369f47c7a5}{FT\_ANY\_COLUMN}},\ this),}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ table\_(ft\_create\_table())}
+\DoxyCodeLine{00423\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00424\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (table\_\ ==\ NULL)}
+\DoxyCodeLine{00425\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::bad\_alloc();}
+\DoxyCodeLine{00426\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00427\ }
+\DoxyCodeLine{00431\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table_a0f60e38ac553c852d8e20583a3e6e866}{\string~table}}()}
+\DoxyCodeLine{00432\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00433\ \ \ \ \ \ \ \ \ \ \ \ \ ft\_destroy\_table(table\_);}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00435\ }
+\DoxyCodeLine{00439\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table_a5c8713c19b01542bcdce75835d714b3f}{table}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classfort_1_1table}{table}}\ \&tbl)}
+\DoxyCodeLine{00440\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{classfort_1_1property__owner}{property\_owner\_t}}(\mbox{\hyperlink{fort_8h_a18fe66b5bbb33d73be7ba06518c1f40d}{FT\_ANY\_ROW}},\ \mbox{\hyperlink{fort_8h_ad5b6b32262309f37874d11369f47c7a5}{FT\_ANY\_COLUMN}},\ this),\ table\_(NULL)}
+\DoxyCodeLine{00441\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00442\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tbl.table\_)\ \{}
+\DoxyCodeLine{00443\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structft__table}{ft\_table\_t}}\ *table\_copy\ =\ ft\_copy\_table(tbl.table\_);}
+\DoxyCodeLine{00444\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (table\_copy\ ==\ NULL)}
+\DoxyCodeLine{00445\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}Error\ during\ table\ copy"{}});}
+\DoxyCodeLine{00446\ }
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stream\_.str(std::string());}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tbl.stream\_.tellp()\ >=\ 0)\ \{}
+\DoxyCodeLine{00449\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stream\_\ <<\ tbl.stream\_.str();}
+\DoxyCodeLine{00450\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00451\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ table\_\ =\ table\_copy;}
+\DoxyCodeLine{00452\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00453\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00454\ }
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table_aefbb2a5c2057b5139791962e242f1566}{table}}(\mbox{\hyperlink{classfort_1_1table}{table}}\ \&\&tbl)}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{classfort_1_1property__owner}{property\_owner\_t}}(\mbox{\hyperlink{fort_8h_a18fe66b5bbb33d73be7ba06518c1f40d}{FT\_ANY\_ROW}},\ \mbox{\hyperlink{fort_8h_ad5b6b32262309f37874d11369f47c7a5}{FT\_ANY\_COLUMN}},\ this),\ table\_(tbl.table\_)}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tbl.stream\_.tellp()\ >=\ 0)\ \{}
+\DoxyCodeLine{00462\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stream\_\ <<\ tbl.stream\_.str();}
+\DoxyCodeLine{00463\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tbl.stream\_.str(std::string());}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00465\ \ \ \ \ \ \ \ \ \ \ \ \ tbl.table\_\ =\ 0;}
+\DoxyCodeLine{00466\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00467\ }
+\DoxyCodeLine{00471\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table}{table}}\ \&\mbox{\hyperlink{classfort_1_1table_a639848e904ab94e5acbd0df49225ca41}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classfort_1_1table}{table}}\ \&tbl)}
+\DoxyCodeLine{00472\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\&tbl\ ==\ \textcolor{keyword}{this})}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00475\ }
+\DoxyCodeLine{00476\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tbl.table\_)\ \{}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structft__table}{ft\_table\_t}}\ *table\_copy\ =\ ft\_copy\_table(tbl.table\_);}
+\DoxyCodeLine{00478\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (table\_copy\ ==\ NULL)}
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}Error\ during\ table\ copy"{}});}
+\DoxyCodeLine{00480\ }
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stream\_.str(std::string());}
+\DoxyCodeLine{00482\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tbl.stream\_.tellp()\ >=\ 0)\ \{}
+\DoxyCodeLine{00483\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stream\_\ <<\ tbl.stream\_.str();}
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00485\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ft\_destroy\_table(table\_);}
+\DoxyCodeLine{00486\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ table\_\ =\ table\_copy;}
+\DoxyCodeLine{00487\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00488\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00490\ }
+\DoxyCodeLine{00494\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table}{table}}\ \&\mbox{\hyperlink{classfort_1_1table_a8ff094374f3f443a0306d09b50897e38}{operator=}}(\mbox{\hyperlink{classfort_1_1table}{table}}\ \&\&tbl)}
+\DoxyCodeLine{00495\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00496\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\&tbl\ ==\ \textcolor{keyword}{this})}
+\DoxyCodeLine{00497\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00498\ }
+\DoxyCodeLine{00499\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tbl.table\_)\ \{}
+\DoxyCodeLine{00500\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stream\_.str(std::string());}
+\DoxyCodeLine{00501\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tbl.stream\_.tellp()\ >=\ 0)\ \{}
+\DoxyCodeLine{00502\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stream\_\ <<\ tbl.stream\_.str();}
+\DoxyCodeLine{00503\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tbl.stream\_.str(std::string());}
+\DoxyCodeLine{00504\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00505\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ft\_destroy\_table(table\_);}
+\DoxyCodeLine{00506\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ table\_\ =\ tbl.table\_;}
+\DoxyCodeLine{00507\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tbl.table\_\ =\ NULL;}
+\DoxyCodeLine{00508\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00509\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00510\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00511\ }
+\DoxyCodeLine{00519\ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classfort_1_1table_a069a11134b61aebd9f798b445c281696}{to\_string}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00520\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{00521\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *str\ =\ \mbox{\hyperlink{classfort_1_1table_a7b194a2c7a08929cc802a723245a3239}{c\_str}}();}
+\DoxyCodeLine{00522\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (str\ ==\ NULL)}
+\DoxyCodeLine{00523\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}Error\ during\ table\ to\ string\ conversion"{}});}
+\DoxyCodeLine{00524\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ str;}
+\DoxyCodeLine{00525\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00526\ }
+\DoxyCodeLine{00542\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *\mbox{\hyperlink{classfort_1_1table_a7b194a2c7a08929cc802a723245a3239}{c\_str}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00543\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{00544\ \textcolor{preprocessor}{\#ifdef\ FT\_HAVE\_UTF8}}
+\DoxyCodeLine{00545\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (TT\ ==\ table\_type::character)}
+\DoxyCodeLine{00546\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ ft\_to\_string(table\_)}
+\DoxyCodeLine{00547\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *)ft\_to\_u8string(table\_);}
+\DoxyCodeLine{00548\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00549\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ft\_to\_string(table\_);}
+\DoxyCodeLine{00550\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00551\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00552\ }
+\DoxyCodeLine{00564\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00565\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table}{table}}\ \&\mbox{\hyperlink{classfort_1_1table_a5fa1b2a0af4dd1e7a7d04070dcbb89c1}{operator<<}}(\textcolor{keyword}{const}\ T\ \&arg)}
+\DoxyCodeLine{00566\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00567\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_manip\ =\ fort::is\_stream\_manipulator<typename\ std::decay<T>::type>();}
+\DoxyCodeLine{00568\ \ \ \ \ \ \ \ \ \ \ \ \ stream\_\ <<\ arg;}
+\DoxyCodeLine{00569\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (stream\_.tellp()\ >=\ 0\ \&\&\ !is\_manip)\ \{}
+\DoxyCodeLine{00570\ \textcolor{preprocessor}{\#ifdef\ FT\_HAVE\_UTF8}}
+\DoxyCodeLine{00571\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (TT\ ==\ table\_type::character)\ \{}
+\DoxyCodeLine{00572\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ft\_nwrite(table\_,\ 1,\ stream\_.str().c\_str());}
+\DoxyCodeLine{00573\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00574\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ft\_u8nwrite(table\_,\ 1,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)stream\_.str().c\_str());}
+\DoxyCodeLine{00575\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00576\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00577\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ft\_nwrite(table\_,\ 1,\ stream\_.str().c\_str());}
+\DoxyCodeLine{00578\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00579\ }
+\DoxyCodeLine{00580\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ stream\_.str(std::string());}
+\DoxyCodeLine{00581\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00582\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00583\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00584\ }
+\DoxyCodeLine{00585\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table}{table}}\ \&\mbox{\hyperlink{classfort_1_1table_a5fa1b2a0af4dd1e7a7d04070dcbb89c1}{operator<<}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classfort_1_1table__manipulator}{table\_manipulator}}\ \&arg)}
+\DoxyCodeLine{00586\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00587\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (arg.value\ ==\ \mbox{\hyperlink{fort_8hpp_a6b60404c249df2f612d990c603d49517}{header}}.value)}
+\DoxyCodeLine{00588\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ft\_set\_cell\_prop(table\_,\ \mbox{\hyperlink{fort_8h_a7b2a188460e60fa72f0182fc3d03c5e6}{FT\_CUR\_ROW}},\ \mbox{\hyperlink{fort_8h_a18fe66b5bbb33d73be7ba06518c1f40d}{FT\_ANY\_ROW}},\ \mbox{\hyperlink{fort_8h_abd5e4b5a6cb494024967f9d22a50c708}{FT\_CPROP\_ROW\_TYPE}},\ \mbox{\hyperlink{fort_8h_a06d9536a2e476d68f5055820535d3b34a2a0a31078eac88202029c3e9bdaa614a}{FT\_ROW\_HEADER}});}
+\DoxyCodeLine{00589\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (arg.value\ ==\ \mbox{\hyperlink{fort_8hpp_aee4e27c8d266e9b1be499e052fbc6c53}{endr}}.value)}
+\DoxyCodeLine{00590\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ft\_ln(table\_);}
+\DoxyCodeLine{00591\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (arg.value\ ==\ \mbox{\hyperlink{fort_8hpp_af61eccb3d2f66403d238b94e59dd7e4a}{separator}}.value)}
+\DoxyCodeLine{00592\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ft\_add\_separator(table\_);}
+\DoxyCodeLine{00593\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00594\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00595\ }
+\DoxyCodeLine{00607\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *str)}
+\DoxyCodeLine{00608\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00609\ \textcolor{preprocessor}{\#ifdef\ FT\_HAVE\_UTF8}}
+\DoxyCodeLine{00610\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (TT\ ==\ table\_type::character)\ \{}
+\DoxyCodeLine{00611\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FT\_IS\_SUCCESS(\mbox{\hyperlink{fort_8h_aeb1059360e481caef1d2dcced5d5b646}{ft\_write}}(table\_,\ str));}
+\DoxyCodeLine{00612\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00613\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FT\_IS\_SUCCESS(ft\_u8write(table\_,\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *)str));}
+\DoxyCodeLine{00614\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00615\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00616\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FT\_IS\_SUCCESS(\mbox{\hyperlink{fort_8h_aeb1059360e481caef1d2dcced5d5b646}{ft\_write}}(table\_,\ str));}
+\DoxyCodeLine{00617\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00618\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00619\ }
+\DoxyCodeLine{00632\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_a23ac58f177ed0717e77d96ca5acec52f}{write\_ln}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *str)}
+\DoxyCodeLine{00633\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00634\ \textcolor{preprocessor}{\#ifdef\ FT\_HAVE\_UTF8}}
+\DoxyCodeLine{00635\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (TT\ ==\ table\_type::character)\ \{}
+\DoxyCodeLine{00636\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FT\_IS\_SUCCESS(\mbox{\hyperlink{fort_8h_a4ebdb2eea82c8b8c3b80f0c7b7bf1536}{ft\_write\_ln}}(table\_,\ str));}
+\DoxyCodeLine{00637\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00638\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FT\_IS\_SUCCESS(ft\_u8write\_ln(table\_,\ str));}
+\DoxyCodeLine{00639\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00640\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00641\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FT\_IS\_SUCCESS(\mbox{\hyperlink{fort_8h_a4ebdb2eea82c8b8c3b80f0c7b7bf1536}{ft\_write\_ln}}(table\_,\ str));}
+\DoxyCodeLine{00642\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00643\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00644\ }
+\DoxyCodeLine{00656\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_aa5bef06063a598ac7985bd7df715803c}{write}}(\textcolor{keyword}{const}\ std::string\ \&str)}
+\DoxyCodeLine{00657\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00658\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(str.c\_str());}
+\DoxyCodeLine{00659\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00660\ }
+\DoxyCodeLine{00673\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_a921c35a1c1aa723c1a96500bdbf04d62}{write\_ln}}(\textcolor{keyword}{const}\ std::string\ \&str)}
+\DoxyCodeLine{00674\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00675\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_a23ac58f177ed0717e77d96ca5acec52f}{write\_ln}}(str.c\_str());}
+\DoxyCodeLine{00676\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00677\ }
+\DoxyCodeLine{00678\ \textcolor{preprocessor}{\#ifdef\ \_\_cpp\_variadic\_templates}}
+\DoxyCodeLine{00693\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ ...Ts>}
+\DoxyCodeLine{00694\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(\textcolor{keyword}{const}\ T\ \&str,\ \textcolor{keyword}{const}\ Ts\ \&...strings)}
+\DoxyCodeLine{00695\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00696\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(str)\ \&\&\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(strings...);}
+\DoxyCodeLine{00697\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00698\ }
+\DoxyCodeLine{00714\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ ...Ts>}
+\DoxyCodeLine{00715\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_a23ac58f177ed0717e77d96ca5acec52f}{write\_ln}}(\textcolor{keyword}{const}\ T\ \&str,\ \textcolor{keyword}{const}\ Ts\ \&...strings)}
+\DoxyCodeLine{00716\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00717\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(str)\ \&\&\ \mbox{\hyperlink{classfort_1_1table_a23ac58f177ed0717e77d96ca5acec52f}{write\_ln}}(strings...);}
+\DoxyCodeLine{00718\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00719\ \textcolor{preprocessor}{\#else\ }\textcolor{comment}{/*\ \_\_cpp\_variadic\_templates\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00720\ }
+\DoxyCodeLine{00721\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T\_0,\ \textcolor{keyword}{typename}\ T\_1>}
+\DoxyCodeLine{00722\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(\textcolor{keyword}{const}\ T\_0\ \&arg\_0,\ \textcolor{keyword}{const}\ T\_1\ \&arg\_1)}
+\DoxyCodeLine{00723\ \ \ \ \ \{}
+\DoxyCodeLine{00724\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(arg\_0)\ \&\&\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(arg\_1);}
+\DoxyCodeLine{00725\ \ \ \ \ \}}
+\DoxyCodeLine{00726\ }
+\DoxyCodeLine{00727\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T\_0,\ \textcolor{keyword}{typename}\ T\_1,\ \textcolor{keyword}{typename}\ T\_2>}
+\DoxyCodeLine{00728\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(\textcolor{keyword}{const}\ T\_0\ \&arg\_0,\ \textcolor{keyword}{const}\ T\_1\ \&arg\_1,\ \textcolor{keyword}{const}\ T\_2\ \&arg\_2)}
+\DoxyCodeLine{00729\ \ \ \ \ \{}
+\DoxyCodeLine{00730\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(arg\_0)\ \&\&\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(arg\_1,\ arg\_2);}
+\DoxyCodeLine{00731\ \ \ \ \ \}}
+\DoxyCodeLine{00732\ }
+\DoxyCodeLine{00733\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T\_0,\ \textcolor{keyword}{typename}\ T\_1,\ \textcolor{keyword}{typename}\ T\_2,\ \textcolor{keyword}{typename}\ T\_3>}
+\DoxyCodeLine{00734\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(\textcolor{keyword}{const}\ T\_0\ \&arg\_0,\ \textcolor{keyword}{const}\ T\_1\ \&arg\_1,\ \textcolor{keyword}{const}\ T\_2\ \&arg\_2,\ \textcolor{keyword}{const}\ T\_3\ \&arg\_3)}
+\DoxyCodeLine{00735\ \ \ \ \ \{}
+\DoxyCodeLine{00736\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(arg\_0)\ \&\&\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(arg\_1,\ arg\_2,\ arg\_3);}
+\DoxyCodeLine{00737\ \ \ \ \ \}}
+\DoxyCodeLine{00738\ }
+\DoxyCodeLine{00739\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T\_0,\ \textcolor{keyword}{typename}\ T\_1,\ \textcolor{keyword}{typename}\ T\_2,\ \textcolor{keyword}{typename}\ T\_3,\ \textcolor{keyword}{typename}\ T\_4>}
+\DoxyCodeLine{00740\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(\textcolor{keyword}{const}\ T\_0\ \&arg\_0,\ \textcolor{keyword}{const}\ T\_1\ \&arg\_1,\ \textcolor{keyword}{const}\ T\_2\ \&arg\_2,\ \textcolor{keyword}{const}\ T\_3\ \&arg\_3,\ \textcolor{keyword}{const}\ T\_4\ \&arg\_4)}
+\DoxyCodeLine{00741\ \ \ \ \ \{}
+\DoxyCodeLine{00742\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(arg\_0)\ \&\&\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(arg\_1,\ arg\_2,\ arg\_3,\ arg\_4);}
+\DoxyCodeLine{00743\ \ \ \ \ \}}
+\DoxyCodeLine{00744\ }
+\DoxyCodeLine{00745\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T\_0,\ \textcolor{keyword}{typename}\ T\_1,\ \textcolor{keyword}{typename}\ T\_2,\ \textcolor{keyword}{typename}\ T\_3,\ \textcolor{keyword}{typename}\ T\_4,\ \textcolor{keyword}{typename}\ T\_5>}
+\DoxyCodeLine{00746\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(\textcolor{keyword}{const}\ T\_0\ \&arg\_0,\ \textcolor{keyword}{const}\ T\_1\ \&arg\_1,\ \textcolor{keyword}{const}\ T\_2\ \&arg\_2,\ \textcolor{keyword}{const}\ T\_3\ \&arg\_3,\ \textcolor{keyword}{const}\ T\_4\ \&arg\_4,\ \textcolor{keyword}{const}\ T\_5\ \&arg\_5)}
+\DoxyCodeLine{00747\ \ \ \ \ \{}
+\DoxyCodeLine{00748\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(arg\_0)\ \&\&\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(arg\_1,\ arg\_2,\ arg\_3,\ arg\_4,\ arg\_5);}
+\DoxyCodeLine{00749\ \ \ \ \ \}}
+\DoxyCodeLine{00750\ }
+\DoxyCodeLine{00751\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T\_0,\ \textcolor{keyword}{typename}\ T\_1,\ \textcolor{keyword}{typename}\ T\_2,\ \textcolor{keyword}{typename}\ T\_3,\ \textcolor{keyword}{typename}\ T\_4,\ \textcolor{keyword}{typename}\ T\_5,\ \textcolor{keyword}{typename}\ T\_6>}
+\DoxyCodeLine{00752\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(\textcolor{keyword}{const}\ T\_0\ \&arg\_0,\ \textcolor{keyword}{const}\ T\_1\ \&arg\_1,\ \textcolor{keyword}{const}\ T\_2\ \&arg\_2,\ \textcolor{keyword}{const}\ T\_3\ \&arg\_3,\ \textcolor{keyword}{const}\ T\_4\ \&arg\_4,\ \textcolor{keyword}{const}\ T\_5\ \&arg\_5,\ \textcolor{keyword}{const}\ T\_6\ \&arg\_6)}
+\DoxyCodeLine{00753\ \ \ \ \ \{}
+\DoxyCodeLine{00754\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(arg\_0)\ \&\&\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(arg\_1,\ arg\_2,\ arg\_3,\ arg\_4,\ arg\_5,\ arg\_6);}
+\DoxyCodeLine{00755\ \ \ \ \ \}}
+\DoxyCodeLine{00756\ }
+\DoxyCodeLine{00757\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T\_0,\ \textcolor{keyword}{typename}\ T\_1,\ \textcolor{keyword}{typename}\ T\_2,\ \textcolor{keyword}{typename}\ T\_3,\ \textcolor{keyword}{typename}\ T\_4,\ \textcolor{keyword}{typename}\ T\_5,\ \textcolor{keyword}{typename}\ T\_6,\ \textcolor{keyword}{typename}\ T\_7>}
+\DoxyCodeLine{00758\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(\textcolor{keyword}{const}\ T\_0\ \&arg\_0,\ \textcolor{keyword}{const}\ T\_1\ \&arg\_1,\ \textcolor{keyword}{const}\ T\_2\ \&arg\_2,\ \textcolor{keyword}{const}\ T\_3\ \&arg\_3,\ \textcolor{keyword}{const}\ T\_4\ \&arg\_4,\ \textcolor{keyword}{const}\ T\_5\ \&arg\_5,\ \textcolor{keyword}{const}\ T\_6\ \&arg\_6,\ \textcolor{keyword}{const}\ T\_7\ \&arg\_7)}
+\DoxyCodeLine{00759\ \ \ \ \ \{}
+\DoxyCodeLine{00760\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(arg\_0)\ \&\&\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(arg\_1,\ arg\_2,\ arg\_3,\ arg\_4,\ arg\_5,\ arg\_6,\ arg\_7);}
+\DoxyCodeLine{00761\ \ \ \ \ \}}
+\DoxyCodeLine{00762\ }
+\DoxyCodeLine{00763\ }
+\DoxyCodeLine{00764\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T\_0,\ \textcolor{keyword}{typename}\ T\_1>}
+\DoxyCodeLine{00765\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_a23ac58f177ed0717e77d96ca5acec52f}{write\_ln}}(\textcolor{keyword}{const}\ T\_0\ \&arg\_0,\ \textcolor{keyword}{const}\ T\_1\ \&arg\_1)}
+\DoxyCodeLine{00766\ \ \ \ \ \{}
+\DoxyCodeLine{00767\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(arg\_0)\ \&\&\ \mbox{\hyperlink{classfort_1_1table_a23ac58f177ed0717e77d96ca5acec52f}{write\_ln}}(arg\_1);}
+\DoxyCodeLine{00768\ \ \ \ \ \}}
+\DoxyCodeLine{00769\ }
+\DoxyCodeLine{00770\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T\_0,\ \textcolor{keyword}{typename}\ T\_1,\ \textcolor{keyword}{typename}\ T\_2>}
+\DoxyCodeLine{00771\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_a23ac58f177ed0717e77d96ca5acec52f}{write\_ln}}(\textcolor{keyword}{const}\ T\_0\ \&arg\_0,\ \textcolor{keyword}{const}\ T\_1\ \&arg\_1,\ \textcolor{keyword}{const}\ T\_2\ \&arg\_2)}
+\DoxyCodeLine{00772\ \ \ \ \ \{}
+\DoxyCodeLine{00773\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(arg\_0)\ \&\&\ \mbox{\hyperlink{classfort_1_1table_a23ac58f177ed0717e77d96ca5acec52f}{write\_ln}}(arg\_1,\ arg\_2);}
+\DoxyCodeLine{00774\ \ \ \ \ \}}
+\DoxyCodeLine{00775\ }
+\DoxyCodeLine{00776\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T\_0,\ \textcolor{keyword}{typename}\ T\_1,\ \textcolor{keyword}{typename}\ T\_2,\ \textcolor{keyword}{typename}\ T\_3>}
+\DoxyCodeLine{00777\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_a23ac58f177ed0717e77d96ca5acec52f}{write\_ln}}(\textcolor{keyword}{const}\ T\_0\ \&arg\_0,\ \textcolor{keyword}{const}\ T\_1\ \&arg\_1,\ \textcolor{keyword}{const}\ T\_2\ \&arg\_2,\ \textcolor{keyword}{const}\ T\_3\ \&arg\_3)}
+\DoxyCodeLine{00778\ \ \ \ \ \{}
+\DoxyCodeLine{00779\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(arg\_0)\ \&\&\ \mbox{\hyperlink{classfort_1_1table_a23ac58f177ed0717e77d96ca5acec52f}{write\_ln}}(arg\_1,\ arg\_2,\ arg\_3);}
+\DoxyCodeLine{00780\ \ \ \ \ \}}
+\DoxyCodeLine{00781\ }
+\DoxyCodeLine{00782\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T\_0,\ \textcolor{keyword}{typename}\ T\_1,\ \textcolor{keyword}{typename}\ T\_2,\ \textcolor{keyword}{typename}\ T\_3,\ \textcolor{keyword}{typename}\ T\_4>}
+\DoxyCodeLine{00783\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_a23ac58f177ed0717e77d96ca5acec52f}{write\_ln}}(\textcolor{keyword}{const}\ T\_0\ \&arg\_0,\ \textcolor{keyword}{const}\ T\_1\ \&arg\_1,\ \textcolor{keyword}{const}\ T\_2\ \&arg\_2,\ \textcolor{keyword}{const}\ T\_3\ \&arg\_3,\ \textcolor{keyword}{const}\ T\_4\ \&arg\_4)}
+\DoxyCodeLine{00784\ \ \ \ \ \{}
+\DoxyCodeLine{00785\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(arg\_0)\ \&\&\ \mbox{\hyperlink{classfort_1_1table_a23ac58f177ed0717e77d96ca5acec52f}{write\_ln}}(arg\_1,\ arg\_2,\ arg\_3,\ arg\_4);}
+\DoxyCodeLine{00786\ \ \ \ \ \}}
+\DoxyCodeLine{00787\ }
+\DoxyCodeLine{00788\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T\_0,\ \textcolor{keyword}{typename}\ T\_1,\ \textcolor{keyword}{typename}\ T\_2,\ \textcolor{keyword}{typename}\ T\_3,\ \textcolor{keyword}{typename}\ T\_4,\ \textcolor{keyword}{typename}\ T\_5>}
+\DoxyCodeLine{00789\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_a23ac58f177ed0717e77d96ca5acec52f}{write\_ln}}(\textcolor{keyword}{const}\ T\_0\ \&arg\_0,\ \textcolor{keyword}{const}\ T\_1\ \&arg\_1,\ \textcolor{keyword}{const}\ T\_2\ \&arg\_2,\ \textcolor{keyword}{const}\ T\_3\ \&arg\_3,\ \textcolor{keyword}{const}\ T\_4\ \&arg\_4,\ \textcolor{keyword}{const}\ T\_5\ \&arg\_5)}
+\DoxyCodeLine{00790\ \ \ \ \ \{}
+\DoxyCodeLine{00791\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(arg\_0)\ \&\&\ \mbox{\hyperlink{classfort_1_1table_a23ac58f177ed0717e77d96ca5acec52f}{write\_ln}}(arg\_1,\ arg\_2,\ arg\_3,\ arg\_4,\ arg\_5);}
+\DoxyCodeLine{00792\ \ \ \ \ \}}
+\DoxyCodeLine{00793\ }
+\DoxyCodeLine{00794\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T\_0,\ \textcolor{keyword}{typename}\ T\_1,\ \textcolor{keyword}{typename}\ T\_2,\ \textcolor{keyword}{typename}\ T\_3,\ \textcolor{keyword}{typename}\ T\_4,\ \textcolor{keyword}{typename}\ T\_5,\ \textcolor{keyword}{typename}\ T\_6>}
+\DoxyCodeLine{00795\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_a23ac58f177ed0717e77d96ca5acec52f}{write\_ln}}(\textcolor{keyword}{const}\ T\_0\ \&arg\_0,\ \textcolor{keyword}{const}\ T\_1\ \&arg\_1,\ \textcolor{keyword}{const}\ T\_2\ \&arg\_2,\ \textcolor{keyword}{const}\ T\_3\ \&arg\_3,\ \textcolor{keyword}{const}\ T\_4\ \&arg\_4,\ \textcolor{keyword}{const}\ T\_5\ \&arg\_5,\ \textcolor{keyword}{const}\ T\_6\ \&arg\_6)}
+\DoxyCodeLine{00796\ \ \ \ \ \{}
+\DoxyCodeLine{00797\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(arg\_0)\ \&\&\ \mbox{\hyperlink{classfort_1_1table_a23ac58f177ed0717e77d96ca5acec52f}{write\_ln}}(arg\_1,\ arg\_2,\ arg\_3,\ arg\_4,\ arg\_5,\ arg\_6);}
+\DoxyCodeLine{00798\ \ \ \ \ \}}
+\DoxyCodeLine{00799\ }
+\DoxyCodeLine{00800\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T\_0,\ \textcolor{keyword}{typename}\ T\_1,\ \textcolor{keyword}{typename}\ T\_2,\ \textcolor{keyword}{typename}\ T\_3,\ \textcolor{keyword}{typename}\ T\_4,\ \textcolor{keyword}{typename}\ T\_5,\ \textcolor{keyword}{typename}\ T\_6,\ \textcolor{keyword}{typename}\ T\_7>}
+\DoxyCodeLine{00801\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_a23ac58f177ed0717e77d96ca5acec52f}{write\_ln}}(\textcolor{keyword}{const}\ T\_0\ \&arg\_0,\ \textcolor{keyword}{const}\ T\_1\ \&arg\_1,\ \textcolor{keyword}{const}\ T\_2\ \&arg\_2,\ \textcolor{keyword}{const}\ T\_3\ \&arg\_3,\ \textcolor{keyword}{const}\ T\_4\ \&arg\_4,\ \textcolor{keyword}{const}\ T\_5\ \&arg\_5,\ \textcolor{keyword}{const}\ T\_6\ \&arg\_6,\ \textcolor{keyword}{const}\ T\_7\ \&arg\_7)}
+\DoxyCodeLine{00802\ \ \ \ \ \{}
+\DoxyCodeLine{00803\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(arg\_0)\ \&\&\ \mbox{\hyperlink{classfort_1_1table_a23ac58f177ed0717e77d96ca5acec52f}{write\_ln}}(arg\_1,\ arg\_2,\ arg\_3,\ arg\_4,\ arg\_5,\ arg\_6,\ arg\_7);}
+\DoxyCodeLine{00804\ \ \ \ \ \}}
+\DoxyCodeLine{00805\ }
+\DoxyCodeLine{00806\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ \_\_cpp\_variadic\_templates\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00807\ }
+\DoxyCodeLine{00819\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ InputIt>}
+\DoxyCodeLine{00820\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_ad26028ecd1d540008f248b782f35898b}{range\_write}}(InputIt\ first,\ InputIt\ last)}
+\DoxyCodeLine{00821\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00822\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (first\ !=\ last)\ \{}
+\DoxyCodeLine{00823\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\textcolor{keyword}{this}\ <<\ *first;}
+\DoxyCodeLine{00824\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++first;}
+\DoxyCodeLine{00825\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00826\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00827\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00828\ }
+\DoxyCodeLine{00841\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ InputIt>}
+\DoxyCodeLine{00842\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_ac798525be3e650e456343301010b0799}{range\_write\_ln}}(InputIt\ first,\ InputIt\ last)}
+\DoxyCodeLine{00843\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00844\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (first\ !=\ last)\ \{}
+\DoxyCodeLine{00845\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\textcolor{keyword}{this}\ <<\ *first;}
+\DoxyCodeLine{00846\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++first;}
+\DoxyCodeLine{00847\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00848\ \ \ \ \ \ \ \ \ \ \ \ \ ft\_ln(table\_);}
+\DoxyCodeLine{00849\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00850\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00851\ }
+\DoxyCodeLine{00861\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_a040c119d6b7965602cdec6bf06e9d197}{set\_border\_style}}(\textcolor{keyword}{const}\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structft__border__style}{ft\_border\_style}}\ *style)}
+\DoxyCodeLine{00862\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00863\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FT\_IS\_SUCCESS(ft\_set\_border\_style(table\_,\ style));}
+\DoxyCodeLine{00864\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00865\ }
+\DoxyCodeLine{00876\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classfort_1_1table_afe4030b7e70ea73ca60d1ed6626b80ec}{set\_cur\_cell}}(\textcolor{keywordtype}{size\_t}\ row\_i,\ \textcolor{keywordtype}{size\_t}\ col\_i)}
+\DoxyCodeLine{00877\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00878\ \ \ \ \ \ \ \ \ \ \ \ \ ft\_set\_cur\_cell(table\_,\ row\_i,\ col\_i);}
+\DoxyCodeLine{00879\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00880\ }
+\DoxyCodeLine{00881\ }
+\DoxyCodeLine{00891\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_a571357e6d86c3021a04f071aaab13e9a}{set\_left\_margin}}(\textcolor{keywordtype}{unsigned}\ value)}
+\DoxyCodeLine{00892\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00893\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FT\_IS\_SUCCESS(ft\_set\_tbl\_prop(table\_,\ FT\_TPROP\_LEFT\_MARGIN,\ value));}
+\DoxyCodeLine{00894\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00895\ }
+\DoxyCodeLine{00905\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_aa5eaa7e5cc6178cd33fbd71b886def6f}{set\_top\_margin}}(\textcolor{keywordtype}{unsigned}\ value)}
+\DoxyCodeLine{00906\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00907\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FT\_IS\_SUCCESS(ft\_set\_tbl\_prop(table\_,\ FT\_TPROP\_TOP\_MARGIN,\ value));}
+\DoxyCodeLine{00908\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00909\ }
+\DoxyCodeLine{00919\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_ae6ed7466401235113daa84079c7d9040}{set\_right\_margin}}(\textcolor{keywordtype}{unsigned}\ value)}
+\DoxyCodeLine{00920\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00921\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FT\_IS\_SUCCESS(ft\_set\_tbl\_prop(table\_,\ FT\_TPROP\_RIGHT\_MARGIN,\ value));}
+\DoxyCodeLine{00922\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00923\ }
+\DoxyCodeLine{00933\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_a0d3651e9e4d47fd3594cc1a8638f5f1d}{set\_bottom\_margin}}(\textcolor{keywordtype}{unsigned}\ value)}
+\DoxyCodeLine{00934\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00935\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FT\_IS\_SUCCESS(ft\_set\_tbl\_prop(table\_,\ FT\_TPROP\_BOTTOM\_MARGIN,\ value));}
+\DoxyCodeLine{00936\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00937\ }
+\DoxyCodeLine{00947\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_a097c227305b6497609363f6744ae9f0b}{set\_adding\_strategy}}(\mbox{\hyperlink{fort_8hpp_a90d7e4b53ec42f4eddd9e63eb02abca4}{fort::add\_strategy}}\ value)}
+\DoxyCodeLine{00948\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00949\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FT\_IS\_SUCCESS(ft\_set\_tbl\_prop(table\_,}
+\DoxyCodeLine{00950\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FT\_TPROP\_ADDING\_STRATEGY,}
+\DoxyCodeLine{00951\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(value)));}
+\DoxyCodeLine{00952\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00953\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00954\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structft__table}{ft\_table\_t}}\ *table\_;}
+\DoxyCodeLine{00955\ \ \ \ \ \ \ \ \ \textcolor{keyword}{mutable}\ std::stringstream\ stream\_;}
+\DoxyCodeLine{00956\ \ \ \ \ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfort_1_1property__owner}{property\_owner}}<\mbox{\hyperlink{classfort_1_1table}{table}}>;}
+\DoxyCodeLine{00957\ }
+\DoxyCodeLine{00958\ }
+\DoxyCodeLine{00959\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00960\ }
+\DoxyCodeLine{00961\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ Iterators\ */}}
+\DoxyCodeLine{00962\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ todo:\ implement\ chains\ like\ table[0][0]\ =\ table\ [0][1]\ =\ "{}somethings"{}\ */}}
+\DoxyCodeLine{00963\ }
+\DoxyCodeLine{00967\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfort_1_1table_1_1table__cell}{table\_cell}}:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classfort_1_1property__owner}{property\_owner\_t}}}
+\DoxyCodeLine{00968\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00969\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }property\_owner\_t::ps\_coll\_idx\_;}
+\DoxyCodeLine{00970\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }property\_owner\_t::ps\_row\_idx\_;}
+\DoxyCodeLine{00971\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }property\_owner\_t::ps\_table\_;}
+\DoxyCodeLine{00972\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }property\_owner\_t::set\_default\_properties\_;}
+\DoxyCodeLine{00973\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00974\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table_1_1table__cell}{table\_cell}}(std::size\_t\ row\_idx,\ std::size\_t\ coll\_idx,\ \mbox{\hyperlink{classfort_1_1table}{table}}\ \&tbl)}
+\DoxyCodeLine{00975\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{classfort_1_1property__owner}{property\_owner\_t}}(row\_idx,\ coll\_idx,\ \&tbl)\ \{\}}
+\DoxyCodeLine{00976\ }
+\DoxyCodeLine{00977\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table_1_1table__cell}{table\_cell}}\ \&operator=(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *str)}
+\DoxyCodeLine{00978\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00979\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ft\_set\_cur\_cell(ps\_table\_-\/>table\_,\ ps\_row\_idx\_,\ ps\_coll\_idx\_);}
+\DoxyCodeLine{00980\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ps\_table\_-\/>\mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}}(str);}
+\DoxyCodeLine{00981\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00982\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00983\ }
+\DoxyCodeLine{00984\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table_1_1table__cell}{table\_cell}}\ \&operator=(\textcolor{keyword}{const}\ std::string\ \&str)}
+\DoxyCodeLine{00985\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00986\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ operator=(str.c\_str());}
+\DoxyCodeLine{00987\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00988\ }
+\DoxyCodeLine{00998\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classfort_1_1table_1_1table__cell_a07c02d2621cc30fb27ee55ffd3fc8dd9}{set\_cell\_span}}(\textcolor{keywordtype}{size\_t}\ hor\_span)}
+\DoxyCodeLine{00999\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01000\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (set\_default\_properties\_)}
+\DoxyCodeLine{01001\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01002\ }
+\DoxyCodeLine{01003\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FT\_IS\_SUCCESS(ft\_set\_cell\_span(ps\_table\_-\/>table\_,\ ps\_row\_idx\_,\ ps\_coll\_idx\_,\ hor\_span));}
+\DoxyCodeLine{01004\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01005\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{01006\ }
+\DoxyCodeLine{01010\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfort_1_1table_1_1table__row}{table\_row}}:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classfort_1_1property__owner}{property\_owner\_t}}}
+\DoxyCodeLine{01011\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01012\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }property\_owner\_t::ps\_row\_idx\_;}
+\DoxyCodeLine{01013\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }property\_owner\_t::ps\_table\_;}
+\DoxyCodeLine{01014\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{01015\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table_1_1table__row}{table\_row}}(std::size\_t\ row\_idx,\ \mbox{\hyperlink{classfort_1_1table}{table}}\ \&tbl)}
+\DoxyCodeLine{01016\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{classfort_1_1property__owner}{property\_owner\_t}}(row\_idx,\ \mbox{\hyperlink{fort_8h_ad5b6b32262309f37874d11369f47c7a5}{FT\_ANY\_COLUMN}},\ \&tbl)\ \{\}}
+\DoxyCodeLine{01017\ }
+\DoxyCodeLine{01018\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfort_1_1table_1_1table__cell}{table\_cell}}}
+\DoxyCodeLine{01019\ \ \ \ \ \ \ \ \ \ \ \ \ operator[](std::size\_t\ coll\_idx)}
+\DoxyCodeLine{01020\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01021\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_1_1table__cell}{table\_cell}}(ps\_row\_idx\_,\ coll\_idx,\ *ps\_table\_);}
+\DoxyCodeLine{01022\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01023\ }
+\DoxyCodeLine{01024\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ erase()}
+\DoxyCodeLine{01025\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01026\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (FT\_IS\_ERROR(ft\_erase\_range(ps\_table\_-\/>table\_,}
+\DoxyCodeLine{01027\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ property\_owner\_t::ps\_row\_idx\_,\ 0,}
+\DoxyCodeLine{01028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ property\_owner\_t::ps\_row\_idx\_,\ FT\_MAX\_COL\_INDEX)))\ \{}
+\DoxyCodeLine{01029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}Failed\ to\ erase\ row"{}});}
+\DoxyCodeLine{01030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01031\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01032\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{01033\ }
+\DoxyCodeLine{01037\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfort_1_1table_1_1table__column}{table\_column}}:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classfort_1_1property__owner}{property\_owner\_t}}}
+\DoxyCodeLine{01038\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01039\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }property\_owner\_t::ps\_coll\_idx\_;}
+\DoxyCodeLine{01040\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }property\_owner\_t::ps\_table\_;}
+\DoxyCodeLine{01041\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{01042\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table_1_1table__column}{table\_column}}(std::size\_t\ col\_idx,\ \mbox{\hyperlink{classfort_1_1table}{table}}\ \&tbl)}
+\DoxyCodeLine{01043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{classfort_1_1property__owner}{property\_owner\_t}}(\mbox{\hyperlink{fort_8h_a18fe66b5bbb33d73be7ba06518c1f40d}{FT\_ANY\_ROW}},\ col\_idx,\ \&tbl)\ \{\}}
+\DoxyCodeLine{01044\ }
+\DoxyCodeLine{01045\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ erase()}
+\DoxyCodeLine{01046\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (FT\_IS\_ERROR(ft\_erase\_range(ps\_table\_-\/>table\_,}
+\DoxyCodeLine{01048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0,\ ps\_coll\_idx\_,}
+\DoxyCodeLine{01049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FT\_MAX\_ROW\_INDEX,\ ps\_coll\_idx\_)))\ \{}
+\DoxyCodeLine{01050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}Failed\ to\ erase\ column"{}});}
+\DoxyCodeLine{01051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01052\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01053\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{01054\ }
+\DoxyCodeLine{01062\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfort_1_1table_1_1cell__range}{cell\_range}}:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classfort_1_1property__owner}{property\_owner\_t}}}
+\DoxyCodeLine{01063\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01064\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }property\_owner\_t::ps\_coll\_idx\_;}
+\DoxyCodeLine{01065\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }property\_owner\_t::ps\_row\_idx\_;}
+\DoxyCodeLine{01066\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }property\_owner\_t::ps\_table\_;}
+\DoxyCodeLine{01067\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{01068\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table_1_1cell__range}{cell\_range}}(\textcolor{keywordtype}{size\_t}\ top\_left\_row,\ \textcolor{keywordtype}{size\_t}\ top\_left\_col,}
+\DoxyCodeLine{01069\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ bottom\_right\_row,\ \textcolor{keywordtype}{size\_t}\ bottom\_right\_col,}
+\DoxyCodeLine{01070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table}{table}}\ \&tbl)}
+\DoxyCodeLine{01071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{classfort_1_1property__owner}{property\_owner\_t}}(top\_left\_row,\ top\_left\_col,\ \&tbl),}
+\DoxyCodeLine{01072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bottom\_right\_row\_(bottom\_right\_row),}
+\DoxyCodeLine{01073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bottom\_right\_col\_(bottom\_right\_col)}
+\DoxyCodeLine{01074\ \ \ \ \ \ \ \ \ \ \ \ \ \{\}}
+\DoxyCodeLine{01075\ }
+\DoxyCodeLine{01076\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ erase()}
+\DoxyCodeLine{01077\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01078\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (FT\_IS\_ERROR(ft\_erase\_range(ps\_table\_-\/>table\_,}
+\DoxyCodeLine{01079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ps\_row\_idx\_,\ ps\_coll\_idx\_,}
+\DoxyCodeLine{01080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bottom\_right\_row\_,\ bottom\_right\_col\_)))\ \{}
+\DoxyCodeLine{01081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error(\textcolor{stringliteral}{"{}Failed\ to\ erase\ column"{}});}
+\DoxyCodeLine{01082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01083\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01084\ }
+\DoxyCodeLine{01085\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{01086\ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ bottom\_right\_row\_;}
+\DoxyCodeLine{01087\ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ bottom\_right\_col\_;}
+\DoxyCodeLine{01088\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{01089\ }
+\DoxyCodeLine{01090\ }
+\DoxyCodeLine{01091\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfort_1_1table_1_1default__properties}{default\_properties}}:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classfort_1_1property__owner}{property\_owner\_t}}}
+\DoxyCodeLine{01092\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01093\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{01094\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table_1_1default__properties}{default\_properties}}(\mbox{\hyperlink{classfort_1_1table}{table}}\ *tbl)}
+\DoxyCodeLine{01095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{classfort_1_1property__owner}{property\_owner\_t}}(\mbox{\hyperlink{fort_8h_a18fe66b5bbb33d73be7ba06518c1f40d}{FT\_ANY\_ROW}},\ \mbox{\hyperlink{fort_8h_ad5b6b32262309f37874d11369f47c7a5}{FT\_ANY\_COLUMN}},\ tbl,\ \textcolor{keyword}{true})\ \{\}}
+\DoxyCodeLine{01096\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{01097\ }
+\DoxyCodeLine{01098\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classfort_1_1table_1_1table__row}{table\_row}}}
+\DoxyCodeLine{01099\ \ \ \ \ \ \ \ \ operator[](std::size\_t\ row\_idx)}
+\DoxyCodeLine{01100\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01101\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_1_1table__row}{table\_row}}(row\_idx,\ *\textcolor{keyword}{this});}
+\DoxyCodeLine{01102\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01103\ }
+\DoxyCodeLine{01104\ }
+\DoxyCodeLine{01115\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }table\_cell}
+\DoxyCodeLine{01116\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table_aed19cddfec34812a4bcbcbc1f919c5f7}{cell}}(std::size\_t\ row\_idx,\ std::size\_t\ col\_idx)}
+\DoxyCodeLine{01117\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01118\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (*\textcolor{keyword}{this})[row\_idx][col\_idx];}
+\DoxyCodeLine{01119\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01120\ }
+\DoxyCodeLine{01127\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}}
+\DoxyCodeLine{01128\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table_a2ab00305a1e754e87efed759cafce945}{cur\_col}}()\ const\ noexcept}
+\DoxyCodeLine{01129\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01130\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ft\_cur\_col(table\_);}
+\DoxyCodeLine{01131\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01132\ }
+\DoxyCodeLine{01139\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}}
+\DoxyCodeLine{01140\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table_ac74ecd92b580d2f350ade38aa7cdd8bc}{cur\_row}}()\ const\ noexcept}
+\DoxyCodeLine{01141\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01142\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ft\_cur\_row(table\_);}
+\DoxyCodeLine{01143\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01144\ }
+\DoxyCodeLine{01152\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{01153\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table_a47558c6b2bc4d7ac0990f6e43938f075}{is\_empty}}()\ const\ noexcept}
+\DoxyCodeLine{01154\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01155\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ft\_is\_empty(table\_);}
+\DoxyCodeLine{01156\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01157\ }
+\DoxyCodeLine{01164\ \ \ \ \ \ \ \ \ std::size\_t}
+\DoxyCodeLine{01165\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table_aa507b478c722bd977c4c346f1cd0381e}{row\_count}}()\ const\ noexcept}
+\DoxyCodeLine{01166\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01167\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ft\_row\_count(table\_);}
+\DoxyCodeLine{01168\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01169\ }
+\DoxyCodeLine{01176\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }table\_cell}
+\DoxyCodeLine{01177\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table_a94c1bc6489c67eb4724e92f3b9ee21b0}{cur\_cell}}()}
+\DoxyCodeLine{01178\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01179\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_aed19cddfec34812a4bcbcbc1f919c5f7}{cell}}(\mbox{\hyperlink{classfort_1_1table_ac74ecd92b580d2f350ade38aa7cdd8bc}{cur\_row}}(),\ \mbox{\hyperlink{classfort_1_1table_a2ab00305a1e754e87efed759cafce945}{cur\_col}}());}
+\DoxyCodeLine{01180\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01181\ }
+\DoxyCodeLine{01190\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }table\_row}
+\DoxyCodeLine{01191\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table_a3d99b789d9d175768890a60ae32c404f}{row}}(std::size\_t\ row\_idx)}
+\DoxyCodeLine{01192\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01193\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_1_1table__row}{table\_row}}(row\_idx,\ *\textcolor{keyword}{this});}
+\DoxyCodeLine{01194\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01195\ }
+\DoxyCodeLine{01204\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }table\_column}
+\DoxyCodeLine{01205\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table_af2b6a6bb01c4769e504f053ee0edb20e}{column}}(std::size\_t\ col\_idx)}
+\DoxyCodeLine{01206\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01207\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_1_1table__column}{table\_column}}(col\_idx,\ *\textcolor{keyword}{this});}
+\DoxyCodeLine{01208\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01209\ }
+\DoxyCodeLine{01218\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }cell\_range}
+\DoxyCodeLine{01219\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table_ad18fcdc28a35e28766c53d76747fc2fd}{range}}(std::size\_t\ top\_left\_row,\ std::size\_t\ top\_left\_col,}
+\DoxyCodeLine{01220\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ bottom\_right\_row,\ std::size\_t\ bottom\_right\_col)}
+\DoxyCodeLine{01221\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01222\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classfort_1_1table_1_1cell__range}{cell\_range}}(top\_left\_row,\ top\_left\_col,}
+\DoxyCodeLine{01223\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bottom\_right\_row,\ bottom\_right\_col,}
+\DoxyCodeLine{01224\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\textcolor{keyword}{this});}
+\DoxyCodeLine{01225\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01226\ }
+\DoxyCodeLine{01227\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{class\ }default\_properties}
+\DoxyCodeLine{01228\ \ \ \ \ \ \ \ \ default\_props()}
+\DoxyCodeLine{01229\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01230\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ default\_properties(NULL);}
+\DoxyCodeLine{01231\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01232\ \ \ \ \ \};}
+\DoxyCodeLine{01233\ }
+\DoxyCodeLine{01241\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classfort_1_1table}{char\_table}}\ =\ \mbox{\hyperlink{classfort_1_1table}{table<table\_type::character>}};}
+\DoxyCodeLine{01242\ }
+\DoxyCodeLine{01243\ \textcolor{preprocessor}{\#ifdef\ FT\_HAVE\_UTF8}}
+\DoxyCodeLine{01247\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classfort_1_1table}{utf8\_table}}\ =\ \mbox{\hyperlink{classfort_1_1table}{table<table\_type::utf8>}};}
+\DoxyCodeLine{01248\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01249\ }
+\DoxyCodeLine{01259\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{fort_8hpp_ad609b3a839d0c845e58d315085f8fade}{set\_default\_border\_style}}(\textcolor{keyword}{struct}\ \mbox{\hyperlink{structft__border__style}{ft\_border\_style}}\ *style)}
+\DoxyCodeLine{01260\ \ \ \ \ \{}
+\DoxyCodeLine{01261\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ FT\_IS\_SUCCESS(ft\_set\_default\_border\_style(style));}
+\DoxyCodeLine{01262\ \ \ \ \ \}}
+\DoxyCodeLine{01263\ }
+\DoxyCodeLine{01264\ }
+\DoxyCodeLine{01265\ \}\ \textcolor{comment}{//\ namespace\ fort}}
+\DoxyCodeLine{01266\ }
+\DoxyCodeLine{01267\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ LIBFORT\_HPP}}
+
+\end{DoxyCode}

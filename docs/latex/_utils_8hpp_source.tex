@@ -1,0 +1,79 @@
+\hypertarget{_utils_8hpp_source}{}\doxysection{Utils.\+hpp}
+\label{_utils_8hpp_source}\index{Utils.hpp@{Utils.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ DA\_TRAINS\_UTILS\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ DA\_TRAINS\_UTILS\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <fstream>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <list>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <map>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <queue>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <sstream>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <unordered\_set>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{fort_8hpp}{libfort/fort.hpp}}"{}}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#define\ uMap\ std::unordered\_map}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#define\ uSet\ std::unordered\_set}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_utils}{Utils}}\ \{}
+\DoxyCodeLine{00022\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_utils_abda5e6ac24cf7c57baf45b3ad835bac9}{lowercase}}(std::string\&\ s,\ \textcolor{keywordtype}{bool}\ uppercase\ =\ \textcolor{keyword}{false})\{}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{char}\&\ c\ :\ s)\{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ c\ =\ (uppercase)\ ?\ (\textcolor{keywordtype}{char})\ toupper(c)\ :\ (char)\ tolower(c);}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00033\ \ \ \ \ \}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_utils_afb38ce3a2bed72ded31da380ba67ec27}{properName}}(std::string\&\ s)\{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ std::string\ name;}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ first\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (std::istringstream\ s\_(s);\ s\_\ >>\ s;)\{}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ prepositions}}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (s.size()\ ==\ 2\ \&\&\ s[0]\ ==\ \textcolor{charliteral}{'d'})\{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ name\ +=\ \textcolor{charliteral}{'\ '}\ +\ s;}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ s[0]\ =\ (char)\ toupper(s[0]);}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 1;\ i\ <\ s.size();\ i++)}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ s[i]\ =\ (\textcolor{keywordtype}{char})\ tolower(s[i]);}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!first)\ name\ +=\ \textcolor{charliteral}{'\ '};}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ name\ +=\ s;}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ first\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ s\ =\ name;}
+\DoxyCodeLine{00063\ \ \ \ \ \}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classfort_1_1table}{fort::utf8\_table}}\ \mbox{\hyperlink{class_utils_a9d08c418aaecfc057a452f6c93d3e6d6}{createTable}}(\textcolor{keyword}{const}\ std::list<std::string>\&\ columnNames)\{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classfort_1_1table}{fort::utf8\_table}}\ table;}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ table.\mbox{\hyperlink{classfort_1_1table_a040c119d6b7965602cdec6bf06e9d197}{set\_border\_style}}(FT\_NICE\_STYLE);}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ table.\mbox{\hyperlink{classfort_1_1table_a3d99b789d9d175768890a60ae32c404f}{row}}(0).\mbox{\hyperlink{classfort_1_1property__owner_acec5096b143be35e12284601f27eceb9}{set\_cell\_content\_text\_style}}(fort::text\_style::bold);}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ table.\mbox{\hyperlink{classfort_1_1table_a3d99b789d9d175768890a60ae32c404f}{row}}(0).\mbox{\hyperlink{classfort_1_1property__owner_a84c20f3c799287d706c9d8e052fff6ec}{set\_cell\_content\_fg\_color}}(fort::color::yellow);}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ table\ <<\ fort::header;}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ columnNames.begin();}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ it\ !=\ columnNames.end();\ ++i)\{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ table\ <<\ *it++;}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ table.\mbox{\hyperlink{classfort_1_1table_af2b6a6bb01c4769e504f053ee0edb20e}{column}}(i).\mbox{\hyperlink{classfort_1_1property__owner_aa0c34eb1dde00dc3b172ede4699e0cdc}{set\_cell\_text\_align}}(fort::text\_align::center);}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ table\ <<\ fort::endr;}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ table;}
+\DoxyCodeLine{00086\ \ \ \ \ \}}
+\DoxyCodeLine{00087\ \};}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//DA\_TRAINS\_UTILS\_HPP}}
+
+\end{DoxyCode}

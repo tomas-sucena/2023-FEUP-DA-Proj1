@@ -1,0 +1,186 @@
+\hypertarget{class_reader}{}\doxysection{Reader Class Reference}
+\label{class_reader}\index{Reader@{Reader}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_reader_a15bfcad4d4845ee9f38048418848e277}{Reader}} (std\+::string path, char value\+Delim=\textquotesingle{},\textquotesingle{}, char line\+Delim=\textquotesingle{}\textbackslash{}n\textquotesingle{})
+\begin{DoxyCompactList}\small\item\em creates a \mbox{\hyperlink{class_reader}{Reader}} object \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_rail_graph}{Rail\+Graph}} \mbox{\hyperlink{class_reader_a9f4ce209c625a51235d34a6fbf019da2}{read}} ()
+\begin{DoxyCompactList}\small\item\em reads the files that detail the railway network \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{class_reader_a623cc5fb1ad7f9363be33bee9d5f30b8}{get\+Path}} () const
+\begin{DoxyCompactList}\small\item\em returns the path to the directory where the data files are stored \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_reader_aa88fe4eacb73b162c175131b89ccb43d}{set\+Path}} (std\+::string \&path)
+\begin{DoxyCompactList}\small\item\em changes the path to the directory where the data files are stored \end{DoxyCompactList}\item 
+u\+Map$<$ std\+::string, int $>$ \mbox{\hyperlink{class_reader_a34f23b423c3f63964d70ed4e887cf3eb}{get\+Station\+IDs}} () const
+\begin{DoxyCompactList}\small\item\em returns an unordered map which binds the name of a station to its index \end{DoxyCompactList}\item 
+u\+Map$<$ int, std\+::string $>$ \mbox{\hyperlink{class_reader_a7c4d34e5534db717529822b56b7deb5b}{get\+Station\+Names}} () const
+\begin{DoxyCompactList}\small\item\em returns an unordered map which binds the index of a station to its name \end{DoxyCompactList}\item 
+u\+Set$<$ int $>$ \mbox{\hyperlink{class_reader_ae339b4b4d92f262c26e41a48235f8685}{get\+Railway\+Sources}} () const
+\begin{DoxyCompactList}\small\item\em returns an unordered set containing the indices of the stations that are the railway network sources \end{DoxyCompactList}\item 
+u\+Set$<$ int $>$ \mbox{\hyperlink{class_reader_a15632ffe9f1afab51b6d4d4a1de9bc90}{get\+Railway\+Sinks}} () const
+\begin{DoxyCompactList}\small\item\em returns an unordered set containing the indices of the stations that are the railway network sinks \end{DoxyCompactList}\item 
+u\+Map$<$ string, u\+Set$<$ string $>$ $>$ \mbox{\hyperlink{class_reader_a127b71ddbebcab25330f9b04eaa5f5ab}{get\+Districts}} () const
+\begin{DoxyCompactList}\small\item\em returns an unordered map which binds the name of a district to the names of the stations located there \end{DoxyCompactList}\item 
+u\+Map$<$ string, u\+Set$<$ string $>$ $>$ \mbox{\hyperlink{class_reader_a1ce63e0b902829eda04d7d5aed169b60}{get\+Municipalities}} () const
+\begin{DoxyCompactList}\small\item\em returns an unordered map which binds the name of a municipality to the names of the stations located there \end{DoxyCompactList}\item 
+u\+Map$<$ string, u\+Set$<$ string $>$ $>$ \mbox{\hyperlink{class_reader_a9c7fa0d54219640e516cf0d9dd9486df}{get\+Train\+Lines}} () const
+\begin{DoxyCompactList}\small\item\em returns an unordered map which binds the name of a train line to the names of the stations it contains \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_reader_a15bfcad4d4845ee9f38048418848e277}\label{class_reader_a15bfcad4d4845ee9f38048418848e277}} 
+\index{Reader@{Reader}!Reader@{Reader}}
+\index{Reader@{Reader}!Reader@{Reader}}
+\doxysubsubsection{\texorpdfstring{Reader()}{Reader()}}
+{\footnotesize\ttfamily Reader\+::\+Reader (\begin{DoxyParamCaption}\item[{std\+::string}]{path,  }\item[{char}]{value\+Delim = {\ttfamily \textquotesingle{},\textquotesingle{}},  }\item[{char}]{line\+Delim = {\ttfamily \textquotesingle{}\textbackslash{}n\textquotesingle{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+creates a \mbox{\hyperlink{class_reader}{Reader}} object 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & path to the directory where the files to be read are \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_reader_a127b71ddbebcab25330f9b04eaa5f5ab}\label{class_reader_a127b71ddbebcab25330f9b04eaa5f5ab}} 
+\index{Reader@{Reader}!getDistricts@{getDistricts}}
+\index{getDistricts@{getDistricts}!Reader@{Reader}}
+\doxysubsubsection{\texorpdfstring{getDistricts()}{getDistricts()}}
+{\footnotesize\ttfamily u\+Map$<$ string, u\+Set$<$ string $>$ $>$ Reader\+::get\+Districts (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+returns an unordered map which binds the name of a district to the names of the stations located there 
+
+\begin{DoxyReturn}{Returns}
+unordered map which binds the name of a district to the names of the stations located there 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_reader_a1ce63e0b902829eda04d7d5aed169b60}\label{class_reader_a1ce63e0b902829eda04d7d5aed169b60}} 
+\index{Reader@{Reader}!getMunicipalities@{getMunicipalities}}
+\index{getMunicipalities@{getMunicipalities}!Reader@{Reader}}
+\doxysubsubsection{\texorpdfstring{getMunicipalities()}{getMunicipalities()}}
+{\footnotesize\ttfamily u\+Map$<$ string, u\+Set$<$ string $>$ $>$ Reader\+::get\+Municipalities (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+returns an unordered map which binds the name of a municipality to the names of the stations located there 
+
+\begin{DoxyReturn}{Returns}
+unordered map which binds the name of a municipality to the names of the stations located there 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_reader_a623cc5fb1ad7f9363be33bee9d5f30b8}\label{class_reader_a623cc5fb1ad7f9363be33bee9d5f30b8}} 
+\index{Reader@{Reader}!getPath@{getPath}}
+\index{getPath@{getPath}!Reader@{Reader}}
+\doxysubsubsection{\texorpdfstring{getPath()}{getPath()}}
+{\footnotesize\ttfamily std\+::string Reader\+::get\+Path (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+returns the path to the directory where the data files are stored 
+
+\begin{DoxyReturn}{Returns}
+path to the directory where the data files are stored 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_reader_a15632ffe9f1afab51b6d4d4a1de9bc90}\label{class_reader_a15632ffe9f1afab51b6d4d4a1de9bc90}} 
+\index{Reader@{Reader}!getRailwaySinks@{getRailwaySinks}}
+\index{getRailwaySinks@{getRailwaySinks}!Reader@{Reader}}
+\doxysubsubsection{\texorpdfstring{getRailwaySinks()}{getRailwaySinks()}}
+{\footnotesize\ttfamily u\+Set$<$ int $>$ Reader\+::get\+Railway\+Sinks (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+returns an unordered set containing the indices of the stations that are the railway network sinks 
+
+\begin{DoxyReturn}{Returns}
+unordered set containing the indices of the stations that are the railway network sinks 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_reader_ae339b4b4d92f262c26e41a48235f8685}\label{class_reader_ae339b4b4d92f262c26e41a48235f8685}} 
+\index{Reader@{Reader}!getRailwaySources@{getRailwaySources}}
+\index{getRailwaySources@{getRailwaySources}!Reader@{Reader}}
+\doxysubsubsection{\texorpdfstring{getRailwaySources()}{getRailwaySources()}}
+{\footnotesize\ttfamily u\+Set$<$ int $>$ Reader\+::get\+Railway\+Sources (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+returns an unordered set containing the indices of the stations that are the railway network sources 
+
+\begin{DoxyReturn}{Returns}
+unordered set containing the indices of the stations that are the railway network sources 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_reader_a34f23b423c3f63964d70ed4e887cf3eb}\label{class_reader_a34f23b423c3f63964d70ed4e887cf3eb}} 
+\index{Reader@{Reader}!getStationIDs@{getStationIDs}}
+\index{getStationIDs@{getStationIDs}!Reader@{Reader}}
+\doxysubsubsection{\texorpdfstring{getStationIDs()}{getStationIDs()}}
+{\footnotesize\ttfamily u\+Map$<$ std\+::string, int $>$ Reader\+::get\+Station\+IDs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+returns an unordered map which binds the name of a station to its index 
+
+\begin{DoxyReturn}{Returns}
+unordered map which binds the name of a station to its index 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_reader_a7c4d34e5534db717529822b56b7deb5b}\label{class_reader_a7c4d34e5534db717529822b56b7deb5b}} 
+\index{Reader@{Reader}!getStationNames@{getStationNames}}
+\index{getStationNames@{getStationNames}!Reader@{Reader}}
+\doxysubsubsection{\texorpdfstring{getStationNames()}{getStationNames()}}
+{\footnotesize\ttfamily u\+Map$<$ int, std\+::string $>$ Reader\+::get\+Station\+Names (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+returns an unordered map which binds the index of a station to its name 
+
+\begin{DoxyReturn}{Returns}
+unordered map which binds the index of a station to its name 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_reader_a9c7fa0d54219640e516cf0d9dd9486df}\label{class_reader_a9c7fa0d54219640e516cf0d9dd9486df}} 
+\index{Reader@{Reader}!getTrainLines@{getTrainLines}}
+\index{getTrainLines@{getTrainLines}!Reader@{Reader}}
+\doxysubsubsection{\texorpdfstring{getTrainLines()}{getTrainLines()}}
+{\footnotesize\ttfamily u\+Map$<$ string, u\+Set$<$ string $>$ $>$ Reader\+::get\+Train\+Lines (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+returns an unordered map which binds the name of a train line to the names of the stations it contains 
+
+\begin{DoxyReturn}{Returns}
+unordered map which binds the name of a train line to the names of the stations it contains 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_reader_a9f4ce209c625a51235d34a6fbf019da2}\label{class_reader_a9f4ce209c625a51235d34a6fbf019da2}} 
+\index{Reader@{Reader}!read@{read}}
+\index{read@{read}!Reader@{Reader}}
+\doxysubsubsection{\texorpdfstring{read()}{read()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_rail_graph}{Rail\+Graph}} Reader\+::read (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+reads the files that detail the railway network 
+
+\begin{DoxyReturn}{Returns}
+directed graph which represents the railway network 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_reader_aa88fe4eacb73b162c175131b89ccb43d}\label{class_reader_aa88fe4eacb73b162c175131b89ccb43d}} 
+\index{Reader@{Reader}!setPath@{setPath}}
+\index{setPath@{setPath}!Reader@{Reader}}
+\doxysubsubsection{\texorpdfstring{setPath()}{setPath()}}
+{\footnotesize\ttfamily void Reader\+::set\+Path (\begin{DoxyParamCaption}\item[{std\+::string \&}]{path }\end{DoxyParamCaption})}
+
+
+
+changes the path to the directory where the data files are stored 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & path to the directory where the files to be read are \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Reader.\+h\item 
+Reader.\+cpp\end{DoxyCompactItemize}

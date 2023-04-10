@@ -1,0 +1,83 @@
+\hypertarget{class_railway}{}\doxysection{Railway Class Reference}
+\label{class_railway}\index{Railway@{Railway}}
+Inheritance diagram for Railway\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_railway}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_railway_a4cdb25d173bbec6f4324ace437421f26}{Railway}} (int src, int dest, double weight, bool valid, std\+::string service)
+\begin{DoxyCompactList}\small\item\em creates a new \mbox{\hyperlink{class_railway}{Railway}} object \end{DoxyCompactList}\item 
+Edge $\ast$ \mbox{\hyperlink{class_railway_add8b43a5844a6b620f0f20f0c2f6b104}{clone}} () const override
+\begin{DoxyCompactList}\small\item\em creates a copy of the \mbox{\hyperlink{class_railway}{Railway}} \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{class_railway_adab928dcc4c0ca0003011b02940af49b}{get\+Service}} () const
+\begin{DoxyCompactList}\small\item\em returns the type of service that is provided in the railway \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_railway_a3b0dbff3210e2d8e43ffe3f4d3c7eb19}\label{class_railway_a3b0dbff3210e2d8e43ffe3f4d3c7eb19}} 
+class {\bfseries Rail\+Graph}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_railway_a4cdb25d173bbec6f4324ace437421f26}\label{class_railway_a4cdb25d173bbec6f4324ace437421f26}} 
+\index{Railway@{Railway}!Railway@{Railway}}
+\index{Railway@{Railway}!Railway@{Railway}}
+\doxysubsubsection{\texorpdfstring{Railway()}{Railway()}}
+{\footnotesize\ttfamily Railway\+::\+Railway (\begin{DoxyParamCaption}\item[{int}]{src,  }\item[{int}]{dest,  }\item[{double}]{weight,  }\item[{bool}]{valid,  }\item[{std\+::string}]{service }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+creates a new \mbox{\hyperlink{class_railway}{Railway}} object 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & index of the source station \\
+\hline
+{\em dest} & index of the destination station \\
+\hline
+{\em weight} & capacity of the railway \\
+\hline
+{\em valid} & bool that indicates if the railway is operational \\
+\hline
+{\em service} & type of service that is provided in the railway \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_railway_add8b43a5844a6b620f0f20f0c2f6b104}\label{class_railway_add8b43a5844a6b620f0f20f0c2f6b104}} 
+\index{Railway@{Railway}!clone@{clone}}
+\index{clone@{clone}!Railway@{Railway}}
+\doxysubsubsection{\texorpdfstring{clone()}{clone()}}
+{\footnotesize\ttfamily Edge $\ast$ Railway\+::clone (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}}
+
+
+
+creates a copy of the \mbox{\hyperlink{class_railway}{Railway}} 
+
+\begin{DoxyReturn}{Returns}
+pointer to a copy of the \mbox{\hyperlink{class_railway}{Railway}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_railway_adab928dcc4c0ca0003011b02940af49b}\label{class_railway_adab928dcc4c0ca0003011b02940af49b}} 
+\index{Railway@{Railway}!getService@{getService}}
+\index{getService@{getService}!Railway@{Railway}}
+\doxysubsubsection{\texorpdfstring{getService()}{getService()}}
+{\footnotesize\ttfamily std\+::string Railway\+::get\+Service (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+returns the type of service that is provided in the railway 
+
+\begin{DoxyReturn}{Returns}
+type of service that is provided in the railway 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Railway.\+hpp\end{DoxyCompactItemize}

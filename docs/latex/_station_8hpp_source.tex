@@ -1,0 +1,59 @@
+\hypertarget{_station_8hpp_source}{}\doxysection{Station.\+hpp}
+\label{_station_8hpp_source}\index{Station.hpp@{Station.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ DA\_TRAINS\_STATION\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ DA\_TRAINS\_STATION\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}implementation/Vertex.hpp"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{using\ }std::string;}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_station}{Station}}\ :\ \textcolor{keyword}{public}\ Vertex\ \{}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_rail_graph}{RailGraph}};}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{comment}{/*\ ATTRIBUTES\ */}}
+\DoxyCodeLine{00014\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keywordtype}{string}\ name;}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keywordtype}{string}\ district;}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{string}\ municipality;}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{string}\ township;}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{string}\ line;}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{comment}{/*\ CONSTRUCTOR\ */}}
+\DoxyCodeLine{00022\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ \ \ \mbox{\hyperlink{class_station_a6a46ea70b50e7d51f54cf078ccb01a3d}{Station}}(\textcolor{keywordtype}{string}\&\ name,\ \textcolor{keywordtype}{string}\&\ district,\ \textcolor{keywordtype}{string}\&\ municipality,\ \textcolor{keywordtype}{string}\&\ township,\ \textcolor{keywordtype}{string}\&\ line)}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ :\ name(name),\ district(district),\ municipality(municipality),\ township(township),\ line(line)\ \{\}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{comment}{/*\ METHODS\ */}}
+\DoxyCodeLine{00035\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00040\ \ \ \ \ Vertex*\ \mbox{\hyperlink{class_station_afd94b3e5a9bae8aa91a0d8778dac587b}{clone}}()\textcolor{keyword}{\ const\ override}\{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ \mbox{\hyperlink{class_station}{Station}}(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00042\ \ \ \ \ \}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{string}\ \mbox{\hyperlink{class_station_ac823ae175ec0e2baff462ed9612c7bae}{getName}}()\textcolor{keyword}{\ const}\{}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ name;}
+\DoxyCodeLine{00050\ \ \ \ \ \}}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{string}\ \mbox{\hyperlink{class_station_adfeb6e1c7361d9de1a8efade27b82c7c}{getDistrict}}()\textcolor{keyword}{\ const}\{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ district;}
+\DoxyCodeLine{00058\ \ \ \ \ \}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{string}\ \mbox{\hyperlink{class_station_a352841c01b6cdb25e84cae3b7b2f6418}{getMunicipality}}()\textcolor{keyword}{\ const}\{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ municipality;}
+\DoxyCodeLine{00066\ \ \ \ \ \}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{string}\ \mbox{\hyperlink{class_station_a1e3c26415e7886648ea5e1a9dfddcdde}{getTownship}}()\textcolor{keyword}{\ const}\{}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ township;}
+\DoxyCodeLine{00074\ \ \ \ \ \}}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{string}\ \mbox{\hyperlink{class_station_a29859ce5b681749459b415b3bf86ae81}{getLine}}()\textcolor{keyword}{\ const}\{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ line;}
+\DoxyCodeLine{00082\ \ \ \ \ \}}
+\DoxyCodeLine{00083\ \};}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//DA\_TRAINS\_STATION\_HPP}}
+
+\end{DoxyCode}

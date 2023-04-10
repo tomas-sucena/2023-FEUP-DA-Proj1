@@ -1,0 +1,52 @@
+\hypertarget{_reader_8h_source}{}\doxysection{Reader.\+h}
+\label{_reader_8h_source}\index{Reader.h@{Reader.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ DA\_TRAINS\_READER\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ DA\_TRAINS\_READER\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}network/RailGraph.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}Utils.hpp"{}}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{using\ }std::string;}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_reader}{Reader}}\ \{}
+\DoxyCodeLine{00010\ \textcolor{comment}{/*\ ATTRIBUTES\ */}}
+\DoxyCodeLine{00011\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{comment}{//\ for\ reading}}
+\DoxyCodeLine{00013\ \ \ \ \ std::ifstream\ reader;}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordtype}{string}\ path;}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keywordtype}{char}\ valueDelim,\ lineDelim;\ \textcolor{comment}{//\ delimiters}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{comment}{//\ data\ structures}}
+\DoxyCodeLine{00018\ \ \ \ \ uMap<string,\ int>\ stationIDs;}
+\DoxyCodeLine{00019\ \ \ \ \ uMap<int,\ string>\ stationNames;}
+\DoxyCodeLine{00020\ \ \ \ \ uSet<int>\ railwaySources,\ railwaySinks;}
+\DoxyCodeLine{00021\ \ \ \ \ uMap<string,\ uSet<string>>\ districts,\ municipalities,\ trainLines;}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{comment}{/*\ CONSTRUCTOR\ */}}
+\DoxyCodeLine{00024\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_reader}{Reader}}(std::string\ path,\ \textcolor{keywordtype}{char}\ valueDelim\ =\ \textcolor{charliteral}{','},\ \textcolor{keywordtype}{char}\ lineDelim\ =\ \textcolor{charliteral}{'\(\backslash\)n'});}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{comment}{/*\ METHODS\ */}}
+\DoxyCodeLine{00028\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{void}\ readStations(\mbox{\hyperlink{class_rail_graph}{RailGraph}}\&\ g);}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ readNetwork(\mbox{\hyperlink{class_rail_graph}{RailGraph}}\&\ g);}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00033\ \ \ \ \ \mbox{\hyperlink{class_rail_graph}{RailGraph}}\ \mbox{\hyperlink{class_reader_a9f4ce209c625a51235d34a6fbf019da2}{read}}();}
+\DoxyCodeLine{00034\ \ \ \ \ std::string\ \mbox{\hyperlink{class_reader_a623cc5fb1ad7f9363be33bee9d5f30b8}{getPath}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_reader_aa88fe4eacb73b162c175131b89ccb43d}{setPath}}(std::string\&\ path);}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ uMap<std::string,\ int>\ \mbox{\hyperlink{class_reader_a34f23b423c3f63964d70ed4e887cf3eb}{getStationIDs}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00038\ \ \ \ \ uMap<int,\ std::string>\ \mbox{\hyperlink{class_reader_a7c4d34e5534db717529822b56b7deb5b}{getStationNames}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00039\ \ \ \ \ uSet<int>\ \mbox{\hyperlink{class_reader_ae339b4b4d92f262c26e41a48235f8685}{getRailwaySources}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00040\ \ \ \ \ uSet<int>\ \mbox{\hyperlink{class_reader_a15632ffe9f1afab51b6d4d4a1de9bc90}{getRailwaySinks}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00041\ \ \ \ \ uMap<string,\ uSet<string>>\ \mbox{\hyperlink{class_reader_a127b71ddbebcab25330f9b04eaa5f5ab}{getDistricts}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00042\ \ \ \ \ uMap<string,\ uSet<string>>\ \mbox{\hyperlink{class_reader_a1ce63e0b902829eda04d7d5aed169b60}{getMunicipalities}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00043\ \ \ \ \ uMap<string,\ uSet<string>>\ \mbox{\hyperlink{class_reader_a9c7fa0d54219640e516cf0d9dd9486df}{getTrainLines}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00044\ \};}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//DA\_TRAINS\_READER\_H}}
+
+\end{DoxyCode}

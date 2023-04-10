@@ -1,0 +1,741 @@
+\hypertarget{classfort_1_1table}{}\doxysection{fort\+::table\texorpdfstring{$<$}{<} TT \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classfort_1_1table}\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+
+
+{\ttfamily \#include $<$fort.\+hpp$>$}
+
+Inheritance diagram for fort\+::table\texorpdfstring{$<$}{<} TT \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classfort_1_1table}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classfort_1_1table_1_1cell__range}{cell\+\_\+range}}
+\item 
+class \mbox{\hyperlink{classfort_1_1table_1_1default__properties}{default\+\_\+properties}}
+\item 
+class \mbox{\hyperlink{classfort_1_1table_1_1table__cell}{table\+\_\+cell}}
+\item 
+class \mbox{\hyperlink{classfort_1_1table_1_1table__column}{table\+\_\+column}}
+\item 
+class \mbox{\hyperlink{classfort_1_1table_1_1table__row}{table\+\_\+row}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classfort_1_1table_af2a0e281e31bcbb3dfd0a14fd73a8fe6}{table}} ()
+\item 
+\mbox{\hyperlink{classfort_1_1table_a0f60e38ac553c852d8e20583a3e6e866}{$\sim$table}} ()
+\item 
+\mbox{\hyperlink{classfort_1_1table_a5c8713c19b01542bcdce75835d714b3f}{table}} (const \mbox{\hyperlink{classfort_1_1table}{table}} \&tbl)
+\item 
+\mbox{\hyperlink{classfort_1_1table_aefbb2a5c2057b5139791962e242f1566}{table}} (\mbox{\hyperlink{classfort_1_1table}{table}} \&\&tbl)
+\item 
+\mbox{\hyperlink{classfort_1_1table}{table}} \& \mbox{\hyperlink{classfort_1_1table_a639848e904ab94e5acbd0df49225ca41}{operator=}} (const \mbox{\hyperlink{classfort_1_1table}{table}} \&tbl)
+\item 
+\mbox{\hyperlink{classfort_1_1table}{table}} \& \mbox{\hyperlink{classfort_1_1table_a8ff094374f3f443a0306d09b50897e38}{operator=}} (\mbox{\hyperlink{classfort_1_1table}{table}} \&\&tbl)
+\item 
+std\+::string \mbox{\hyperlink{classfort_1_1table_a069a11134b61aebd9f798b445c281696}{to\+\_\+string}} () const
+\item 
+const char $\ast$ \mbox{\hyperlink{classfort_1_1table_a7b194a2c7a08929cc802a723245a3239}{c\+\_\+str}} () const
+\item 
+{\footnotesize template$<$typename T $>$ }\\\mbox{\hyperlink{classfort_1_1table}{table}} \& \mbox{\hyperlink{classfort_1_1table_a5fa1b2a0af4dd1e7a7d04070dcbb89c1}{operator$<$$<$}} (const T \&arg)
+\item 
+\mbox{\Hypertarget{classfort_1_1table_aec7b4ad1ececf231a59d8c866a1c4976}\label{classfort_1_1table_aec7b4ad1ececf231a59d8c866a1c4976}} 
+\mbox{\hyperlink{classfort_1_1table}{table}} \& {\bfseries operator$<$$<$} (const \mbox{\hyperlink{classfort_1_1table__manipulator}{table\+\_\+manipulator}} \&arg)
+\item 
+bool \mbox{\hyperlink{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}{write}} (const char $\ast$str)
+\item 
+bool \mbox{\hyperlink{classfort_1_1table_a23ac58f177ed0717e77d96ca5acec52f}{write\+\_\+ln}} (const char $\ast$str)
+\item 
+bool \mbox{\hyperlink{classfort_1_1table_aa5bef06063a598ac7985bd7df715803c}{write}} (const std\+::string \&str)
+\item 
+bool \mbox{\hyperlink{classfort_1_1table_a921c35a1c1aa723c1a96500bdbf04d62}{write\+\_\+ln}} (const std\+::string \&str)
+\item 
+\mbox{\Hypertarget{classfort_1_1table_ad2dc2246f44855fd778646a405ff8a69}\label{classfort_1_1table_ad2dc2246f44855fd778646a405ff8a69}} 
+{\footnotesize template$<$typename T\+\_\+0 , typename T\+\_\+1 $>$ }\\bool {\bfseries write} (const T\+\_\+0 \&arg\+\_\+0, const T\+\_\+1 \&arg\+\_\+1)
+\item 
+\mbox{\Hypertarget{classfort_1_1table_a7067e94257b88a30cf54bf1c14034b2c}\label{classfort_1_1table_a7067e94257b88a30cf54bf1c14034b2c}} 
+{\footnotesize template$<$typename T\+\_\+0 , typename T\+\_\+1 , typename T\+\_\+2 $>$ }\\bool {\bfseries write} (const T\+\_\+0 \&arg\+\_\+0, const T\+\_\+1 \&arg\+\_\+1, const T\+\_\+2 \&arg\+\_\+2)
+\item 
+\mbox{\Hypertarget{classfort_1_1table_a5818f33a183db28a45eade06fbec2ee3}\label{classfort_1_1table_a5818f33a183db28a45eade06fbec2ee3}} 
+{\footnotesize template$<$typename T\+\_\+0 , typename T\+\_\+1 , typename T\+\_\+2 , typename T\+\_\+3 $>$ }\\bool {\bfseries write} (const T\+\_\+0 \&arg\+\_\+0, const T\+\_\+1 \&arg\+\_\+1, const T\+\_\+2 \&arg\+\_\+2, const T\+\_\+3 \&arg\+\_\+3)
+\item 
+\mbox{\Hypertarget{classfort_1_1table_a7b2d27ceca94b7b7204ea0559098be5f}\label{classfort_1_1table_a7b2d27ceca94b7b7204ea0559098be5f}} 
+{\footnotesize template$<$typename T\+\_\+0 , typename T\+\_\+1 , typename T\+\_\+2 , typename T\+\_\+3 , typename T\+\_\+4 $>$ }\\bool {\bfseries write} (const T\+\_\+0 \&arg\+\_\+0, const T\+\_\+1 \&arg\+\_\+1, const T\+\_\+2 \&arg\+\_\+2, const T\+\_\+3 \&arg\+\_\+3, const T\+\_\+4 \&arg\+\_\+4)
+\item 
+\mbox{\Hypertarget{classfort_1_1table_ae5072030609664813fc07080405dcb91}\label{classfort_1_1table_ae5072030609664813fc07080405dcb91}} 
+{\footnotesize template$<$typename T\+\_\+0 , typename T\+\_\+1 , typename T\+\_\+2 , typename T\+\_\+3 , typename T\+\_\+4 , typename T\+\_\+5 $>$ }\\bool {\bfseries write} (const T\+\_\+0 \&arg\+\_\+0, const T\+\_\+1 \&arg\+\_\+1, const T\+\_\+2 \&arg\+\_\+2, const T\+\_\+3 \&arg\+\_\+3, const T\+\_\+4 \&arg\+\_\+4, const T\+\_\+5 \&arg\+\_\+5)
+\item 
+\mbox{\Hypertarget{classfort_1_1table_a85e2de34b45c30ca49148ca0e07aefee}\label{classfort_1_1table_a85e2de34b45c30ca49148ca0e07aefee}} 
+{\footnotesize template$<$typename T\+\_\+0 , typename T\+\_\+1 , typename T\+\_\+2 , typename T\+\_\+3 , typename T\+\_\+4 , typename T\+\_\+5 , typename T\+\_\+6 $>$ }\\bool {\bfseries write} (const T\+\_\+0 \&arg\+\_\+0, const T\+\_\+1 \&arg\+\_\+1, const T\+\_\+2 \&arg\+\_\+2, const T\+\_\+3 \&arg\+\_\+3, const T\+\_\+4 \&arg\+\_\+4, const T\+\_\+5 \&arg\+\_\+5, const T\+\_\+6 \&arg\+\_\+6)
+\item 
+\mbox{\Hypertarget{classfort_1_1table_ad0feccbba8738c5e9a87f643d3cf8d7b}\label{classfort_1_1table_ad0feccbba8738c5e9a87f643d3cf8d7b}} 
+{\footnotesize template$<$typename T\+\_\+0 , typename T\+\_\+1 , typename T\+\_\+2 , typename T\+\_\+3 , typename T\+\_\+4 , typename T\+\_\+5 , typename T\+\_\+6 , typename T\+\_\+7 $>$ }\\bool {\bfseries write} (const T\+\_\+0 \&arg\+\_\+0, const T\+\_\+1 \&arg\+\_\+1, const T\+\_\+2 \&arg\+\_\+2, const T\+\_\+3 \&arg\+\_\+3, const T\+\_\+4 \&arg\+\_\+4, const T\+\_\+5 \&arg\+\_\+5, const T\+\_\+6 \&arg\+\_\+6, const T\+\_\+7 \&arg\+\_\+7)
+\item 
+\mbox{\Hypertarget{classfort_1_1table_a63f18bf8abf9cfdacd4953e2146a5fd2}\label{classfort_1_1table_a63f18bf8abf9cfdacd4953e2146a5fd2}} 
+{\footnotesize template$<$typename T\+\_\+0 , typename T\+\_\+1 $>$ }\\bool {\bfseries write\+\_\+ln} (const T\+\_\+0 \&arg\+\_\+0, const T\+\_\+1 \&arg\+\_\+1)
+\item 
+\mbox{\Hypertarget{classfort_1_1table_a38002cf12f835e893edf3262bf00f322}\label{classfort_1_1table_a38002cf12f835e893edf3262bf00f322}} 
+{\footnotesize template$<$typename T\+\_\+0 , typename T\+\_\+1 , typename T\+\_\+2 $>$ }\\bool {\bfseries write\+\_\+ln} (const T\+\_\+0 \&arg\+\_\+0, const T\+\_\+1 \&arg\+\_\+1, const T\+\_\+2 \&arg\+\_\+2)
+\item 
+\mbox{\Hypertarget{classfort_1_1table_a81e4d98a2f2151b0bcd0e7fe0f6aea34}\label{classfort_1_1table_a81e4d98a2f2151b0bcd0e7fe0f6aea34}} 
+{\footnotesize template$<$typename T\+\_\+0 , typename T\+\_\+1 , typename T\+\_\+2 , typename T\+\_\+3 $>$ }\\bool {\bfseries write\+\_\+ln} (const T\+\_\+0 \&arg\+\_\+0, const T\+\_\+1 \&arg\+\_\+1, const T\+\_\+2 \&arg\+\_\+2, const T\+\_\+3 \&arg\+\_\+3)
+\item 
+\mbox{\Hypertarget{classfort_1_1table_a63ff04dc77d667a51ab64efbf040df9b}\label{classfort_1_1table_a63ff04dc77d667a51ab64efbf040df9b}} 
+{\footnotesize template$<$typename T\+\_\+0 , typename T\+\_\+1 , typename T\+\_\+2 , typename T\+\_\+3 , typename T\+\_\+4 $>$ }\\bool {\bfseries write\+\_\+ln} (const T\+\_\+0 \&arg\+\_\+0, const T\+\_\+1 \&arg\+\_\+1, const T\+\_\+2 \&arg\+\_\+2, const T\+\_\+3 \&arg\+\_\+3, const T\+\_\+4 \&arg\+\_\+4)
+\item 
+\mbox{\Hypertarget{classfort_1_1table_a19fdbc0703507c9f35826b2382852bcb}\label{classfort_1_1table_a19fdbc0703507c9f35826b2382852bcb}} 
+{\footnotesize template$<$typename T\+\_\+0 , typename T\+\_\+1 , typename T\+\_\+2 , typename T\+\_\+3 , typename T\+\_\+4 , typename T\+\_\+5 $>$ }\\bool {\bfseries write\+\_\+ln} (const T\+\_\+0 \&arg\+\_\+0, const T\+\_\+1 \&arg\+\_\+1, const T\+\_\+2 \&arg\+\_\+2, const T\+\_\+3 \&arg\+\_\+3, const T\+\_\+4 \&arg\+\_\+4, const T\+\_\+5 \&arg\+\_\+5)
+\item 
+\mbox{\Hypertarget{classfort_1_1table_a4b7be9381f7e1034847d9a485fa36f51}\label{classfort_1_1table_a4b7be9381f7e1034847d9a485fa36f51}} 
+{\footnotesize template$<$typename T\+\_\+0 , typename T\+\_\+1 , typename T\+\_\+2 , typename T\+\_\+3 , typename T\+\_\+4 , typename T\+\_\+5 , typename T\+\_\+6 $>$ }\\bool {\bfseries write\+\_\+ln} (const T\+\_\+0 \&arg\+\_\+0, const T\+\_\+1 \&arg\+\_\+1, const T\+\_\+2 \&arg\+\_\+2, const T\+\_\+3 \&arg\+\_\+3, const T\+\_\+4 \&arg\+\_\+4, const T\+\_\+5 \&arg\+\_\+5, const T\+\_\+6 \&arg\+\_\+6)
+\item 
+\mbox{\Hypertarget{classfort_1_1table_afbacbbc3bfd9883157c86e794c4f85af}\label{classfort_1_1table_afbacbbc3bfd9883157c86e794c4f85af}} 
+{\footnotesize template$<$typename T\+\_\+0 , typename T\+\_\+1 , typename T\+\_\+2 , typename T\+\_\+3 , typename T\+\_\+4 , typename T\+\_\+5 , typename T\+\_\+6 , typename T\+\_\+7 $>$ }\\bool {\bfseries write\+\_\+ln} (const T\+\_\+0 \&arg\+\_\+0, const T\+\_\+1 \&arg\+\_\+1, const T\+\_\+2 \&arg\+\_\+2, const T\+\_\+3 \&arg\+\_\+3, const T\+\_\+4 \&arg\+\_\+4, const T\+\_\+5 \&arg\+\_\+5, const T\+\_\+6 \&arg\+\_\+6, const T\+\_\+7 \&arg\+\_\+7)
+\item 
+{\footnotesize template$<$typename Input\+It $>$ }\\bool \mbox{\hyperlink{classfort_1_1table_ad26028ecd1d540008f248b782f35898b}{range\+\_\+write}} (Input\+It first, Input\+It last)
+\item 
+{\footnotesize template$<$typename Input\+It $>$ }\\bool \mbox{\hyperlink{classfort_1_1table_ac798525be3e650e456343301010b0799}{range\+\_\+write\+\_\+ln}} (Input\+It first, Input\+It last)
+\item 
+bool \mbox{\hyperlink{classfort_1_1table_a040c119d6b7965602cdec6bf06e9d197}{set\+\_\+border\+\_\+style}} (const struct \mbox{\hyperlink{structft__border__style}{ft\+\_\+border\+\_\+style}} $\ast$style)
+\item 
+void \mbox{\hyperlink{classfort_1_1table_afe4030b7e70ea73ca60d1ed6626b80ec}{set\+\_\+cur\+\_\+cell}} (size\+\_\+t row\+\_\+i, size\+\_\+t col\+\_\+i)
+\item 
+bool \mbox{\hyperlink{classfort_1_1table_a571357e6d86c3021a04f071aaab13e9a}{set\+\_\+left\+\_\+margin}} (unsigned value)
+\item 
+bool \mbox{\hyperlink{classfort_1_1table_aa5eaa7e5cc6178cd33fbd71b886def6f}{set\+\_\+top\+\_\+margin}} (unsigned value)
+\item 
+bool \mbox{\hyperlink{classfort_1_1table_ae6ed7466401235113daa84079c7d9040}{set\+\_\+right\+\_\+margin}} (unsigned value)
+\item 
+bool \mbox{\hyperlink{classfort_1_1table_a0d3651e9e4d47fd3594cc1a8638f5f1d}{set\+\_\+bottom\+\_\+margin}} (unsigned value)
+\item 
+bool \mbox{\hyperlink{classfort_1_1table_a097c227305b6497609363f6744ae9f0b}{set\+\_\+adding\+\_\+strategy}} (\mbox{\hyperlink{fort_8hpp_a90d7e4b53ec42f4eddd9e63eb02abca4}{fort\+::add\+\_\+strategy}} value)
+\item 
+\mbox{\Hypertarget{classfort_1_1table_af541aa39b1815308558bd8412b62794f}\label{classfort_1_1table_af541aa39b1815308558bd8412b62794f}} 
+class \mbox{\hyperlink{classfort_1_1table_1_1table__row}{table\+\_\+row}} {\bfseries operator\mbox{[}$\,$\mbox{]}} (std\+::size\+\_\+t row\+\_\+idx)
+\item 
+class \mbox{\hyperlink{classfort_1_1table_1_1table__cell}{table\+\_\+cell}} \mbox{\hyperlink{classfort_1_1table_aed19cddfec34812a4bcbcbc1f919c5f7}{cell}} (std\+::size\+\_\+t row\+\_\+idx, std\+::size\+\_\+t col\+\_\+idx)
+\item 
+size\+\_\+t \mbox{\hyperlink{classfort_1_1table_a2ab00305a1e754e87efed759cafce945}{cur\+\_\+col}} () const noexcept
+\item 
+size\+\_\+t \mbox{\hyperlink{classfort_1_1table_ac74ecd92b580d2f350ade38aa7cdd8bc}{cur\+\_\+row}} () const noexcept
+\item 
+bool \mbox{\hyperlink{classfort_1_1table_a47558c6b2bc4d7ac0990f6e43938f075}{is\+\_\+empty}} () const noexcept
+\item 
+std\+::size\+\_\+t \mbox{\hyperlink{classfort_1_1table_aa507b478c722bd977c4c346f1cd0381e}{row\+\_\+count}} () const noexcept
+\item 
+class \mbox{\hyperlink{classfort_1_1table_1_1table__cell}{table\+\_\+cell}} \mbox{\hyperlink{classfort_1_1table_a94c1bc6489c67eb4724e92f3b9ee21b0}{cur\+\_\+cell}} ()
+\item 
+class \mbox{\hyperlink{classfort_1_1table_1_1table__row}{table\+\_\+row}} \mbox{\hyperlink{classfort_1_1table_a3d99b789d9d175768890a60ae32c404f}{row}} (std\+::size\+\_\+t row\+\_\+idx)
+\item 
+class \mbox{\hyperlink{classfort_1_1table_1_1table__column}{table\+\_\+column}} \mbox{\hyperlink{classfort_1_1table_af2b6a6bb01c4769e504f053ee0edb20e}{column}} (std\+::size\+\_\+t col\+\_\+idx)
+\item 
+class \mbox{\hyperlink{classfort_1_1table_1_1cell__range}{cell\+\_\+range}} \mbox{\hyperlink{classfort_1_1table_ad18fcdc28a35e28766c53d76747fc2fd}{range}} (std\+::size\+\_\+t top\+\_\+left\+\_\+row, std\+::size\+\_\+t top\+\_\+left\+\_\+col, std\+::size\+\_\+t bottom\+\_\+right\+\_\+row, std\+::size\+\_\+t bottom\+\_\+right\+\_\+col)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions inherited from \mbox{\hyperlink{classfort_1_1property__owner}{fort\+::property\+\_\+owner$<$ table $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classfort_1_1property__owner_ac8b428ead2bd53ad38ca035eaec93d21}\label{classfort_1_1property__owner_ac8b428ead2bd53ad38ca035eaec93d21}} 
+{\bfseries property\+\_\+owner} (std\+::size\+\_\+t row\+\_\+idx, std\+::size\+\_\+t coll\+\_\+idx, \mbox{\hyperlink{classfort_1_1table}{table}} $\ast$tbl, bool def=false)
+\item 
+bool \mbox{\hyperlink{classfort_1_1property__owner_a271ffa111ba27a68715044826298b42b}{set\+\_\+cell\+\_\+min\+\_\+width}} (unsigned value)
+\item 
+bool \mbox{\hyperlink{classfort_1_1property__owner_aa0c34eb1dde00dc3b172ede4699e0cdc}{set\+\_\+cell\+\_\+text\+\_\+align}} (\mbox{\hyperlink{fort_8hpp_a895f73752fc847c22853fd363a575b04}{fort\+::text\+\_\+align}} value)
+\item 
+bool \mbox{\hyperlink{classfort_1_1property__owner_a1b6a5415016a2a93c25795ed2b99ec44}{set\+\_\+cell\+\_\+top\+\_\+padding}} (unsigned value)
+\item 
+bool \mbox{\hyperlink{classfort_1_1property__owner_aab88ac28d70ea5d630aa55d7c97defd5}{set\+\_\+cell\+\_\+bottom\+\_\+padding}} (unsigned value)
+\item 
+bool \mbox{\hyperlink{classfort_1_1property__owner_a8ae9305903c8467e8c43065bd6ebbde4}{set\+\_\+cell\+\_\+left\+\_\+padding}} (unsigned value)
+\item 
+bool \mbox{\hyperlink{classfort_1_1property__owner_a4bb870a7101fad9df8e6d3b78afccd86}{set\+\_\+cell\+\_\+right\+\_\+padding}} (unsigned value)
+\item 
+bool \mbox{\hyperlink{classfort_1_1property__owner_a7a36fdadc9095cb969488ca03e28de6d}{set\+\_\+cell\+\_\+row\+\_\+type}} (\mbox{\hyperlink{fort_8hpp_a28370d69d653e7ae3cb80c61cf2469aa}{fort\+::row\+\_\+type}} value)
+\item 
+bool \mbox{\hyperlink{classfort_1_1property__owner_ab04fde5f089d89a16c10c4c6fe9ee41c}{set\+\_\+cell\+\_\+empty\+\_\+str\+\_\+height}} (unsigned value)
+\item 
+bool \mbox{\hyperlink{classfort_1_1property__owner_a84c20f3c799287d706c9d8e052fff6ec}{set\+\_\+cell\+\_\+content\+\_\+fg\+\_\+color}} (\mbox{\hyperlink{fort_8hpp_a3cac6d8954776afa43e4d389ff70fbba}{fort\+::color}} value)
+\item 
+bool \mbox{\hyperlink{classfort_1_1property__owner_a8780bb5cf0e2918e3d6db3439414f0b6}{set\+\_\+cell\+\_\+bg\+\_\+color}} (\mbox{\hyperlink{fort_8hpp_a3cac6d8954776afa43e4d389ff70fbba}{fort\+::color}} value)
+\item 
+bool \mbox{\hyperlink{classfort_1_1property__owner_a5d83c216797e222d79e47c500bc98571}{set\+\_\+cell\+\_\+content\+\_\+bg\+\_\+color}} (\mbox{\hyperlink{fort_8hpp_a3cac6d8954776afa43e4d389ff70fbba}{fort\+::color}} value)
+\item 
+bool \mbox{\hyperlink{classfort_1_1property__owner_ad762b2bec6d78559b1393e003054e894}{set\+\_\+cell\+\_\+text\+\_\+style}} (\mbox{\hyperlink{fort_8hpp_aca558b21bbb52c9c28de9811bec32061}{fort\+::text\+\_\+style}} value)
+\item 
+bool \mbox{\hyperlink{classfort_1_1property__owner_acec5096b143be35e12284601f27eceb9}{set\+\_\+cell\+\_\+content\+\_\+text\+\_\+style}} (\mbox{\hyperlink{fort_8hpp_aca558b21bbb52c9c28de9811bec32061}{fort\+::text\+\_\+style}} value)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classfort_1_1table_a1424d05a0271d78d441c61f85c1a349f}\label{classfort_1_1table_a1424d05a0271d78d441c61f85c1a349f}} 
+static class \mbox{\hyperlink{classfort_1_1table_1_1default__properties}{default\+\_\+properties}} {\bfseries default\+\_\+props} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classfort_1_1table_a50364843cb6211715b7ebebbb5f37c77}\label{classfort_1_1table_a50364843cb6211715b7ebebbb5f37c77}} 
+class {\bfseries property\+\_\+owner$<$ table $>$}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+\doxysubsubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classfort_1_1property__owner}{fort\+::property\+\_\+owner$<$ table $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classfort_1_1property__owner_ab922c31dddc0acd7940de715e83fc53c}\label{classfort_1_1property__owner_ab922c31dddc0acd7940de715e83fc53c}} 
+bool {\bfseries set\+\_\+property} (uint32\+\_\+t property, int value)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes inherited from \mbox{\hyperlink{classfort_1_1property__owner}{fort\+::property\+\_\+owner$<$ table $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classfort_1_1property__owner_a1a008cd03d21db838be6b1718d462f71}\label{classfort_1_1property__owner_a1a008cd03d21db838be6b1718d462f71}} 
+std\+::size\+\_\+t {\bfseries ps\+\_\+row\+\_\+idx\+\_\+}
+\item 
+\mbox{\Hypertarget{classfort_1_1property__owner_ab3d52a7587080b99afecd6d362ecbdc9}\label{classfort_1_1property__owner_ab3d52a7587080b99afecd6d362ecbdc9}} 
+std\+::size\+\_\+t {\bfseries ps\+\_\+coll\+\_\+idx\+\_\+}
+\item 
+\mbox{\Hypertarget{classfort_1_1property__owner_a8b0bba2c8cf48c8b727d4c849f90be2b}\label{classfort_1_1property__owner_a8b0bba2c8cf48c8b727d4c849f90be2b}} 
+\mbox{\hyperlink{classfort_1_1table}{table}} $\ast$ {\bfseries ps\+\_\+table\+\_\+}
+\item 
+\mbox{\Hypertarget{classfort_1_1property__owner_ac9a6f69065cc50d9fb1f31160e9ba31b}\label{classfort_1_1property__owner_ac9a6f69065cc50d9fb1f31160e9ba31b}} 
+bool {\bfseries set\+\_\+default\+\_\+properties\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$\newline
+class fort\+::table$<$ TT $>$}
+Formatted table.
+
+Table template class is a C++ wrapper around struct {\ttfamily \mbox{\hyperlink{structft__table}{ft\+\_\+table}}}. Template parameter is {\ttfamily \mbox{\hyperlink{aa331578461d0ee79e683d9e209cfc25b}{table\+\_\+type}}}. Useful instantiations of table template class are {\ttfamily \mbox{\hyperlink{fort_8hpp_a41a05e3a6bb3e0e7d89dd06005e0bb5d}{char\+\_\+table}}} and {\ttfamily \mbox{\hyperlink{fort_8hpp_a508f5a472ab557708969fc946380cfc4}{utf8\+\_\+table}}}. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classfort_1_1table_af2a0e281e31bcbb3dfd0a14fd73a8fe6}\label{classfort_1_1table_af2a0e281e31bcbb3dfd0a14fd73a8fe6}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!table@{table}}
+\index{table@{table}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{table()}{table()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+\mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::table (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Default constructor. \mbox{\Hypertarget{classfort_1_1table_a0f60e38ac553c852d8e20583a3e6e866}\label{classfort_1_1table_a0f60e38ac553c852d8e20583a3e6e866}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!````~table@{$\sim$table}}
+\index{````~table@{$\sim$table}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{$\sim$table()}{~table()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+\mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::$\sim$\mbox{\hyperlink{classfort_1_1table}{table}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Destructor. \mbox{\Hypertarget{classfort_1_1table_a5c8713c19b01542bcdce75835d714b3f}\label{classfort_1_1table_a5c8713c19b01542bcdce75835d714b3f}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!table@{table}}
+\index{table@{table}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{table()}{table()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+\mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::table (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classfort_1_1table}{table}}$<$ TT $>$ \&}]{tbl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Copy contstructor. \mbox{\Hypertarget{classfort_1_1table_aefbb2a5c2057b5139791962e242f1566}\label{classfort_1_1table_aefbb2a5c2057b5139791962e242f1566}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!table@{table}}
+\index{table@{table}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{table()}{table()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+\mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::table (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classfort_1_1table}{table}}$<$ TT $>$ \&\&}]{tbl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Move contstructor. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classfort_1_1table_a7b194a2c7a08929cc802a723245a3239}\label{classfort_1_1table_a7b194a2c7a08929cc802a723245a3239}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!c\_str@{c\_str}}
+\index{c\_str@{c\_str}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{c\_str()}{c\_str()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+const char $\ast$ \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::c\+\_\+str (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Convert table to string representation.
+
+Table object has ownership of the returned pointer. So there is no need to free it. To take ownership user should explicitly copy the returned string with strdup or similar functions.
+
+Returned pointer may be later invalidated by\+:
+\begin{DoxyItemize}
+\item Calling destroying the table;
+\item Other invocations of c\+\_\+str or to\+\_\+string.
+\end{DoxyItemize}
+
+\begin{DoxyReturn}{Returns}
+
+\begin{DoxyItemize}
+\item The pointer to the string representation of formatted table, on success.
+\item NULL on error. 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_aed19cddfec34812a4bcbcbc1f919c5f7}\label{classfort_1_1table_aed19cddfec34812a4bcbcbc1f919c5f7}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!cell@{cell}}
+\index{cell@{cell}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{cell()}{cell()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+class \mbox{\hyperlink{classfort_1_1table_1_1table__cell}{table\+\_\+cell}} \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::cell (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{row\+\_\+idx,  }\item[{std\+::size\+\_\+t}]{col\+\_\+idx }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get cell.
+
+
+\begin{DoxyParams}{Parameters}
+{\em row\+\_\+idx} & Row index. \\
+\hline
+{\em col\+\_\+idx} & Column index. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classfort_1_1table_1_1table__cell}{table\+\_\+cell}} object. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_af2b6a6bb01c4769e504f053ee0edb20e}\label{classfort_1_1table_af2b6a6bb01c4769e504f053ee0edb20e}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!column@{column}}
+\index{column@{column}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{column()}{column()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+class \mbox{\hyperlink{classfort_1_1table_1_1table__column}{table\+\_\+column}} \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::column (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{col\+\_\+idx }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get column.
+
+
+\begin{DoxyParams}{Parameters}
+{\em col\+\_\+idx} & Column index. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classfort_1_1table_1_1table__column}{table\+\_\+column}} object. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_a94c1bc6489c67eb4724e92f3b9ee21b0}\label{classfort_1_1table_a94c1bc6489c67eb4724e92f3b9ee21b0}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!cur\_cell@{cur\_cell}}
+\index{cur\_cell@{cur\_cell}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{cur\_cell()}{cur\_cell()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+class \mbox{\hyperlink{classfort_1_1table_1_1table__cell}{table\+\_\+cell}} \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::cur\+\_\+cell (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get current cell.
+
+\begin{DoxyReturn}{Returns}
+Current cell. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_a2ab00305a1e754e87efed759cafce945}\label{classfort_1_1table_a2ab00305a1e754e87efed759cafce945}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!cur\_col@{cur\_col}}
+\index{cur\_col@{cur\_col}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{cur\_col()}{cur\_col()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+size\+\_\+t \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::cur\+\_\+col (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+Get column number of the current cell.
+
+\begin{DoxyReturn}{Returns}
+Column number of the current cell. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_ac74ecd92b580d2f350ade38aa7cdd8bc}\label{classfort_1_1table_ac74ecd92b580d2f350ade38aa7cdd8bc}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!cur\_row@{cur\_row}}
+\index{cur\_row@{cur\_row}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{cur\_row()}{cur\_row()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+size\+\_\+t \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::cur\+\_\+row (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+Get row number of the current cell.
+
+\begin{DoxyReturn}{Returns}
+Row number of the current cell. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_a47558c6b2bc4d7ac0990f6e43938f075}\label{classfort_1_1table_a47558c6b2bc4d7ac0990f6e43938f075}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!is\_empty@{is\_empty}}
+\index{is\_empty@{is\_empty}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{is\_empty()}{is\_empty()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+bool \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::is\+\_\+empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+Check if table is empty.
+
+\begin{DoxyReturn}{Returns}
+true -\/ table is empty false -\/ some data has been inserted 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_a5fa1b2a0af4dd1e7a7d04070dcbb89c1}\label{classfort_1_1table_a5fa1b2a0af4dd1e7a7d04070dcbb89c1}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+template$<$typename T $>$ \\
+\mbox{\hyperlink{classfort_1_1table}{table}} \& \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{const T \&}]{arg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Write provided object to the table.
+
+To convert object to the string representation conversion for std\+::ostream is used.
+
+
+\begin{DoxyParams}{Parameters}
+{\em arg} & Obect that would be inserted in the current cell. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\begin{DoxyItemize}
+\item Reference to the current table. 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_a639848e904ab94e5acbd0df49225ca41}\label{classfort_1_1table_a639848e904ab94e5acbd0df49225ca41}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+\mbox{\hyperlink{classfort_1_1table}{table}} \& \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classfort_1_1table}{table}}$<$ TT $>$ \&}]{tbl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Copy assignment operator. \mbox{\Hypertarget{classfort_1_1table_a8ff094374f3f443a0306d09b50897e38}\label{classfort_1_1table_a8ff094374f3f443a0306d09b50897e38}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+\mbox{\hyperlink{classfort_1_1table}{table}} \& \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classfort_1_1table}{table}}$<$ TT $>$ \&\&}]{tbl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Move assignment operator. \mbox{\Hypertarget{classfort_1_1table_ad18fcdc28a35e28766c53d76747fc2fd}\label{classfort_1_1table_ad18fcdc28a35e28766c53d76747fc2fd}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!range@{range}}
+\index{range@{range}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{range()}{range()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+class \mbox{\hyperlink{classfort_1_1table_1_1cell__range}{cell\+\_\+range}} \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::range (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{top\+\_\+left\+\_\+row,  }\item[{std\+::size\+\_\+t}]{top\+\_\+left\+\_\+col,  }\item[{std\+::size\+\_\+t}]{bottom\+\_\+right\+\_\+row,  }\item[{std\+::size\+\_\+t}]{bottom\+\_\+right\+\_\+col }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get range of cells.
+
+
+\begin{DoxyParams}{Parameters}
+{\em col\+\_\+idx} & Column index. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classfort_1_1table_1_1table__column}{table\+\_\+column}} object. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_ad26028ecd1d540008f248b782f35898b}\label{classfort_1_1table_ad26028ecd1d540008f248b782f35898b}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!range\_write@{range\_write}}
+\index{range\_write@{range\_write}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{range\_write()}{range\_write()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+template$<$typename Input\+It $>$ \\
+bool \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::range\+\_\+write (\begin{DoxyParamCaption}\item[{Input\+It}]{first,  }\item[{Input\+It}]{last }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Write elements from range to the table.
+
+Write objects from range to consecutive cells in the current row.
+
+
+\begin{DoxyParams}{Parameters}
+{\em first,last} & Range of elements. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\begin{DoxyItemize}
+\item 0\+: Success; data were written
+\item (\texorpdfstring{$<$}{<}0)\+: In case of error 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_ac798525be3e650e456343301010b0799}\label{classfort_1_1table_ac798525be3e650e456343301010b0799}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!range\_write\_ln@{range\_write\_ln}}
+\index{range\_write\_ln@{range\_write\_ln}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{range\_write\_ln()}{range\_write\_ln()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+template$<$typename Input\+It $>$ \\
+bool \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::range\+\_\+write\+\_\+ln (\begin{DoxyParamCaption}\item[{Input\+It}]{first,  }\item[{Input\+It}]{last }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Write elements from range to the table and go to the next line.
+
+Write objects from range to consecutive cells in the current row and move current position to the first cell of the next line(row).
+
+
+\begin{DoxyParams}{Parameters}
+{\em first,last} & Range of elements. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\begin{DoxyItemize}
+\item 0\+: Success; data were written
+\item (\texorpdfstring{$<$}{<}0)\+: In case of error 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_a3d99b789d9d175768890a60ae32c404f}\label{classfort_1_1table_a3d99b789d9d175768890a60ae32c404f}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!row@{row}}
+\index{row@{row}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{row()}{row()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+class \mbox{\hyperlink{classfort_1_1table_1_1table__row}{table\+\_\+row}} \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::row (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{row\+\_\+idx }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get row.
+
+
+\begin{DoxyParams}{Parameters}
+{\em row\+\_\+idx} & Row index. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classfort_1_1table_1_1table__row}{table\+\_\+row}} object. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_aa507b478c722bd977c4c346f1cd0381e}\label{classfort_1_1table_aa507b478c722bd977c4c346f1cd0381e}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!row\_count@{row\_count}}
+\index{row\_count@{row\_count}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{row\_count()}{row\_count()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+std\+::size\+\_\+t \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::row\+\_\+count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+Get number of rows in the table.
+
+\begin{DoxyReturn}{Returns}
+Number of rows in the table. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_a097c227305b6497609363f6744ae9f0b}\label{classfort_1_1table_a097c227305b6497609363f6744ae9f0b}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!set\_adding\_strategy@{set\_adding\_strategy}}
+\index{set\_adding\_strategy@{set\_adding\_strategy}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{set\_adding\_strategy()}{set\_adding\_strategy()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+bool \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::set\+\_\+adding\+\_\+strategy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{fort_8hpp_a90d7e4b53ec42f4eddd9e63eb02abca4}{fort\+::add\+\_\+strategy}}}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Set table adding strategy.
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & Adding strategy. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\begin{DoxyItemize}
+\item true\+: Success; table property was changed.
+\item false\+: In case of error. 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_a040c119d6b7965602cdec6bf06e9d197}\label{classfort_1_1table_a040c119d6b7965602cdec6bf06e9d197}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!set\_border\_style@{set\_border\_style}}
+\index{set\_border\_style@{set\_border\_style}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{set\_border\_style()}{set\_border\_style()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+bool \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::set\+\_\+border\+\_\+style (\begin{DoxyParamCaption}\item[{const struct \mbox{\hyperlink{structft__border__style}{ft\+\_\+border\+\_\+style}} $\ast$}]{style }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Set border style for the table.
+
+
+\begin{DoxyParams}{Parameters}
+{\em style} & Pointer to border style. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\begin{DoxyItemize}
+\item True\+: Success; table border style was changed.
+\item False\+: Error 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_a0d3651e9e4d47fd3594cc1a8638f5f1d}\label{classfort_1_1table_a0d3651e9e4d47fd3594cc1a8638f5f1d}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!set\_bottom\_margin@{set\_bottom\_margin}}
+\index{set\_bottom\_margin@{set\_bottom\_margin}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{set\_bottom\_margin()}{set\_bottom\_margin()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+bool \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::set\+\_\+bottom\+\_\+margin (\begin{DoxyParamCaption}\item[{unsigned}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Set table bottom margin.
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & Bottom margin. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\begin{DoxyItemize}
+\item true\+: Success; table property was changed.
+\item false\+: In case of error. 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_afe4030b7e70ea73ca60d1ed6626b80ec}\label{classfort_1_1table_afe4030b7e70ea73ca60d1ed6626b80ec}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!set\_cur\_cell@{set\_cur\_cell}}
+\index{set\_cur\_cell@{set\_cur\_cell}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{set\_cur\_cell()}{set\_cur\_cell()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+void \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::set\+\_\+cur\+\_\+cell (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{row\+\_\+i,  }\item[{size\+\_\+t}]{col\+\_\+i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Set current cell position.
+
+Current cell -\/ cell that will be edited with all modifiing functions.
+
+
+\begin{DoxyParams}{Parameters}
+{\em row\+\_\+i} & New row number for the current cell. \\
+\hline
+{\em col\+\_\+i} & New row number for the current cell. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classfort_1_1table_a571357e6d86c3021a04f071aaab13e9a}\label{classfort_1_1table_a571357e6d86c3021a04f071aaab13e9a}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!set\_left\_margin@{set\_left\_margin}}
+\index{set\_left\_margin@{set\_left\_margin}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{set\_left\_margin()}{set\_left\_margin()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+bool \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::set\+\_\+left\+\_\+margin (\begin{DoxyParamCaption}\item[{unsigned}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Set table left margin.
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & Left margin. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\begin{DoxyItemize}
+\item true\+: Success; table property was changed.
+\item false\+: In case of error. 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_ae6ed7466401235113daa84079c7d9040}\label{classfort_1_1table_ae6ed7466401235113daa84079c7d9040}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!set\_right\_margin@{set\_right\_margin}}
+\index{set\_right\_margin@{set\_right\_margin}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{set\_right\_margin()}{set\_right\_margin()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+bool \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::set\+\_\+right\+\_\+margin (\begin{DoxyParamCaption}\item[{unsigned}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Set table right margin.
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & Right margin. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\begin{DoxyItemize}
+\item true\+: Success; table property was changed.
+\item false\+: In case of error. 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_aa5eaa7e5cc6178cd33fbd71b886def6f}\label{classfort_1_1table_aa5eaa7e5cc6178cd33fbd71b886def6f}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!set\_top\_margin@{set\_top\_margin}}
+\index{set\_top\_margin@{set\_top\_margin}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{set\_top\_margin()}{set\_top\_margin()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+bool \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::set\+\_\+top\+\_\+margin (\begin{DoxyParamCaption}\item[{unsigned}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Set table top margin.
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & Top margin. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\begin{DoxyItemize}
+\item true\+: Success; table property was changed.
+\item false\+: In case of error. 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_a069a11134b61aebd9f798b445c281696}\label{classfort_1_1table_a069a11134b61aebd9f798b445c281696}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!to\_string@{to\_string}}
+\index{to\_string@{to\_string}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{to\_string()}{to\_string()}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+std\+::string \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::to\+\_\+string (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Convert table to string representation.
+
+\begin{DoxyReturn}{Returns}
+
+\begin{DoxyItemize}
+\item String representation of formatted table, on success.
+\item In case of error std\+::runtime\+\_\+error is thrown. 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}\label{classfort_1_1table_ab6b0b3f3a39b255d5dd95ce14f9d472b}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!write@{write}}
+\index{write@{write}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{write()}{write()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+bool \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::write (\begin{DoxyParamCaption}\item[{const char $\ast$}]{str }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Write string to the the table.
+
+Write specified string to the current cell.
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & String to write. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\begin{DoxyItemize}
+\item 0\+: Success; data were written
+\item (\texorpdfstring{$<$}{<}0)\+: In case of error 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_aa5bef06063a598ac7985bd7df715803c}\label{classfort_1_1table_aa5bef06063a598ac7985bd7df715803c}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!write@{write}}
+\index{write@{write}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{write()}{write()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+bool \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::write (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Write string to the the table.
+
+Write specified string to the current cell.
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & String to write. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\begin{DoxyItemize}
+\item 0\+: Success; data were written
+\item (\texorpdfstring{$<$}{<}0)\+: In case of error 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_a23ac58f177ed0717e77d96ca5acec52f}\label{classfort_1_1table_a23ac58f177ed0717e77d96ca5acec52f}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!write\_ln@{write\_ln}}
+\index{write\_ln@{write\_ln}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{write\_ln()}{write\_ln()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+bool \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::write\+\_\+ln (\begin{DoxyParamCaption}\item[{const char $\ast$}]{str }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Write string to the the table and go to the next line.
+
+Write specified string to the current cell and move current position to the first cell of the next line(row).
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & String to write. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\begin{DoxyItemize}
+\item 0\+: Success; data were written
+\item (\texorpdfstring{$<$}{<}0)\+: In case of error 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{classfort_1_1table_a921c35a1c1aa723c1a96500bdbf04d62}\label{classfort_1_1table_a921c35a1c1aa723c1a96500bdbf04d62}} 
+\index{fort::table$<$ TT $>$@{fort::table$<$ TT $>$}!write\_ln@{write\_ln}}
+\index{write\_ln@{write\_ln}!fort::table$<$ TT $>$@{fort::table$<$ TT $>$}}
+\doxysubsubsection{\texorpdfstring{write\_ln()}{write\_ln()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$table\+\_\+type TT = table\+\_\+type\+::character$>$ \\
+bool \mbox{\hyperlink{classfort_1_1table}{fort\+::table}}$<$ TT $>$\+::write\+\_\+ln (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{str }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Write string to the the table and go to the next line.
+
+Write specified string to the current cell and move current position to the first cell of the next line(row).
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & String to write. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\begin{DoxyItemize}
+\item 0\+: Success; data were written
+\item (\texorpdfstring{$<$}{<}0)\+: In case of error 
+\end{DoxyItemize}
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{fort_8hpp}{fort.\+hpp}}\end{DoxyCompactItemize}

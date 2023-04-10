@@ -1,0 +1,75 @@
+\hypertarget{class_utils}{}\doxysection{Utils Class Reference}
+\label{class_utils}\index{Utils@{Utils}}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{class_utils_abda5e6ac24cf7c57baf45b3ad835bac9}{lowercase}} (std\+::string \&s, bool uppercase=false)
+\begin{DoxyCompactList}\small\item\em turns all the characters of a string into lowercase or uppercase \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{class_utils_afb38ce3a2bed72ded31da380ba67ec27}{proper\+Name}} (std\+::string \&s)
+\begin{DoxyCompactList}\small\item\em takes a user inputted string and modifies it so that it becomes well-\/written \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{fort_8hpp_a508f5a472ab557708969fc946380cfc4}{fort\+::utf8\+\_\+table}} \mbox{\hyperlink{class_utils_a9d08c418aaecfc057a452f6c93d3e6d6}{create\+Table}} (const std\+::list$<$ std\+::string $>$ \&column\+Names)
+\begin{DoxyCompactList}\small\item\em creates a \mbox{\hyperlink{fort_8hpp_a508f5a472ab557708969fc946380cfc4}{fort\+::utf8\+\_\+table}} used for displaying information in the terminal \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_utils_a9d08c418aaecfc057a452f6c93d3e6d6}\label{class_utils_a9d08c418aaecfc057a452f6c93d3e6d6}} 
+\index{Utils@{Utils}!createTable@{createTable}}
+\index{createTable@{createTable}!Utils@{Utils}}
+\doxysubsubsection{\texorpdfstring{createTable()}{createTable()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{fort_8hpp_a508f5a472ab557708969fc946380cfc4}{fort\+::utf8\+\_\+table}} Utils\+::create\+Table (\begin{DoxyParamCaption}\item[{const std\+::list$<$ std\+::string $>$ \&}]{column\+Names }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+creates a \mbox{\hyperlink{fort_8hpp_a508f5a472ab557708969fc946380cfc4}{fort\+::utf8\+\_\+table}} used for displaying information in the terminal 
+
+
+\begin{DoxyParams}{Parameters}
+{\em column\+Names} & list containing the name of each column of the table \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{fort_8hpp_a508f5a472ab557708969fc946380cfc4}{fort\+::utf8\+\_\+table}} object 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_utils_abda5e6ac24cf7c57baf45b3ad835bac9}\label{class_utils_abda5e6ac24cf7c57baf45b3ad835bac9}} 
+\index{Utils@{Utils}!lowercase@{lowercase}}
+\index{lowercase@{lowercase}!Utils@{Utils}}
+\doxysubsubsection{\texorpdfstring{lowercase()}{lowercase()}}
+{\footnotesize\ttfamily static void Utils\+::lowercase (\begin{DoxyParamCaption}\item[{std\+::string \&}]{s,  }\item[{bool}]{uppercase = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+turns all the characters of a string into lowercase or uppercase 
+
+\begin{DoxyParagraph}{Time Complexity\+:}
+O(n) 
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em s} & string to be modified \\
+\hline
+{\em uppercase} & bool that indicates if the string should be converted to uppercase \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_utils_afb38ce3a2bed72ded31da380ba67ec27}\label{class_utils_afb38ce3a2bed72ded31da380ba67ec27}} 
+\index{Utils@{Utils}!properName@{properName}}
+\index{properName@{properName}!Utils@{Utils}}
+\doxysubsubsection{\texorpdfstring{properName()}{properName()}}
+{\footnotesize\ttfamily static void Utils\+::proper\+Name (\begin{DoxyParamCaption}\item[{std\+::string \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+takes a user inputted string and modifies it so that it becomes well-\/written 
+
+\begin{DoxyParagraph}{Time Complexity\+:}
+O(n) 
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em s} & string to be modified \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Utils.\+hpp\end{DoxyCompactItemize}

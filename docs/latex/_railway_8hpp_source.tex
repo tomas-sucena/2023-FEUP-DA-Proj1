@@ -1,0 +1,39 @@
+\hypertarget{_railway_8hpp_source}{}\doxysection{Railway.\+hpp}
+\label{_railway_8hpp_source}\index{Railway.hpp@{Railway.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ DA\_TRAINS\_RAILWAY\_HPP}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ DA\_TRAINS\_RAILWAY\_HPP}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}implementation/Edge.hpp"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_railway}{Railway}}\ :\ \textcolor{keyword}{public}\ Edge\ \{}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_rail_graph}{RailGraph}};}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{comment}{/*\ ATTRIBUTES\ */}}
+\DoxyCodeLine{00013\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00014\ \ \ \ \ std::string\ service;}
+\DoxyCodeLine{00015\ \ \ \ \ \mbox{\hyperlink{class_railway}{Railway}}*\ reverse;}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{/*\ CONSTRUCTOR\ */}}
+\DoxyCodeLine{00018\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ \ \ \ \ \mbox{\hyperlink{class_railway_a4cdb25d173bbec6f4324ace437421f26}{Railway}}(\textcolor{keywordtype}{int}\ src,\ \textcolor{keywordtype}{int}\ dest,\ \textcolor{keywordtype}{double}\ weight,\ \textcolor{keywordtype}{bool}\ valid,\ std::string\ service)}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ :\ Edge(src,\ dest,\ weight,\ valid),\ service(std::move(service)),\ reverse(nullptr)\ \{\}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{comment}{/*\ METHODS\ */}}
+\DoxyCodeLine{00031\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00036\ \ \ \ \ Edge*\ \mbox{\hyperlink{class_railway_add8b43a5844a6b620f0f20f0c2f6b104}{clone}}()\textcolor{keyword}{\ const\ override}\{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{new}\ \mbox{\hyperlink{class_railway}{Railway}}(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00038\ \ \ \ \ \}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00044\ \ \ \ \ std::string\ \mbox{\hyperlink{class_railway_adab928dcc4c0ca0003011b02940af49b}{getService}}()\textcolor{keyword}{\ const}\{}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ service;}
+\DoxyCodeLine{00046\ \ \ \ \ \}}
+\DoxyCodeLine{00047\ \};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//DA\_TRAINS\_RAILWAY\_HPP}}
+
+\end{DoxyCode}
