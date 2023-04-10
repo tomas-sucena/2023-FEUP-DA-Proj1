@@ -30,7 +30,7 @@ private:
 
     static string readInput(const string& instruction, uSet<string>& options);
     static double readNumber(const string& instruction);
-    static void readInputFromTable(std::list<std::pair<int,int>>& edges, std::vector<Edge*> ref, int station);
+    static void readInputFromTable(std::vector<Edge*> ref, std::list<Edge*>& edges);
     string readStation();
     string readLocation(const string& instruction);
     string readLocation();

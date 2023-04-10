@@ -26,12 +26,11 @@ public:
 /* METHODS */
 private:
     void getFullPicture();
-    void reduceConnectivity(const list<Edge*>& edgesToRemove);
 
 public:
     bool addEdge(int src, int dest, double weight = 1, std::string service = "STANDARD", bool valid = true);
     Station& operator[](int index) override;
-    void reduceConnectivity(const list<std::pair<int, int>>& edgesToRemove);
+    void reduceConnectivity(const list<Edge*>& edgesToRemove);
     void restoreNetwork();
 
     std::list<std::pair<string, double>> getBusiestStations(int k);

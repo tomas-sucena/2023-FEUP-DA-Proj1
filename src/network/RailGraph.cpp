@@ -51,23 +51,6 @@ void RailGraph::getFullPicture() {
 }
 
 /**
- * @brief reduces the connectivity of the railway network by invalidating certain edges (i.e. railways)
- * @complexity O(|E|)
- * @param edgesToRemove list containing the edges that will be invalidated
- */
-void RailGraph::reduceConnectivity(const list<Edge*>& edgesToRemove){
-    fullPicture = false;
-    underMaintenance = edgesToRemove;
-
-    for (Edge* e : underMaintenance){
-        auto r = (Railway*) e;
-
-        r->valid = false;
-        r->reverse->valid = false;
-    }
-}
-
-/**
  * adds an edge (i.e. a Railway) to the RailGraph
  * @param src index of the source station
  * @param dest index of the destination station
@@ -112,23 +95,18 @@ Station& RailGraph::operator[](int index){
 
 /**
  * @brief reduces the connectivity of the railway network by invalidating certain edges (i.e. railways)
- * @complexity O(|E|^2)
- * @param edgesToRemove list containing the indices of the source and destination vertices of the edges that will be invalidated
+ * @complexity O(|E|)
+ * @param edgesToRemove list containing the edges that will be invalidated
  */
-void RailGraph::reduceConnectivity(const list<std::pair<int, int>>& edgesToRemove){
+void RailGraph::reduceConnectivity(const list<Edge*>& edgesToRemove){
     fullPicture = false;
+    underMaintenance = edgesToRemove;
 
-    for (auto& p : edgesToRemove){
-        for (auto e: (*this)[p.first].outEdges()){
-            auto r = (Railway*) e;
-            if (r->getDest() != p.second) continue;
+    for (Edge* e : underMaintenance){
+        auto r = (Railway*) e;
 
-            r->valid = false;
-            r->reverse->valid = false;
-
-            underMaintenance.push_back(r);
-            break;
-        }
+        r->valid = false;
+        r->reverse->valid = false;
     }
 }
 
@@ -139,9 +117,11 @@ void RailGraph::reduceConnectivity(const list<std::pair<int, int>>& edgesToRemov
 void RailGraph::restoreNetwork(){
     fullPicture = false;
 
-    for (auto it = underMaintenance.begin(); it != underMaintenance.end();){
-        (*it)->valid = true;
-        it = underMaintenance.erase(it);
+    for (; !underMaintenance.empty(); underMaintenance.pop_front()){
+        auto r = (Railway*) underMaintenance.front();
+
+        r->valid = true;
+        r->reverse->valid = true;
     }
 }
 

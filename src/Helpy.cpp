@@ -128,7 +128,12 @@ double Helpy::readNumber(const string &instruction){
     return res;
 }
 
-void Helpy::readInputFromTable(std::list<std::pair<int,int>>& edges, std::vector<Edge*> ref, int station){
+/**
+ * @brief reads input related to a previously printed table
+ * @param ref vector containing the edges that were displayed in the table
+ * @param edges list which will contain the edges to be invalidated
+ */
+void Helpy::readInputFromTable(std::vector<Edge*> ref, std::list<Edge*>& edges){
     cout << BREAK;
     cout << "Please type the " << BOLD << "indices" << RESET << " of the " << YELLOW << "railways" << RESET
          << " you would like to " << RED << "remove" << RESET << ", separated by a comma (ex: 1,2,7,...)."
@@ -141,9 +146,9 @@ void Helpy::readInputFromTable(std::list<std::pair<int,int>>& edges, std::vector
 
     for (string temp; getline(line_, temp, ',');){
         int k = std::stoi(temp);
-        if (k > (int) ref.size()) continue;
+        if (k <= 0 || k > (int) ref.size()) continue;
 
-        edges.emplace_back(station, ref[k - 1]->getDest());
+        edges.emplace_back(ref[k - 1]);
     }
 }
 
@@ -884,7 +889,7 @@ void Helpy::changeRailwayNetwork(){
     }
 
     // reduce the current network
-    std::list<std::pair<int,int>> edgesToRemove;
+    std::list<Edge*> edgesToRemove;
 
     while(true){
         std::ostringstream instr;
@@ -897,8 +902,8 @@ void Helpy::changeRailwayNetwork(){
 
         int station = stationIDs[readLocation(instr.str())];
 
-        std::vector<Edge*> edges = printEdges(station);
-        readInputFromTable(edgesToRemove, edges, station);
+        std::vector<Edge*> stationEdges = printEdges(station);
+        readInputFromTable(stationEdges, edgesToRemove);
 
         instr.clear(); instr.str("");
         instr << "Would you like to select more railways?" << YES_NO;
