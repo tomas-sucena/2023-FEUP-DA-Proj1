@@ -129,12 +129,11 @@ double Helpy::readNumber(const string &instruction){
 }
 
 void Helpy::readInputFromTable(std::list<std::pair<int,int>>& edges, std::vector<Edge*> ref, int station){
-    int size = (int) ref.size();
-    std::cout << std::endl << YELLOW << BREAK << RESET;
-    std::cout << "Please type the " << BOLD << "indexes" << RESET << " of the " << YELLOW << "edges" << RESET << " you would like to " << RED << "remove"
-              << RESET << ", separated by a comma (ex: 0,1,2,7,...).\n";
+    cout << BREAK;
+    cout << "Please type the " << BOLD << "indices" << RESET << " of the " << YELLOW << "railways" << RESET
+         << " you would like to " << RED << "remove" << RESET << ", separated by a comma (ex: 1,2,7,...)."
+         << endl << endl;
 
-    // countries to USE
     string line; getline(std::cin, line);
     line += ",";
 
@@ -142,9 +141,9 @@ void Helpy::readInputFromTable(std::list<std::pair<int,int>>& edges, std::vector
 
     for (string temp; getline(line_, temp, ',');){
         int k = std::stoi(temp);
-        if (k > size) continue;
+        if (k > (int) ref.size()) continue;
 
-        edges.emplace_back(station, ref[k]->getDest());
+        edges.emplace_back(station, ref[k - 1]->getDest());
     }
 }
 
@@ -484,18 +483,23 @@ bool Helpy::process_command(string& s1, string& s2, string& s3){
  * @param station index of the station
 */
 std::vector<Edge*> Helpy::printEdges(int station){
-    fort::utf8_table table = Utils::createTable({"N", "Source", "Destination"});
+    fort::utf8_table table = Utils::createTable({"N", "Source", "Destination", "Service", "Capacity"});
 
-    int i = 0;
+    int i = 1;
     std::vector<Edge*> edges;
     for(auto e: graph[station].outEdges()){
-        if (!e->valid) continue;
+        auto r = (Railway*) e;
+        if (!r->valid) continue;
 
-        edges.push_back(e);
-        table << i++ << graph[station].getName() << graph[e->getDest()].getName() << fort::endr;
+        edges.push_back(r);
+        table << i++ << stationNames[station] << stationNames[r->getDest()] << r->getService() << r->getWeight()
+              << fort::endr;
     }
 
-    std::cout << table.to_string();
+    cout << BREAK;
+    cout << graph[station].getName() << " has the following railways:" << endl << endl;
+    cout << table.to_string();
+
     return edges;
 }
 
@@ -812,6 +816,14 @@ void Helpy::calculateMaximumTrains(){
  * @complexity O(|V| * |E|^2)
 */
 void Helpy::determineAffectedStations(){
+    // check if the user is working with a reduced network
+    if (graph.underMaintenance.empty()){
+        cout << BREAK;
+        cout << RED << "Error! You must have a network of reduced connectivity to issue this command." << RESET << endl;
+
+        return;
+    }
+
     std::ostringstream instr;
     instr << "Please enter the " << BOLD << "number" << RESET << " of " << YELLOW << "stations" << RESET
           << " you would like to display:";
@@ -821,15 +833,15 @@ void Helpy::determineAffectedStations(){
     // compute the flow in the reduced network
     std::vector<std::pair<int, std::pair<double, double>>> beforeAndAfter;
 
-    for(int i = 1; i <= graph.countVertices(); i++)
+    for(int i = 1; i <= graph.countVertices(); ++i)
         beforeAndAfter.push_back({i, {0, graph.getIncomingTrains(i)}});
 
     // compute the flow in the original network
     std::list<Edge*> removedEdges = graph.underMaintenance;
     graph.restoreNetwork();
 
-    for(int i = 1; i <= graph.countVertices(); i++)
-        beforeAndAfter[i].second.first = graph.getIncomingTrains(i);
+    for(auto& p : beforeAndAfter)
+        p.second.first = graph.getIncomingTrains(p.first);
 
     graph.reduceConnectivity(removedEdges);
 
@@ -847,6 +859,7 @@ void Helpy::determineAffectedStations(){
     for (auto& p: beforeAndAfter)
         table << i++ << graph[p.first].getName() << p.second.first << p.second.second << fort::endr;
 
+    cout << "These are the results of my search:" << endl << endl;
     cout << table.to_string();
 }
 
@@ -874,13 +887,24 @@ void Helpy::changeRailwayNetwork(){
     std::list<std::pair<int,int>> edgesToRemove;
 
     while(true){
-        int station = stationIDs[readLocation()];
+        std::ostringstream instr;
+        instr << "With which of the following would you like to define the " << YELLOW << "station" << RESET
+              << " from which you will " << RED << "remove" << RESET << " railways?" << endl << endl
+              << "* Name" << endl
+              << "* District" << endl
+              << "* Municipality" << endl
+              << "* Line";
+
+        int station = stationIDs[readLocation(instr.str())];
+
         std::vector<Edge*> edges = printEdges(station);
         readInputFromTable(edgesToRemove, edges, station);
-        cout << "Would you like to select more edges (y/n): \n" << endl;
-        std::string s; std::cin >> s;
-        if (s == "y" || s == "yes") continue;
-        break;
+
+        instr.clear(); instr.str("");
+        instr << "Would you like to select more railways?" << YES_NO;
+
+        uSet<string> options = {"yes", "no"};
+        if (readInput(instr.str(), options) == "no") break;
     }
 
     graph.reduceConnectivity(edgesToRemove);

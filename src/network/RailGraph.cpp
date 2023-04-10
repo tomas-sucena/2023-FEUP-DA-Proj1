@@ -56,6 +56,7 @@ void RailGraph::getFullPicture() {
  * @param edgesToRemove list containing the edges that will be invalidated
  */
 void RailGraph::reduceConnectivity(const list<Edge*>& edgesToRemove){
+    fullPicture = false;
     underMaintenance = edgesToRemove;
 
     for (Edge* e : underMaintenance){
@@ -115,6 +116,8 @@ Station& RailGraph::operator[](int index){
  * @param edgesToRemove list containing the indices of the source and destination vertices of the edges that will be invalidated
  */
 void RailGraph::reduceConnectivity(const list<std::pair<int, int>>& edgesToRemove){
+    fullPicture = false;
+
     for (auto& p : edgesToRemove){
         for (auto e: (*this)[p.first].outEdges()){
             auto r = (Railway*) e;
@@ -134,6 +137,8 @@ void RailGraph::reduceConnectivity(const list<std::pair<int, int>>& edgesToRemov
  * @complexity O(|E|)
  */
 void RailGraph::restoreNetwork(){
+    fullPicture = false;
+
     for (auto it = underMaintenance.begin(); it != underMaintenance.end();){
         (*it)->valid = true;
         it = underMaintenance.erase(it);
