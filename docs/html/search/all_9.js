@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lowercase_0',['lowercase',['../class_utils.html#abda5e6ac24cf7c57baf45b3ad835bac9',1,'Utils']]]
+  ['terminal_0',['terminal',['../class_helpy.html#aaa754efec4177b0c763859b5847d10d3',1,'Helpy']]]
 ];

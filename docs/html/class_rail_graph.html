@@ -107,7 +107,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a77f4f4777315af471b80c2bf3d5110c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c2afd869f1bd222b23481b5747a0b1e"><td class="memItemLeft" align="right" valign="top">std::list&lt; std::pair&lt; int, int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_rail_graph.html#a2c2afd869f1bd222b23481b5747a0b1e">getBusiestStationPairs</a> (double &amp;maxTrains)</td></tr>
 <tr class="separator:a2c2afd869f1bd222b23481b5747a0b1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72f7ebce8b34512c48c1b785926b8059"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_rail_graph.html#a72f7ebce8b34512c48c1b785926b8059">getIncomingTrains</a> (int index, <a class="el" href="fort_8hpp.html#a508f5a472ab557708969fc946380cfc4">fort::utf8_table</a> *table=nullptr)</td></tr>
+<tr class="memitem:a72f7ebce8b34512c48c1b785926b8059"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_rail_graph.html#a72f7ebce8b34512c48c1b785926b8059">getIncomingTrains</a> (int index, fort::utf8_table *table=nullptr)</td></tr>
 <tr class="memdesc:a72f7ebce8b34512c48c1b785926b8059"><td class="mdescLeft">&#160;</td><td class="mdescRight">computes the maximum number of trains that can simultaneously arrive at a station  <br /></td></tr>
 <tr class="separator:a72f7ebce8b34512c48c1b785926b8059"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8a1cc26c02611547971b2110620860b"><td class="memItemLeft" align="right" valign="top">std::list&lt; Path &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_rail_graph.html#ad8a1cc26c02611547971b2110620860b">getMinimumCostPaths</a> (int src, int sink, double &amp;maxTrains, double &amp;minCost)</td></tr>
@@ -328,7 +328,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Helpy</b></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="fort_8hpp.html#a508f5a472ab557708969fc946380cfc4">fort::utf8_table</a> *&#160;</td>
+          <td class="paramtype">fort::utf8_table *&#160;</td>
           <td class="paramname"><em>table</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
@@ -343,7 +343,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Helpy</b></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">index</td><td>index of the station </td></tr>
-    <tr><td class="paramname">table</td><td><a class="el" href="fort_8hpp.html#a508f5a472ab557708969fc946380cfc4">fort::utf8_table</a> which will store information about the incoming trains </td></tr>
+    <tr><td class="paramname">table</td><td>fort::utf8_table which will store information about the incoming trains </td></tr>
   </table>
   </dd>
 </dl>

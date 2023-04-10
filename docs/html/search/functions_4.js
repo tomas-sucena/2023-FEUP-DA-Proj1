@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['helpy_0',['Helpy',['../class_helpy.html#a8bab5605460bfb9911281ba3327df1c2',1,'Helpy']]]
+  ['lowercase_0',['lowercase',['../class_utils.html#abda5e6ac24cf7c57baf45b3ad835bac9',1,'Utils']]]
 ];

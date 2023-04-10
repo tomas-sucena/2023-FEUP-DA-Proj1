@@ -1,23 +1,4 @@
 var searchData=
 [
-  ['getbusiestdistricts_0',['getBusiestDistricts',['../class_rail_graph.html#a0b86a58601b4badcc5cbfcf03c302f61',1,'RailGraph']]],
-  ['getbusiestmunicipalities_1',['getBusiestMunicipalities',['../class_rail_graph.html#a77f4f4777315af471b80c2bf3d5110c7',1,'RailGraph']]],
-  ['getbusieststationpairs_2',['getBusiestStationPairs',['../class_rail_graph.html#a2c2afd869f1bd222b23481b5747a0b1e',1,'RailGraph']]],
-  ['getbusieststations_3',['getBusiestStations',['../class_rail_graph.html#a1e4cc4a2eb5cc7434a8f2927251a13e6',1,'RailGraph']]],
-  ['getdistrict_4',['getDistrict',['../class_station.html#adfeb6e1c7361d9de1a8efade27b82c7c',1,'Station']]],
-  ['getdistricts_5',['getDistricts',['../class_reader.html#a127b71ddbebcab25330f9b04eaa5f5ab',1,'Reader']]],
-  ['getincomingtrains_6',['getIncomingTrains',['../class_rail_graph.html#a72f7ebce8b34512c48c1b785926b8059',1,'RailGraph']]],
-  ['getline_7',['getLine',['../class_station.html#a29859ce5b681749459b415b3bf86ae81',1,'Station']]],
-  ['getminimumcostpaths_8',['getMinimumCostPaths',['../class_rail_graph.html#ad8a1cc26c02611547971b2110620860b',1,'RailGraph']]],
-  ['getmunicipalities_9',['getMunicipalities',['../class_reader.html#a1ce63e0b902829eda04d7d5aed169b60',1,'Reader']]],
-  ['getmunicipality_10',['getMunicipality',['../class_station.html#a352841c01b6cdb25e84cae3b7b2f6418',1,'Station']]],
-  ['getname_11',['getName',['../class_station.html#ac823ae175ec0e2baff462ed9612c7bae',1,'Station']]],
-  ['getpath_12',['getPath',['../class_reader.html#a623cc5fb1ad7f9363be33bee9d5f30b8',1,'Reader']]],
-  ['getrailwaysinks_13',['getRailwaySinks',['../class_reader.html#a15632ffe9f1afab51b6d4d4a1de9bc90',1,'Reader']]],
-  ['getrailwaysources_14',['getRailwaySources',['../class_reader.html#ae339b4b4d92f262c26e41a48235f8685',1,'Reader']]],
-  ['getservice_15',['getService',['../class_railway.html#adab928dcc4c0ca0003011b02940af49b',1,'Railway']]],
-  ['getstationids_16',['getStationIDs',['../class_reader.html#a34f23b423c3f63964d70ed4e887cf3eb',1,'Reader']]],
-  ['getstationnames_17',['getStationNames',['../class_reader.html#a7c4d34e5534db717529822b56b7deb5b',1,'Reader']]],
-  ['gettownship_18',['getTownship',['../class_station.html#a1e3c26415e7886648ea5e1a9dfddcdde',1,'Station']]],
-  ['gettrainlines_19',['getTrainLines',['../class_reader.html#a9c7fa0d54219640e516cf0d9dd9486df',1,'Reader']]]
+  ['helpy_0',['Helpy',['../class_helpy.html#a8bab5605460bfb9911281ba3327df1c2',1,'Helpy']]]
 ];

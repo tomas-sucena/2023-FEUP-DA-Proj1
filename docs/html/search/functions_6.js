@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lowercase_0',['lowercase',['../class_utils.html#abda5e6ac24cf7c57baf45b3ad835bac9',1,'Utils']]]
+  ['propername_0',['properName',['../class_utils.html#afb38ce3a2bed72ded31da380ba67ec27',1,'Utils']]]
 ];

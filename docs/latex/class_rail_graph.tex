@@ -27,7 +27,7 @@ std\+::list$<$ std\+::pair$<$ string, double $>$ $>$ \mbox{\hyperlink{class_rail
 \item 
 std\+::list$<$ std\+::pair$<$ int, int $>$ $>$ \mbox{\hyperlink{class_rail_graph_a2c2afd869f1bd222b23481b5747a0b1e}{get\+Busiest\+Station\+Pairs}} (double \&max\+Trains)
 \item 
-double \mbox{\hyperlink{class_rail_graph_a72f7ebce8b34512c48c1b785926b8059}{get\+Incoming\+Trains}} (int index, \mbox{\hyperlink{fort_8hpp_a508f5a472ab557708969fc946380cfc4}{fort\+::utf8\+\_\+table}} $\ast$table=nullptr)
+double \mbox{\hyperlink{class_rail_graph_a72f7ebce8b34512c48c1b785926b8059}{get\+Incoming\+Trains}} (int index, fort\+::utf8\+\_\+table $\ast$table=nullptr)
 \begin{DoxyCompactList}\small\item\em computes the maximum number of trains that can simultaneously arrive at a station \end{DoxyCompactList}\item 
 std\+::list$<$ Path $>$ \mbox{\hyperlink{class_rail_graph_ad8a1cc26c02611547971b2110620860b}{get\+Minimum\+Cost\+Paths}} (int src, int sink, double \&max\+Trains, double \&min\+Cost)
 \begin{DoxyCompactList}\small\item\em computes the minimum cost paths between two stations \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -140,7 +140,7 @@ list with the names and the number of trains circulating in the top-\/k stations
 \index{RailGraph@{RailGraph}!getIncomingTrains@{getIncomingTrains}}
 \index{getIncomingTrains@{getIncomingTrains}!RailGraph@{RailGraph}}
 \doxysubsubsection{\texorpdfstring{getIncomingTrains()}{getIncomingTrains()}}
-{\footnotesize\ttfamily double Rail\+Graph\+::get\+Incoming\+Trains (\begin{DoxyParamCaption}\item[{int}]{index,  }\item[{\mbox{\hyperlink{fort_8hpp_a508f5a472ab557708969fc946380cfc4}{fort\+::utf8\+\_\+table}} $\ast$}]{table = {\ttfamily nullptr} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily double Rail\+Graph\+::get\+Incoming\+Trains (\begin{DoxyParamCaption}\item[{int}]{index,  }\item[{fort\+::utf8\+\_\+table $\ast$}]{table = {\ttfamily nullptr} }\end{DoxyParamCaption})}
 
 
 
@@ -150,7 +150,7 @@ computes the maximum number of trains that can simultaneously arrive at a statio
 \begin{DoxyParams}{Parameters}
 {\em index} & index of the station \\
 \hline
-{\em table} & \mbox{\hyperlink{fort_8hpp_a508f5a472ab557708969fc946380cfc4}{fort\+::utf8\+\_\+table}} which will store information about the incoming trains \\
+{\em table} & fort\+::utf8\+\_\+table which will store information about the incoming trains \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['default_5fproperties_0',['default_properties',['../classfort_1_1table_1_1default__properties.html',1,'fort::table']]]
+  ['helpy_0',['Helpy',['../class_helpy.html',1,'Helpy'],['../class_helpy.html#a8bab5605460bfb9911281ba3327df1c2',1,'Helpy::Helpy()']]]
 ];
