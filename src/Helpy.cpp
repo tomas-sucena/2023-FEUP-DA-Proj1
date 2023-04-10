@@ -362,7 +362,7 @@ b2: cout << BREAK;
         cout << BREAK;
         cout << "* Directory" << endl;
     }
-    else if (s2 == "maximum"){
+    else if (s2 == "maximum" || s2 == "max"){
         cout << BREAK;
         cout << "* Trains" << endl;
     }
@@ -375,7 +375,7 @@ b2: cout << BREAK;
     }
     else if (s2 == "railway"){
         cout << BREAK;
-        cout << "* Network" << endl;
+        if (s1 == "change") cout << "* Network" << endl;
         cout << "* Sources" << endl;
         cout << "* Sinks" << endl;
     }
