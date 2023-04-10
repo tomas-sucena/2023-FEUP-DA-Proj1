@@ -147,30 +147,58 @@ void Reader::readNetwork(RailGraph& graph){
     reader.clear();
 }
 
+/**
+ * @brief returns an unordered map which binds the name of a station to its index
+ * @return unordered map which binds the name of a station to its index
+ */
 uMap<std::string, int> Reader::getStationIDs() const{
     return stationIDs;
 }
 
+/**
+ * @brief returns an unordered map which binds the index of a station to its name
+ * @return unordered map which binds the index of a station to its name
+ */
 uMap<int, std::string> Reader::getStationNames() const{
     return stationNames;
 }
 
+/**
+ * @brief returns an unordered set containing the indices of the stations that are the railway network sources
+ * @return unordered set containing the indices of the stations that are the railway network sources
+ */
 uSet<int> Reader::getRailwaySources() const{
     return railwaySources;
 }
 
+/**
+ * @brief returns an unordered set containing the indices of the stations that are the railway network sinks
+ * @return unordered set containing the indices of the stations that are the railway network sinks
+ */
 uSet<int> Reader::getRailwaySinks() const{
     return railwaySinks;
 }
 
+/**
+ * @brief returns an unordered map which binds the name of a district to the names of the stations located there
+ * @return unordered map which binds the name of a district to the names of the stations located there
+ */
 uMap<string, uSet<string>> Reader::getDistricts() const{
     return districts;
 }
 
+/**
+ * @brief returns an unordered map which binds the name of a municipality to the names of the stations located there
+ * @return unordered map which binds the name of a municipality to the names of the stations located there
+ */
 uMap<string, uSet<string>> Reader::getMunicipalities() const{
     return municipalities;
 }
 
+/**
+ * @brief returns an unordered map which binds the name of a train line to the names of the stations it contains
+ * @return unordered map which binds the name of a train line to the names of the stations it contains
+ */
 uMap<string, uSet<string>> Reader::getTrainLines() const{
     return trainLines;
 }

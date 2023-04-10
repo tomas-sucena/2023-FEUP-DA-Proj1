@@ -42,11 +42,16 @@ public:
 
         bool first = true;
         for (std::istringstream s_(s); s_ >> s;){
+            // prepositions
+            if (s.size() == 2 && s[0] == 'd'){
+                name += ' ' + s;
+                continue;
+            }
+
             s[0] = (char) toupper(s[0]);
 
-            for (int i = 1; i < s.size(); i++){
+            for (int i = 1; i < s.size(); i++)
                 s[i] = (char) tolower(s[i]);
-            }
 
             if (!first) name += ' ';
 
