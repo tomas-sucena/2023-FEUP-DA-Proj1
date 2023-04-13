@@ -61,11 +61,22 @@ void RailGraph::getFullPicture() {
  */
 bool RailGraph::addEdge(int src, int dest, double weight, std::string service, bool valid){
     auto r = new Railway(src, dest, weight, valid, std::move(service));
-    if (!UGraph::addEdge(r)) return false;
+    if (!edges.insert(r).second) return false;
 
     // set the reverse edges
-    r->reverse = (Railway*) (*this)[src].inEdges().back();
-    r->reverse->reverse = r;
+    auto r_ = (Railway*) r->clone();
+    std::swap(r_->src, r_->dest);
+
+    if (!edges.insert(r_).second) return false;
+    r->reverse = r_; r_->reverse = r;
+
+    // update the vertices
+    bool isStandard = (r->getService() == "STANDARD");
+
+    (isStandard) ? (*this)[src].out.push_front(r) : (*this)[src].out.push_back(r);
+    (isStandard) ? (*this)[dest].in.push_front(r) : (*this)[dest].in.push_back(r);
+    (isStandard) ? (*this)[dest].out.push_front(r_) : (*this)[dest].out.push_back(r_);
+    (isStandard) ? (*this)[src].in.push_front(r_) : (*this)[src].in.push_back(r_);
 
     // update the districts map
     std::string srcDistrict = (*this)[src].getDistrict();
