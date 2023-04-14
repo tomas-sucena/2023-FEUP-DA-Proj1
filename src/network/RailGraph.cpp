@@ -60,6 +60,8 @@ void RailGraph::getFullPicture() {
  * @return 'true' if the insertion occurs, 'false' otherwise
  */
 bool RailGraph::addEdge(int src, int dest, double weight, std::string service, bool valid){
+    if (!validIndex(src) || !validIndex(dest)) return false;
+
     auto r = new Railway(src, dest, weight, valid, std::move(service));
     if (!edges.insert(r).second) return false;
 
