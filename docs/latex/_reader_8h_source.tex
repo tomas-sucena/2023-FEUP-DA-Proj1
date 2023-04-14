@@ -30,23 +30,24 @@
 \DoxyCodeLine{00026\ }
 \DoxyCodeLine{00027\ \textcolor{comment}{/*\ METHODS\ */}}
 \DoxyCodeLine{00028\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{void}\ readStations(\mbox{\hyperlink{class_rail_graph}{RailGraph}}\&\ g);}
-\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ readNetwork(\mbox{\hyperlink{class_rail_graph}{RailGraph}}\&\ g);}
-\DoxyCodeLine{00031\ }
-\DoxyCodeLine{00032\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00033\ \ \ \ \ \mbox{\hyperlink{class_rail_graph}{RailGraph}}\ \mbox{\hyperlink{class_reader_a9f4ce209c625a51235d34a6fbf019da2}{read}}();}
-\DoxyCodeLine{00034\ \ \ \ \ std::string\ \mbox{\hyperlink{class_reader_a623cc5fb1ad7f9363be33bee9d5f30b8}{getPath}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_reader_aa88fe4eacb73b162c175131b89ccb43d}{setPath}}(std::string\&\ path);}
-\DoxyCodeLine{00036\ }
-\DoxyCodeLine{00037\ \ \ \ \ uMap<std::string,\ int>\ \mbox{\hyperlink{class_reader_a34f23b423c3f63964d70ed4e887cf3eb}{getStationIDs}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00038\ \ \ \ \ uMap<int,\ std::string>\ \mbox{\hyperlink{class_reader_a7c4d34e5534db717529822b56b7deb5b}{getStationNames}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00039\ \ \ \ \ uSet<int>\ \mbox{\hyperlink{class_reader_ae339b4b4d92f262c26e41a48235f8685}{getRailwaySources}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00040\ \ \ \ \ uSet<int>\ \mbox{\hyperlink{class_reader_a15632ffe9f1afab51b6d4d4a1de9bc90}{getRailwaySinks}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00041\ \ \ \ \ uMap<string,\ uSet<string>>\ \mbox{\hyperlink{class_reader_a127b71ddbebcab25330f9b04eaa5f5ab}{getDistricts}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00042\ \ \ \ \ uMap<string,\ uSet<string>>\ \mbox{\hyperlink{class_reader_a1ce63e0b902829eda04d7d5aed169b60}{getMunicipalities}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00043\ \ \ \ \ uMap<string,\ uSet<string>>\ \mbox{\hyperlink{class_reader_a9c7fa0d54219640e516cf0d9dd9486df}{getTrainLines}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00044\ \};}
-\DoxyCodeLine{00045\ }
-\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//DA\_TRAINS\_READER\_H}}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ extractValue(std::string::iterator\&\ lineIt,\ std::string\&\ value,\ \textcolor{keywordtype}{char}\ delim);}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ readStations(\mbox{\hyperlink{class_rail_graph}{RailGraph}}\&\ g);}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ readNetwork(\mbox{\hyperlink{class_rail_graph}{RailGraph}}\&\ g);}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00034\ \ \ \ \ \mbox{\hyperlink{class_rail_graph}{RailGraph}}\ \mbox{\hyperlink{class_reader_a9f4ce209c625a51235d34a6fbf019da2}{read}}();}
+\DoxyCodeLine{00035\ \ \ \ \ std::string\ \mbox{\hyperlink{class_reader_a623cc5fb1ad7f9363be33bee9d5f30b8}{getPath}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_reader_aa88fe4eacb73b162c175131b89ccb43d}{setPath}}(std::string\&\ path);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ uMap<std::string,\ int>\ \mbox{\hyperlink{class_reader_a34f23b423c3f63964d70ed4e887cf3eb}{getStationIDs}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00039\ \ \ \ \ uMap<int,\ std::string>\ \mbox{\hyperlink{class_reader_a7c4d34e5534db717529822b56b7deb5b}{getStationNames}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00040\ \ \ \ \ uSet<int>\ \mbox{\hyperlink{class_reader_ae339b4b4d92f262c26e41a48235f8685}{getRailwaySources}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00041\ \ \ \ \ uSet<int>\ \mbox{\hyperlink{class_reader_a15632ffe9f1afab51b6d4d4a1de9bc90}{getRailwaySinks}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00042\ \ \ \ \ uMap<string,\ uSet<string>>\ \mbox{\hyperlink{class_reader_a127b71ddbebcab25330f9b04eaa5f5ab}{getDistricts}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00043\ \ \ \ \ uMap<string,\ uSet<string>>\ \mbox{\hyperlink{class_reader_a1ce63e0b902829eda04d7d5aed169b60}{getMunicipalities}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00044\ \ \ \ \ uMap<string,\ uSet<string>>\ \mbox{\hyperlink{class_reader_a9c7fa0d54219640e516cf0d9dd9486df}{getTrainLines}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00045\ \};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//DA\_TRAINS\_READER\_H}}
 
 \end{DoxyCode}

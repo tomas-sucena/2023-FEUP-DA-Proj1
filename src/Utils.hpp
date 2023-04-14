@@ -63,7 +63,7 @@ public:
     }
 
     /**
-     * @brief creates a fort::utf8_table used for displaying information in the terminal
+     * @brief creates a fort::utf8_table that will be used to display information in the terminal
      * @param columnNames list containing the name of each column of the table
      * @return fort::utf8_table object
      */
