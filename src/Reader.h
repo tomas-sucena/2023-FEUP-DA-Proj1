@@ -26,6 +26,7 @@ public:
 
 /* METHODS */
 private:
+    static void extractValue(std::string::iterator& lineIt, std::string& value, char delim);
     void readStations(RailGraph& g);
     void readNetwork(RailGraph& g);
 

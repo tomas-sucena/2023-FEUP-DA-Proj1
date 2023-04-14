@@ -31,7 +31,7 @@ std::map<string, int> Helpy::what = {{"directory", 17}, {"dir", 17}, {"train", 2
 /**
  * @brief creates a new Helpy object
  */
-Helpy::Helpy() : reader("../data", ';') {
+Helpy::Helpy() : reader("../data", ',') {
     fetchData();
 }
 
