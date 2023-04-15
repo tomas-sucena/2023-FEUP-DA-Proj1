@@ -124,7 +124,7 @@ void Reader::readNetwork(RailGraph& graph){
         string service;
         extractValue(it, service, lineDelim);
 
-        graph.addEdge(stationIDs[stationA], stationIDs[stationB], std::stod(capacity), service);
+        graph.addEdge(stationIDs[stationA], stationIDs[stationB], std::stod(capacity) / 2, service);
 
         railwaySources.erase(stationIDs[stationB]);
         railwaySinks.erase(stationIDs[stationA]);
