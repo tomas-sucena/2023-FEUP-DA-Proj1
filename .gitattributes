@@ -1,0 +1,2 @@
+# exclude Libfort
+src/libfort/* linguist-vendored
