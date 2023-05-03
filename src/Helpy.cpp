@@ -148,6 +148,7 @@ void Helpy::readInputFromTable(std::vector<Edge*> ref, std::list<Edge*>& edges){
         int k = std::stoi(temp);
         if (k <= 0 || k > (int) ref.size()) continue;
 
+        ref[k - 1]->valid = false;
         edges.emplace_back(ref[k - 1]);
     }
 }
@@ -864,6 +865,7 @@ void Helpy::determineAffectedStations(){
     for (auto& p: beforeAndAfter)
         table << i++ << graph[p.first].getName() << p.second.first << p.second.second << fort::endr;
 
+    cout << BREAK;
     cout << "These are the results of my search:" << endl << endl;
     cout << table.to_string();
 }
