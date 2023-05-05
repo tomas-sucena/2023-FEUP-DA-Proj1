@@ -933,6 +933,14 @@ void Helpy::changeRailwaySources(){
     string line; getline(std::cin >> std::ws, line);
     Utils::lowercase(line);
 
+    // add all the stations
+    if (line == "all"){
+        line.clear();
+
+        for (auto& p : stationIDs)
+            line += p.first + ';';
+    }
+
     if (line.back() != ';') line += ";";
 
     std::istringstream line_(line);
@@ -952,6 +960,14 @@ void Helpy::changeRailwaySources(){
 
     getline(std::cin >> std::ws, line);
     Utils::lowercase(line);
+
+    // remove all the stations
+    if (line == "all"){
+        line.clear();
+
+        for (auto& p : stationIDs)
+            line += p.first + ';';
+    }
 
     if (line.back() != ';') line += ";";
 
@@ -980,6 +996,14 @@ void Helpy::changeRailwaySinks(){
     string line; getline(std::cin >> std::ws, line);
     Utils::lowercase(line);
 
+    // add all the stations
+    if (line == "all"){
+        line.clear();
+
+        for (auto& p : stationIDs)
+            line += p.first + ';';
+    }
+
     if (line.back() != ';') line += ";";
 
     std::istringstream line_(line);
@@ -999,6 +1023,14 @@ void Helpy::changeRailwaySinks(){
 
     getline(std::cin >> std::ws, line);
     Utils::lowercase(line);
+
+    // remove all the stations
+    if (line == "all"){
+        line.clear();
+
+        for (auto& p : stationIDs)
+            line += p.first + ';';
+    }
 
     if (line.back() != ';') line += ";";
 
